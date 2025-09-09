@@ -1,4 +1,5 @@
 using Application.DTOs.CenterDTOs;
+using Application.DTOs.SciencesDTOs;
 using Application.DTOs.UserDTOs;
 using AutoMapper;
 using Domain.Entities;
@@ -15,6 +16,8 @@ public class MappingProfile : Profile
         CreateMap<UpdatedCenterDTO, Center>();
 
         CreateMap<UpdatedCenterAdminDto, User>();
+        CreateMap<NewScienceDto, Science>();
+        CreateMap<UpdatedScienceDto, Science>();
 
         //    CreateMap<UpdateCenterAdminDto, CenterAdmin>();
     }

@@ -139,3 +139,7 @@ D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Domain.pdb
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\BCrypt.Net-Next.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\AutoMapper.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\EntityFrameworkCore.Seeding.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\System.Net.Http.Formatting.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Newtonsoft.Json.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll

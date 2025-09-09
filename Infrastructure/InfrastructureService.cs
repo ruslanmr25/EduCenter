@@ -24,6 +24,10 @@ public static class InfrastructureService
         services.AddScoped<CenterRepository>();
 
         services.AddScoped<IDataValidationService, DataValidationSerive>();
+
+        services.AddScoped<ScienceRepository>();
+
+        services.AddScoped<GroupRepository>();
         return services;
     }
 }
