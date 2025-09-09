@@ -1,0 +1,9 @@
+dotnet ef migrations add initial --startup-project=Api --project=Infrastructure
+
+
+dotnet ef migrations remove --startup-project=Api --project=Infrastructure
+
+
+dotnet ef database update --startup-project=Api --project=Infrastructure
+
+dotnet ef database drop --startup-project=Api --project=Infrastructure

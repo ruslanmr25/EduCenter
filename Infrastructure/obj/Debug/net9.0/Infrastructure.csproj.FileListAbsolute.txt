@@ -1,0 +1,17 @@
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Infrastructure.deps.json
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Infrastructure.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Infrastructure.pdb
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Application.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Domain.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Application.pdb
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Domain.pdb
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.csproj.AssemblyReference.cache
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.AssemblyInfoInputs.cache
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.AssemblyInfo.cs
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.csproj.CoreCompileInputs.cache
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastr.15EFFBFE.Up2Date
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\refint\Infrastructure.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.pdb
+D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\ref\Infrastructure.dll
