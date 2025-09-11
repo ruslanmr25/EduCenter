@@ -30,5 +30,11 @@ namespace Api.Controllers.CenterAdminsControllers
             var groups = await groupRepository.GetAllAsync(centerId: centerId, page, pageSize);
             return Ok(new ApiResponse<PagedResult<Group>>(groups));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create()
+        {
+            return Ok();
+        }
     }
 }
