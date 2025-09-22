@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250909153420_initial")]
+    [Migration("20250911064623_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -25,6 +25,21 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CenterUser", b =>
+                {
+                    b.Property<int>("CenterId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeachersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CenterId", "TeachersId");
+
+                    b.HasIndex("TeachersId");
+
+                    b.ToTable("CenterUser");
+                });
 
             modelBuilder.Entity("Domain.Entities.Center", b =>
                 {
@@ -56,6 +71,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CenterId")
+                        .HasColumnType("integer");
+
                     b.PrimitiveCollection<int[]>("Days")
                         .IsRequired()
                         .HasColumnType("integer[]");
@@ -75,6 +93,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("time without time zone[]");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CenterId");
 
                     b.HasIndex("ScienceId");
 
@@ -173,12 +193,27 @@ namespace Infrastructure.Migrations
                     b.ToTable("GroupStudent");
                 });
 
+            modelBuilder.Entity("CenterUser", b =>
+                {
+                    b.HasOne("Domain.Entities.Center", null)
+                        .WithMany()
+                        .HasForeignKey("CenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Center", b =>
                 {
                     b.HasOne("Domain.Entities.User", "CenterAdmin")
-                        .WithMany()
+                        .WithMany("Centers")
                         .HasForeignKey("CenterAdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CenterAdmin");
@@ -186,6 +221,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
+                    b.HasOne("Domain.Entities.Center", "Center")
+                        .WithMany()
+                        .HasForeignKey("CenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Science", "Science")
                         .WithMany()
                         .HasForeignKey("ScienceId")
@@ -197,6 +238,8 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Center");
 
                     b.Navigation("Science");
 
@@ -227,6 +270,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Centers");
                 });
 #pragma warning restore 612, 618
         }

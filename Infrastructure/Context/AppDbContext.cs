@@ -85,6 +85,20 @@ public class AppDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder
+            .Entity<Center>()
+            .HasOne(c => c.CenterAdmin)
+            .WithMany(u => u.Centers)
+            .HasForeignKey(c => c.CenterAdminId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Center>().HasMany(c => c.Teachers).WithMany();
+    }
+
     public DbSet<User> Users { get; set; }
 
     public DbSet<Center> Centers { get; set; }

@@ -1,4 +1,5 @@
 using Api.Responses;
+using Application.DTOs.GroupDTOs;
 using Application.Results;
 using AutoMapper;
 using Domain.Entities;
@@ -32,9 +33,58 @@ namespace Api.Controllers.CenterAdminsControllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(NewGroupDto dto)
         {
+            Group group = mapper.Map<Group>(dto);
+
+            await groupRepository.CreateAsync(group);
+
+            return Created();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync(int id)
+        {
+            Group? group = await groupRepository.GetAsync(id);
+
+            if (group is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(group);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdatedGroupDto dto)
+        {
+            Group? dbGroup = await groupRepository.GetAsync(id);
+
+            if (dbGroup is null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(dto, dbGroup);
+
+            await groupRepository.UpdateAsync(dbGroup);
+
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var entity = await groupRepository.GetAsync(id);
+            if (entity is null)
+            {
+                return NotFound(
+                    new ApiResponse<string[]>([], success: false, message: "Hech narsa topilmadi")
+                );
+            }
+
+            await groupRepository.DeleteAsync(entity);
+            return Ok(new ApiResponse<string[]>());
         }
     }
 }

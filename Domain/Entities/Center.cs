@@ -11,4 +11,6 @@ public class Center
     public User CenterAdmin { get; set; }
 
     public int CenterAdminId { get; set; }
+
+    public List<User> Teachers { get; set; }
 }

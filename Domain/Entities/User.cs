@@ -14,4 +14,6 @@ public class User
     public string Password { get; set; } = string.Empty;
 
     public Role Role { get; set; }
+
+    public List<Center> Centers { get; set; }
 }

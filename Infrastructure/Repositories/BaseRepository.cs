@@ -34,7 +34,7 @@ public class BaseRepository<TEntity>
         return createdEntity.Entity;
     }
 
-    public async Task<TEntity?> GetAsync(int id)
+    public virtual async Task<TEntity?> GetAsync(int id)
     {
         TEntity? entity = await _context.Set<TEntity>().FindAsync(id);
 

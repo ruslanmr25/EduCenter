@@ -61,6 +61,30 @@ namespace Infrastructure.Migrations
                         column: x => x.CenterAdminId,
                         principalTable: "Users",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CenterUser",
+                columns: table => new
+                {
+                    CenterId = table.Column<int>(type: "integer", nullable: false),
+                    TeachersId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CenterUser", x => new { x.CenterId, x.TeachersId });
+                    table.ForeignKey(
+                        name: "FK_CenterUser_Centers_CenterId",
+                        column: x => x.CenterId,
+                        principalTable: "Centers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CenterUser_Users_TeachersId",
+                        column: x => x.TeachersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -91,6 +115,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    CenterId = table.Column<int>(type: "integer", nullable: false),
                     ScienceId = table.Column<int>(type: "integer", nullable: false),
                     TeacherId = table.Column<int>(type: "integer", nullable: false),
                     Days = table.Column<int[]>(type: "integer[]", nullable: false),
@@ -99,6 +124,12 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Groups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Groups_Centers_CenterId",
+                        column: x => x.CenterId,
+                        principalTable: "Centers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Groups_Sciences_ScienceId",
                         column: x => x.ScienceId,
@@ -143,6 +174,16 @@ namespace Infrastructure.Migrations
                 column: "CenterAdminId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CenterUser_TeachersId",
+                table: "CenterUser",
+                column: "TeachersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_CenterId",
+                table: "Groups",
+                column: "CenterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Groups_ScienceId",
                 table: "Groups",
                 column: "ScienceId");
@@ -166,6 +207,9 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CenterUser");
+
             migrationBuilder.DropTable(
                 name: "GroupStudent");
 

@@ -24,4 +24,21 @@ public class GroupRepository : BaseRepository<Group>
 
         return new PagedResult<Group>(result, totalCount, page, pageSize);
     }
+
+    public async Task<List<Group>> GetAllAsyncByIds(List<int> groupIds)
+    {
+        return await _context.Groups.Where(g => groupIds.Contains(g.Id)).ToListAsync();
+    }
+
+    public override async Task<Group?> GetAsync(int id)
+    {
+        Group? entity = await _context
+            .Set<Group>()
+            .Include(g => g.Teacher)
+            .Include(g => g.Science)
+            .Where(g => g.Id == id)
+            .FirstOrDefaultAsync();
+
+        return entity;
+    }
 }
