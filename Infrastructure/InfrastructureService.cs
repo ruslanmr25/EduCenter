@@ -30,6 +30,8 @@ public static class InfrastructureService
         services.AddScoped<GroupRepository>();
 
         services.AddScoped<StudentRepository>();
+
+        services.AddScoped<AuthRepository>();
         return services;
     }
 }

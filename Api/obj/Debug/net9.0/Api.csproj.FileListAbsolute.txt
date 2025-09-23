@@ -143,3 +143,11 @@ D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\EntityFrameworkCore.See
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\System.Net.Http.Formatting.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Newtonsoft.Json.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

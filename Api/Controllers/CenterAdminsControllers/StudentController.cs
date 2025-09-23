@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.StudentsDto;
 using Application.Results;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +13,14 @@ namespace Api.Controllers.CenterAdminsControllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "CenterAdmin")]
 public class StudentController : ControllerBase
 {
     protected readonly StudentRepository studentRepository;
 
     protected readonly GroupRepository groupRepository;
+
+    protected int CenterId;
 
     protected readonly IMapper mapper;
 
@@ -28,6 +33,7 @@ public class StudentController : ControllerBase
         this.studentRepository = studentRepository;
         this.mapper = mapper;
         this.groupRepository = groupRepository;
+        CenterId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 
     [HttpGet]

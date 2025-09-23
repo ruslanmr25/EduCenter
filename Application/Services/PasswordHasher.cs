@@ -12,6 +12,19 @@ public class PasswordHasher : IPasswordHasher
 
     public bool Verify(string password, string hashedPassword)
     {
-        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        try
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+        catch (BCrypt.Net.SaltParseException)
+        {
+            // log qiling: buzilgan hash
+            return false;
+        }
+        catch (Exception)
+        {
+            // kutilmagan xatoliklar — hamma joyda tutib olinish kerak
+            return false;
+        }
     }
 }

@@ -18,6 +18,23 @@ public class AppDbContext : DbContext
             .UseSeeding(
                 (context, _) =>
                 {
+                    var superAdmin = context
+                        .Set<User>()
+                        .FirstOrDefault(c => c.FullName == "Super Admin");
+
+                    superAdmin ??= context
+                        .Set<User>()
+                        .Add(
+                            new User
+                            {
+                                FullName = "Super Admin",
+                                Username = "superAdmin",
+                                Role = Role.SuperAdmin,
+                                Password = "123456789",
+                            }
+                        )
+                        .Entity;
+
                     var centerAdmin = context
                         .Set<User>()
                         .FirstOrDefault(c => c.FullName == "centerAdmin");
@@ -51,6 +68,23 @@ public class AppDbContext : DbContext
             .UseAsyncSeeding(
                 async (context, _, cancellationToken) =>
                 {
+                    var superAdmin = await context
+                        .Set<User>()
+                        .FirstOrDefaultAsync(c => c.FullName == "Super Admin");
+
+                    await context
+                        .Set<User>()
+                        .AddAsync(
+                            new User
+                            {
+                                FullName = "Super Admin",
+                                Username = "superAdmin",
+                                Role = Role.SuperAdmin,
+                                Password =
+                                    "$2a$11$QbiQHQTv47aIbaXNhX.G3.QW3OzCU/AnTkK6EUmqFbxAzBN4J74V.",
+                            }
+                        );
+
                     var centerAdmin = await context
                         .Set<User>()
                         .FirstOrDefaultAsync(c => c.FullName == "centerAdmin");
@@ -66,7 +100,8 @@ public class AppDbContext : DbContext
                                         FullName = "Center Admin",
                                         Username = "centerAdmin",
                                         Role = Role.CenterAdmin,
-                                        Password = "123456789",
+                                        Password =
+                                            "$2a$11$QbiQHQTv47aIbaXNhX.G3.QW3OzCU/AnTkK6EUmqFbxAzBN4J74V.",
                                     }
                                 )
                         ).Entity;

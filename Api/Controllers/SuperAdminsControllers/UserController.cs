@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace Api.Controllers.SuperAdminsControllers;
 
 [Route("api/super-admin/users")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin")]
 public class UserController : ControllerBase
 {
     protected UserRepository userRepository;

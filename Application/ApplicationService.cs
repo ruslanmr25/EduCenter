@@ -13,6 +13,8 @@ public static class ApplicationService
 
         services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+        services.AddScoped<TokenService>();
+
         return services;
     }
 }

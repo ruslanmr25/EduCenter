@@ -4,7 +4,9 @@ using Application.DTOs.CenterDTOs;
 using Application.Results;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,6 +15,7 @@ namespace Api.Controllers.SuperAdminsControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin")]
     public class CenterController : ControllerBase
     {
         protected CenterRepository centerRepository;
