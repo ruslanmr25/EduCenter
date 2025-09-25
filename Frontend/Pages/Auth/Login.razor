@@ -1,0 +1,109 @@
+﻿@layout Frontend.Layout.AuthLayout
+@page "/login"
+
+
+<div class="row justify-content-center">
+     <div class="col-md-6 col-lg-5">
+          <div class="card border-0 shadow-lg">
+               <div class="card-body p-5">
+                    <div class="text-center">
+                         <div class="mb-4 text-center">
+
+                              <img src="assets/images/logo.png" height="100" alt="logo light">
+
+                         </div>
+                         <h4 class="fw-bold text-dark mb-2">Kirish</h4>
+
+                    </div>
+
+                    <EditForm Model="@dto" OnValidSubmit="SubmitAsync" class="mt-4">
+
+
+                         <DataAnnotationsValidator></DataAnnotationsValidator>
+                         <div class="mb-3">
+                              <label class="form-label" for="example-name">Username:</label>
+                              <InputText @bind-Value="dto.Username" class="form-control"
+                                   placeholder="foydalanuvchi nomingizni shu yerga kiriting"></InputText>
+
+
+                              <p class=" text-danger m-2 text-opacity-50">
+                                   @errorMessage
+                              </p>
+
+                              <ValidationMessage For="@(() => dto.Username)"></ValidationMessage>
+                         </div>
+
+                         <div class="mb-3">
+                              <label class="form-label" for="example-password">Parol</label>
+                              <InputText type="password" @bind-Value="dto.Password" id="example-password"
+                                   class="form-control" placeholder="Parolingiz"></InputText>
+                              <ValidationMessage For="@(() => dto.Password)"></ValidationMessage>
+
+                         </div>
+
+
+                         <div class="mb-1 text-center d-grid">
+                              <LoadingButton IsRequestSending="@isRequestSending"
+                                   CssClass="btn btn-dark btn-lg fw-medium" Type="submit">Kirish
+                              </LoadingButton>
+                         </div>
+                    </EditForm>
+
+               </div>
+          </div>
+     </div>
+</div>
+
+
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authProvider
+@inject AuthClient authClient
+
+@inject TokenService tokenService
+@code {
+
+
+     protected string? errorMessage;
+
+
+     protected bool isRequestSending = false;
+
+     protected LoginDto dto = new();
+
+
+     protected async Task SubmitAsync()
+     {
+
+          isRequestSending = true;
+
+          Response<LoginResponse>? response = await authClient.LoginAsync(dto);
+
+          if (response.Success == false)
+          {
+
+               errorMessage = response.Message;
+
+          }
+          else
+          {
+
+               errorMessage = null;
+
+
+               var token = response.Data!.Token;
+
+               Console.WriteLine(token);
+
+               await tokenService.SetTokenAsync(token);
+
+               await ((CustomAuthenticationStateProvider)authProvider)
+               .NotifyUserAuthentication(token);
+
+               NavigationManager.NavigateTo("/");
+
+          }
+
+          isRequestSending = false;
+     }
+}

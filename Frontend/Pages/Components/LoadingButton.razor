@@ -1,0 +1,40 @@
+﻿<button class="@CssClass" type="@Type" @onclick="OnClick" disabled="@IsRequestSending">
+     @if (IsRequestSending)
+     {
+          <div class="spinner-border text-primary" role="status">
+               <span class="visually-hidden">Loading...</span>
+          </div>
+     }
+     else
+     {
+          @ChildContent
+     }
+</button>
+
+
+@code
+{
+
+     [Parameter]
+
+     public string Type { get; set; } = "button";
+
+
+     [Parameter]
+
+     public bool IsRequestSending { get; set; } = false;
+
+     [Parameter]
+
+     public string? CssClass { get; set; } = "btn btn-primary";
+
+
+     [Parameter]
+
+     public RenderFragment? ChildContent { get; set; }
+
+
+     [Parameter]
+     public EventCallback OnClick { get; set; }
+
+}

@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Frontend",
+    "\\Frontend\\Layout",
+    "\\Frontend\\Pages\\SuperAdminPages",
+    "\\Frontend\\Properties",
+    "\\Frontend\\wwwroot\\front",
+    "\\Frontend\\wwwroot\\front\\vendors",
+    "\\Frontend\\wwwroot\\front\\vendors\\img",
+    "\\Frontend\\wwwroot\\front\\vendors\\img\\flags",
+    "\\Frontend\\wwwroot\\front\\vendors\\img\\flags\\1x1"
+  ],
+  "SelectedNode": "\\Frontend\\Layout\\NavMenu.razor",
+  "PreviewInSolutionExplorer": false
+}

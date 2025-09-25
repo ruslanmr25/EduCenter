@@ -1,5 +1,7 @@
+using Api.Responses;
 using Application.Abstracts;
 using Application.DTOs.AuthDto;
+using Application.ErrorResponse;
 using Application.Services;
 using Domain.Entities;
 using Infrastructure.Repositories;
@@ -36,9 +38,9 @@ public class AuthController : ControllerBase
         if (user is not null && passwordHasher.Verify(request.Password, user.Password))
         {
             var token = _tokenService.GenerateToken("1", user.Username, user.Role.ToString());
-            return Ok(new { token });
+            return Ok(new ApiResponse<object>(new { Token = token }));
         }
 
-        return Unauthorized("Invalid credentials");
+        return Unauthorized(new BadRequest() { Message = "Login yoki parol xato" });
     }
 }

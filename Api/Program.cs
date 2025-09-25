@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
+using Application.ErrorResponse;
 using Infrastructure;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,11 +39,12 @@ builder
                     Errors = e.Value?.Errors.Select(er => er.ErrorMessage),
                 });
 
-            return new BadRequestObjectResult(
-                new { Message = "So‘rovda xatolik bor", Errors = errors }
-            );
+            var response = new BadRequest { Errors = errors };
+
+            return new BadRequestObjectResult(response);
         };
     });
+
 ;
 
 builder.Services.RegisterApplicationServices();
@@ -56,6 +58,18 @@ builder.Services.RegisterInfraStructureService(
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+            policy
+                .WithOrigins("http://localhost:5227") // frontend manzilingiz
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+    );
+});
 
 builder
     .Services.AddAuthentication(options =>
@@ -84,6 +98,9 @@ builder
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
+
+// CORS middleware
+app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

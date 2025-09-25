@@ -13,3 +13,5 @@ D:\Projects\visual studio\EduCenter\Application\obj\Debug\net9.0\Application.dll
 D:\Projects\visual studio\EduCenter\Application\obj\Debug\net9.0\refint\Application.dll
 D:\Projects\visual studio\EduCenter\Application\obj\Debug\net9.0\Application.pdb
 D:\Projects\visual studio\EduCenter\Application\obj\Debug\net9.0\ref\Application.dll
+D:\Projects\visual studio\EduCenter\Application\bin\Debug\net9.0\Common.dll
+D:\Projects\visual studio\EduCenter\Application\bin\Debug\net9.0\Common.pdb

@@ -151,3 +151,5 @@ D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Common.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Common.pdb

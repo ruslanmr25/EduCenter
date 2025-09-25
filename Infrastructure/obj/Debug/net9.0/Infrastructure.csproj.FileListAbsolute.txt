@@ -15,3 +15,5 @@ D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructu
 D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\refint\Infrastructure.dll
 D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\Infrastructure.pdb
 D:\Projects\visual studio\EduCenter\Infrastructure\obj\Debug\net9.0\ref\Infrastructure.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Common.dll
+D:\Projects\visual studio\EduCenter\Infrastructure\bin\Debug\net9.0\Common.pdb

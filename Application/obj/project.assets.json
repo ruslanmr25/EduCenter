@@ -605,6 +605,16 @@
           "lib/netcoreapp2.1/_._": {}
         }
       },
+      "Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -1593,6 +1603,11 @@
         "version.txt"
       ]
     },
+    "Common/1.0.0": {
+      "type": "project",
+      "path": "../Common/Common.csproj",
+      "msbuildProject": "../Common/Common.csproj"
+    },
     "Domain/1.0.0": {
       "type": "project",
       "path": "../Domain/Domain.csproj",
@@ -1603,6 +1618,7 @@
     "net9.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "BCrypt.Net-Next >= 4.0.3",
+      "Common >= 1.0.0",
       "Domain >= 1.0.0",
       "EntityFrameworkCore.Seeding >= 1.1.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 9.0.9",
@@ -1642,6 +1658,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "D:\\Projects\\visual studio\\EduCenter\\Common\\Common.csproj": {
+              "projectPath": "D:\\Projects\\visual studio\\EduCenter\\Common\\Common.csproj"
+            },
             "D:\\Projects\\visual studio\\EduCenter\\Domain\\Domain.csproj": {
               "projectPath": "D:\\Projects\\visual studio\\EduCenter\\Domain\\Domain.csproj"
             }

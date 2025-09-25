@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+
+<div class="app-wrapper">
+
+    <Header />
+
+    <NavMenu />
+
+    <div class="page-content">
+
+        <!-- Start Container Fluid -->
+        <div class="container-fluid">
+
+            @Body
+
+        </div>
+        <!-- End Container Fluid -->
+
+
+
+    </div>
+
+</div>
+
+
+@inject IJSRuntime jSRuntime
+
+@code
+{
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+
+        if (firstRender)
+        {
+            await jSRuntime.InvokeVoidAsync("appInit");
+
+        }
+    }
+}
