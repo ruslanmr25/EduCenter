@@ -1,0 +1,104 @@
+﻿@page "/center-admin/groups"
+<div class="card border-0">
+     <div class="card-header bg-transparent border-0 pb-0">
+          <div class="d-flex align-items-center justify-content-between">
+               <h3 class="fw-semibold text-dark mb-0">Guruhlar</h3>
+
+               <div class="d-flex ">
+                    @if (sciences is not null)
+                    {
+                         <CustomSelect TItem="Science" TValue="int" Items="@sciences" TextSelector="@((s) => s.Name)"
+                              ValueSelector="@((s) => s.Id)" @bind-Value="@selectedScienceId"
+                              DefaultOption="Fanni tanlang">
+                         </CustomSelect>
+                    }
+
+
+                    <NavLink href="/center-admin/groups/create"
+                         class="ms-3 btn btn-sm btn-outline-primary rounded-pill px-3">
+                         <i class="bx bx-plus me-1"></i> Yangi guruh qo'shish
+                    </NavLink>
+               </div>
+          </div>
+     </div>
+
+     <div class="card-body mt-3">
+          <div class="row g-4">
+               @foreach (var item in groups.Items.Select((group, index) => new { group, index }))
+               {
+                    <div class="col-xl-3 col-md-6">
+                         <div class="card border-1 shadow-md rounded-4 overflow-hidden hover-lift bg-white">
+                              <div class="position-relative">
+                                   <img src="@($"assets/group-images/group-image-{item.index % 10}.jpg")"
+                                        class="card-img-top img-fluid" alt="group image"
+                                        style="height: 200px; object-fit: cover;">
+                              </div>
+
+                              <div class="card-body p-4">
+                                   <h5 class="fw-bold text-dark mb-3 fs-5">
+                                        @item.group.Name
+                                   </h5>
+
+                                   <div class="text-muted mb-4" style="font-size: 0.95rem;">
+                                        <div class="mb-2">
+                                             <i class="bi bi-book me-2 text-primary fs-6"></i>
+                                             Fan: <strong>@item.group.Science?.Name</strong>
+                                        </div>
+                                        <div class="mb-2">
+                                             <i class="bi bi-person-circle me-2 text-primary fs-6"></i>
+                                             O'qituvchi: <strong>@item.group.Teacher?.FullName</strong>
+                                        </div>
+                                        <div>
+                                             <i class="bi bi-calendar-event me-2 text-primary fs-6"></i>
+                                             <strong>@item.group.CreatedAt.ToString("dd.MM.yyyy")</strong>
+                                        </div>
+                                   </div>
+
+                                   <a href="javascript:void(0);"
+                                        class="btn btn-outline-secondary w-100 rounded-3 py-2 fw-semibold">
+                                        <i class="bi bi-info-circle me-1"></i> Batafsil
+                                   </a>
+                              </div>
+                         </div>
+                    </div>
+               }
+          </div>
+     </div>
+</div>
+
+
+@inject GroupClient groupClient
+
+@inject ScienceClient scienceClient
+@code
+{
+
+     protected int selectedScienceId { get; set; }
+
+     protected Collection<Group> groups = new();
+
+     protected List<Science>? sciences;
+     protected override async Task OnInitializedAsync()
+     {
+
+          await LoadData(1);
+
+          await base.OnInitializedAsync();
+
+          sciences = (await scienceClient.GetAllAsync()).Data?.Items;
+
+
+     }
+
+
+     protected async Task LoadData(int page)
+     {
+          groups = (await groupClient.GetAllAsync(page, 20)).Data!;
+
+
+
+     }
+
+
+
+}

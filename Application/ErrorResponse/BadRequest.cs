@@ -15,7 +15,7 @@ public class BadRequest
 
     public bool Success { get; set; } = false;
 
-    public object Data { get; set; } = new int[0];
+    public object? Data { get; set; } = null;
 
     public string Message { get; set; } = "So‘rovda xatolik bor";
 

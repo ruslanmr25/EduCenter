@@ -3,12 +3,44 @@
   "WorkspaceRootPath": "D:\\Projects\\visual studio\\EduCenter\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|d:\\projects\\visual studio\\educenter\\application\\dtos\\authdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|solutionrelative:application\\dtos\\authdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\clients\\baseclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\clients\\baseclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\pages\\centeradminpages\\groups\\edit.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\pages\\centeradminpages\\groups\\edit.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\pages\\centeradminpages\\groups\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\pages\\centeradminpages\\groups\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\dtos\\groupdto\\editgroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\dtos\\groupdto\\editgroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\dtos\\groupdto\\creategroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\dtos\\groupdto\\creategroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\pages\\centeradminpages\\groups\\create.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|solutionrelative:frontend\\pages\\centeradminpages\\groups\\create.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|d:\\projects\\visual studio\\educenter\\application\\dtos\\groupdtos\\newgroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|solutionrelative:application\\dtos\\groupdtos\\newgroupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB426092-1DFB-497A-B305-508F55145DDB}|Api\\Api.csproj|d:\\projects\\visual studio\\educenter\\api\\controllers\\centeradminscontrollers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB426092-1DFB-497A-B305-508F55145DDB}|Api\\Api.csproj|solutionrelative:api\\controllers\\centeradminscontrollers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|d:\\projects\\visual studio\\educenter\\application\\applicationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|solutionrelative:application\\applicationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|d:\\projects\\visual studio\\educenter\\application\\dtos\\authdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7ABD03CB-620A-43EE-8CBE-1556C1DF6489}|Application\\Application.csproj|solutionrelative:application\\dtos\\authdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{361D7D2B-768D-439E-BDE3-9E9DCC2D8C80}|Frontend\\Frontend.csproj|d:\\projects\\visual studio\\educenter\\frontend\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -42,8 +74,86 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BaseClient.cs",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Clients\\BaseClient.cs",
+              "RelativeDocumentMoniker": "Frontend\\Clients\\BaseClient.cs",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Clients\\BaseClient.cs",
+              "RelativeToolTip": "Frontend\\Clients\\BaseClient.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAIA6wHAAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T07:45:11.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EditGroupDto.cs",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\DTOs\\GroupDto\\EditGroupDto.cs",
+              "RelativeDocumentMoniker": "Frontend\\DTOs\\GroupDto\\EditGroupDto.cs",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\DTOs\\GroupDto\\EditGroupDto.cs",
+              "RelativeToolTip": "Frontend\\DTOs\\GroupDto\\EditGroupDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T07:38:07.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Edit.razor",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Edit.razor",
+              "RelativeDocumentMoniker": "Frontend\\Pages\\CenterAdminPages\\Groups\\Edit.razor",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Edit.razor",
+              "RelativeToolTip": "Frontend\\Pages\\CenterAdminPages\\Groups\\Edit.razor",
+              "ViewState": "AgIAAG0AAAAAAAAAAIAwwHYAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-02T07:37:13.428Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.razor",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Index.razor",
+              "RelativeDocumentMoniker": "Frontend\\Pages\\CenterAdminPages\\Groups\\Index.razor",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Index.razor",
+              "RelativeToolTip": "Frontend\\Pages\\CenterAdminPages\\Groups\\Index.razor",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-02T07:37:03.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CreateGroupDto.cs",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\DTOs\\GroupDto\\CreateGroupDto.cs",
+              "RelativeDocumentMoniker": "Frontend\\DTOs\\GroupDto\\CreateGroupDto.cs",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\DTOs\\GroupDto\\CreateGroupDto.cs",
+              "RelativeToolTip": "Frontend\\DTOs\\GroupDto\\CreateGroupDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T07:30:18.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "NewGroupDto.cs",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Application\\DTOs\\GroupDTOs\\NewGroupDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\GroupDTOs\\NewGroupDto.cs",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Application\\DTOs\\GroupDTOs\\NewGroupDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\GroupDTOs\\NewGroupDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T07:28:39.877Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -70,20 +180,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
+              "Title": "GroupController.cs",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Api\\Controllers\\CenterAdminsControllers\\GroupController.cs",
+              "RelativeDocumentMoniker": "Api\\Controllers\\CenterAdminsControllers\\GroupController.cs",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Api\\Controllers\\CenterAdminsControllers\\GroupController.cs",
+              "RelativeToolTip": "Api\\Controllers\\CenterAdminsControllers\\GroupController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAuwCoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T07:28:10.958Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Create.razor",
+              "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Create.razor",
+              "RelativeDocumentMoniker": "Frontend\\Pages\\CenterAdminPages\\Groups\\Create.razor",
+              "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\CenterAdminPages\\Groups\\Create.razor",
+              "RelativeToolTip": "Frontend\\Pages\\CenterAdminPages\\Groups\\Create.razor",
+              "ViewState": "AgIAALUAAAAAAAAAAAAqwNIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-02T05:42:35.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "LoginDto.cs",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Application\\DTOs\\AuthDto\\LoginDto.cs",
               "RelativeDocumentMoniker": "Application\\DTOs\\AuthDto\\LoginDto.cs",
               "ToolTip": "D:\\Projects\\visual studio\\EduCenter\\Application\\DTOs\\AuthDto\\LoginDto.cs",
               "RelativeToolTip": "Application\\DTOs\\AuthDto\\LoginDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-24T19:20:18.365Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "ApplicationService.cs",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Application\\ApplicationService.cs",
               "RelativeDocumentMoniker": "Application\\ApplicationService.cs",
@@ -96,7 +232,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 13,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Frontend\\Properties\\launchSettings.json",
@@ -109,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Api\\appsettings.json",
               "RelativeDocumentMoniker": "Api\\appsettings.json",
@@ -122,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Frontend\\Layout\\NavMenu.razor",
@@ -135,7 +271,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 11,
               "Title": "Index.razor",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\Pages\\SuperAdminPages\\Index.razor",
               "RelativeDocumentMoniker": "Frontend\\Pages\\SuperAdminPages\\Index.razor",
@@ -146,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 12,
               "Title": "in.svg",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\front\\vendors\\img\\flags\\1x1\\in.svg",
               "RelativeDocumentMoniker": "Frontend\\wwwroot\\front\\vendors\\img\\flags\\1x1\\in.svg",
@@ -157,7 +293,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 15,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Projects\\visual studio\\EduCenter\\Api\\Program.cs",
               "RelativeDocumentMoniker": "Api\\Program.cs",

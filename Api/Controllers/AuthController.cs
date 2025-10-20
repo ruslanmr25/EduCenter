@@ -31,13 +31,16 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto request)
     {
-        // Bu yerda foydalanuvchini DB’dan tekshirish kerak
-
         User? user = await authRepository.GetUser(request.Username);
 
         if (user is not null && passwordHasher.Verify(request.Password, user.Password))
         {
-            var token = _tokenService.GenerateToken("1", user.Username, user.Role.ToString());
+            var token = _tokenService.GenerateToken(
+                user.Id.ToString(),
+                user.Username,
+                user.Role.ToString(),
+                user.Center?.Id ?? 0
+            );
             return Ok(new ApiResponse<object>(new { Token = token }));
         }
 

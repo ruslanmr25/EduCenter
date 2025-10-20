@@ -1,12 +1,13 @@
 using System;
 using Application.Results;
+using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class BaseRepository<TEntity>
-    where TEntity : class
+    where TEntity : BaseEntity
 {
     protected AppDbContext _context;
 
@@ -51,10 +52,12 @@ public class BaseRepository<TEntity>
 
     public async Task DeleteAsync(TEntity entity)
     {
-        if (entity is null)
-            throw new ArgumentNullException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity);
 
-        _context.Set<TEntity>().Remove(entity);
+        entity.DeletedAt = DateTime.UtcNow;
+
+        _context.Update(entity);
+
         await _context.SaveChangesAsync();
     }
 }

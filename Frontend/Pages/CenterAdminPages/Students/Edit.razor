@@ -1,0 +1,126 @@
+﻿@page "/center-admin/students/{id:int}/edit"
+
+
+@inject StudentClient studentClient
+@inject GroupClient groupClient
+@inject NavigationManager navigationManager
+
+<EditForm Model="@editDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Talaba qo'shish</h5>
+               </div>
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+                         <div class="mb-3">
+                              <h4>Quyidagi xatolar mavjud:</h4>
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Ismi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="editDto.FullName" />
+                         <ValidationMessage For="@(() => editDto.FullName)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="phoneNumber" class="form-label">Telefon raqami</label>
+                         <InputText id="phoneNumber" class="form-control" @bind-Value="editDto.PhoneNumber" />
+                         <ValidationMessage For="@(() => editDto.PhoneNumber)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="secondPhoneNumber" class="form-label">Ikkinchi telefon raqami</label>
+                         <InputText id="secondPhoneNumber" class="form-control"
+                              @bind-Value="editDto.SecondPhoneNumber" />
+                         <ValidationMessage For="@(() => editDto.SecondPhoneNumber)" />
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-success mt-3">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+@code {
+
+
+     [Parameter]
+
+     public int Id { get; set; }
+
+
+
+     private EditStudentDto editDto = new();
+     protected List<string> errors = new();
+     protected List<Group> groups = new();
+
+
+     protected override async Task OnParametersSetAsync()
+     {
+
+
+          var studentResponse = await studentClient.GetAsync(Id);
+
+
+          if (studentResponse.Success)
+          {
+               var student = studentResponse.Data!;
+
+
+               editDto.FullName = student.FullName;
+               editDto.PhoneNumber = student.PhoneNumber;
+
+               editDto.SecondPhoneNumber = student.SecondPhoneNumber;
+
+
+          }
+          await base.OnParametersSetAsync();
+     }
+
+     protected override async Task OnInitializedAsync()
+     {
+          var groupsResponse = await groupClient.GetAllAsync();
+          if (groupsResponse.Success)
+          {
+               groups = groupsResponse.Data!.Items;
+          }
+          else
+          {
+               Console.WriteLine("Guruhlarni olishda xato yuz berdi");
+          }
+
+          await base.OnInitializedAsync();
+     }
+
+
+
+     private async Task HandleValidSubmitAsync()
+     {
+          errors.Clear();
+
+          var response = await studentClient.PutAsync(Id, editDto);
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+          }
+          else if (response.HttpStatusCode == System.Net.HttpStatusCode.Created)
+          {
+               navigationManager.NavigateTo("/center-admin/students");
+          }
+     }
+}

@@ -1,0 +1,91 @@
+﻿@page "/center-admin/sciences/create"
+@using Frontend.DTOs.CenterDTO
+@using Frontend.DTOs.SciencesDto
+
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Fan qo'shish</h5>
+               </div>
+
+
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+
+                         <div clas="mb-3">
+
+                              <h4>Quyidagi xatolar mavjud</h4>
+
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Nomi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.Name" />
+                         <ValidationMessage For="@(() => createDto.Name)" />
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject ScienceClient scienceClient
+
+@inject NavigationManager navigationManager
+@inject CenterAdminClient centerAdminClient
+@code {
+
+
+
+     protected List<string> errors = new();
+
+
+
+     private CreateScienceDto createDto = new();
+
+
+
+
+     private async Task HandleValidSubmitAsync()
+     {
+
+          errors = new();
+
+
+          Response<Science>? response = await scienceClient.PostAsync(createDto);
+
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+
+          }
+
+
+          if (response.HttpStatusCode == HttpStatusCode.Created)
+          {
+
+               navigationManager.NavigateTo("/center-admin/sciences");
+
+          }
+
+     }
+}

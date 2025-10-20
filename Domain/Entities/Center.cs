@@ -2,7 +2,7 @@ using System;
 
 namespace Domain.Entities;
 
-public class Center
+public class Center : BaseEntity
 {
     public int Id { get; set; }
 

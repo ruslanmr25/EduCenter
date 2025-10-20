@@ -1,0 +1,120 @@
+﻿@page "/super-admin/centers/create"
+@using Frontend.DTOs.CenterDTO
+
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Foydalanuvchi qo'shish</h5>
+               </div>
+
+
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+
+                         <div clas="mb-3">
+
+                              <h4>Quyidagi xatolar mavjud</h4>
+
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Nomi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.Name" />
+                         <ValidationMessage For="@(() => createDto.Name)" />
+                    </div>
+
+
+                    <div class="mb-3">
+                         <label for="password" class="form-label">Admini</label>
+                         <InputSelect id="password" type="password" class="form-control"
+                              @bind-Value="createDto.CenterAdminId">
+
+                              <option value="">Tanlang</option>
+
+                              @foreach (var admin in admins)
+                              {
+                                   <option value="@admin.Id">@admin.FullName</option>
+                              }
+                         </InputSelect>
+                         <ValidationMessage For="@(() => createDto.CenterAdminId)" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject CenterClient centerClient
+
+@inject NavigationManager navigationManager
+@inject CenterAdminClient centerAdminClient
+@code {
+
+
+
+     protected List<string> errors = new();
+
+
+     protected List<User> admins = new();
+
+
+     private CreateCenterDto createDto = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+          var adminResponse = (await centerAdminClient.GetAllAsync());
+
+          if (!adminResponse.Success)
+          {
+
+               errors.Add("Nimadir xato ketti");
+
+          }
+          else
+          {
+               admins = adminResponse.Data!.Items;
+          }
+     }
+
+     private async Task HandleValidSubmitAsync()
+     {
+
+          errors = new();
+
+
+          Response<Center>? response = await centerClient.PostAsync(createDto);
+
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+
+          }
+
+
+          if (response.HttpStatusCode == HttpStatusCode.Created)
+          {
+
+               navigationManager.NavigateTo("/super-admin/centers");
+
+          }
+
+     }
+}

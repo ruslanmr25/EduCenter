@@ -18,19 +18,18 @@ public class GroupController : ControllerBase
 {
     protected readonly GroupRepository groupRepository;
     protected readonly IMapper mapper;
-    protected int centerId;
 
     public GroupController(GroupRepository groupRepository, IMapper mapper)
     {
         this.groupRepository = groupRepository;
         this.mapper = mapper;
-
-        centerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 
     [HttpGet]
     public async Task<IActionResult> Index(int page = 1, int pageSize = 50)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         var groups = await groupRepository.GetAllAsync(centerId: centerId, page, pageSize);
         return Ok(new ApiResponse<PagedResult<Group>>(groups));
     }
@@ -38,7 +37,10 @@ public class GroupController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(NewGroupDto dto)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Group group = mapper.Map<Group>(dto);
+        group.CenterId = centerId;
 
         await groupRepository.CreateAsync(group);
 
@@ -48,6 +50,8 @@ public class GroupController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Group? group = await groupRepository.GetAsync(id);
 
         if (group is null)
@@ -55,7 +59,7 @@ public class GroupController : ControllerBase
             return NotFound();
         }
 
-        return Ok(group);
+        return Ok(new ApiResponse<Group>(group));
     }
 
     [HttpPut("{id}")]
@@ -78,6 +82,8 @@ public class GroupController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         var entity = await groupRepository.GetAsync(id);
         if (entity is null)
         {

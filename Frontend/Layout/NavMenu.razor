@@ -2,14 +2,14 @@
 <div class="app-sidebar">
     <!-- Sidebar Logo -->
     <div class="logo-box">
-        <a href="/" class="logo-dark">
+        <NavLink href="/" class="logo-dark">
             <h3 class="mt-3">EduCenter</h3>
 
-        </a>
+        </NavLink>
 
-        <a href="/" class="logo-light">
+        <NavLink href="/" class="logo-light">
             <h3 class="mt-3">EduCenter</h3>
-        </a>
+        </NavLink>
     </div>
 
     <div class="scrollbar" data-simplebar>
@@ -18,15 +18,109 @@
 
             <li class="menu-title">Menu...</li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <span class="nav-icon">
-                        <iconify-icon icon="solar:widget-2-outline"></iconify-icon>
-                    </span>
-                    <span class="nav-text"> Dashboard </span>
-                    <span class="badge bg-primary badge-pill text-end">New</span>
-                </a>
-            </li>
+            <AuthorizeView Roles="SuperAdmin">
+                <Authorized>
+
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:widget-2-outline"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Dashboard </span>
+                            <span class="badge bg-primary badge-pill text-end">New</span>
+                        </NavLink>
+                    </li>
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/super-admin/admins">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:user-circle-outline"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Markaz adminlari </span>
+                        </NavLink>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/super-admin/centers">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:map-outline"></iconify-icon>
+
+                            </span>
+                            <span class="nav-text"> Markazlar </span>
+                        </NavLink>
+                    </li>
+                </Authorized>
+            </AuthorizeView>
+
+
+
+
+            <AuthorizeView Roles="CenterAdmin">
+                <Authorized>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:widget-2-outline"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Ish stoli </span>
+                            <span class="badge bg-primary badge-pill text-end">Yangi</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/center-admin/sciences">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:checklist-outline"></iconify-icon>
+
+                            </span>
+                            <span class="nav-text"> Fanlar </span>
+                        </NavLink>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/center-admin/groups">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:map-outline"></iconify-icon>
+
+                            </span>
+                            <span class="nav-text"> Guruhlar </span>
+                        </NavLink>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/center-admin/students">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:window-frame-outline"></iconify-icon>
+
+                            </span>
+                            <span class="nav-text"> O'quvchilar </span>
+                        </NavLink>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/center-admin/teachers">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:user-circle-outline"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> O'qituvchilar </span>
+                        </NavLink>
+                    </li>
+
+
+
+
+
+
+                </Authorized>
+            </AuthorizeView>
 
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarAuthentication" data-bs-toggle="collapse" role="button"

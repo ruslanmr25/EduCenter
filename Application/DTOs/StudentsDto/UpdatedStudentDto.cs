@@ -18,8 +18,4 @@ public class UpdatedStudentDto
     //     [Phone(ErrorMessage = "Telefon raqam noto‘g‘ri formatda.")]
     [StringLength(15, ErrorMessage = "Ikkinchi telefon raqam uzunligi 15 ta belgidan oshmasin.")]
     public string SecondPhoneNumber { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Guruhlar ro‘yxati bo‘sh bo‘lishi mumkin emas.")]
-    [MinLength(1, ErrorMessage = "Kamida bitta guruh tanlanishi shart.")]
-    public List<int> Groups { get; set; } = new();
 }

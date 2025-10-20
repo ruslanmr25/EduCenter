@@ -13,14 +13,10 @@ public class ScienceRepository : BaseRepository<Science>
 
     public async Task<PagedResult<Science>> GetAllAsync(int centerId, int page, int pageSize = 50)
     {
-        var query = _context.Set<Science>().AsQueryable();
+        var query = _context.Set<Science>().AsQueryable().Where(s => s.CenterId == centerId);
         var totalCount = await query.CountAsync();
 
-        var result = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Where(s => s.CenterId == centerId)
-            .ToListAsync();
+        var result = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<Science>(result, totalCount, page, pageSize);
     }

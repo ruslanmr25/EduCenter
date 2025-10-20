@@ -1,0 +1,253 @@
+﻿@page "/center-admin/students"
+@inject StudentClient studentClient
+
+<style>
+     /* kichik stil qo'shildi — o'zgartirish mumkin */
+     .filter-panel {
+          background: rgba(248, 249, 250, 0.9);
+          /* light */
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          border-radius: 12px;
+          padding: 1rem;
+     }
+
+     .profile-card {
+          border-radius: 12px;
+          padding: 1rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+     }
+
+     .avatar-circle {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 24px;
+          color: #fff;
+          background: linear-gradient(135deg, #6f42c1 0%, #0d6efd 100%);
+     }
+
+     .avatar-img {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          object-fit: cover;
+     }
+
+     .filter-divider {
+          height: 1px;
+          background: rgba(0, 0, 0, 0.06);
+          margin: 0.75rem 0;
+     }
+
+     .table .cursor-row {
+          cursor: pointer;
+     }
+
+     .table .cursor-row:hover {
+          background: rgba(13, 110, 253, 0.04);
+     }
+</style>
+
+<div class="row g-3">
+     <div class="col-9">
+          <div class="card border-0 shadow-sm">
+               <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                         <h4 class="mb-0">Abituriyentlar ro'yxati</h4>
+                         <NavLink class="btn btn-primary btn-sm rounded-pill" href="/center-admin/students/create">
+                              <i class="bx bx-plus me-1"></i> Qo'shish
+                         </NavLink>
+                    </div>
+
+                    <div class="table-responsive">
+                         <table class="table align-middle mb-0">
+                              <thead class="bg-light">
+                                   <tr>
+                                        <th>#</th>
+                                        <th>Ism</th>
+                                        <th>Telefon</th>
+                                        <th>Guruhlar</th>
+                                        <th>Holat</th>
+                                        <th>Yaratilgan</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   @foreach (var it in students.Items.Select((student, index) => new
+                                   {
+                                        student,
+                                        index
+                                   }))
+                                   {
+                                        var s = it.student;
+                                        <tr class="cursor-row ">
+                                             <td>@((students.Meta!.Page - 1) * students.Meta.PageSize + it.index + 1)</td>
+                                             <td class="fw-medium">@s.FullName</td>
+                                             <td>@string.Join(", ", new [] { s.PhoneNumber, s.SecondPhoneNumber }.Where(x =>
+                                                                                               !string.IsNullOrEmpty(x)))</td>
+                                        <td>@string.Join(", ", s.Groups.Select(g => g.Name))</td>
+                                        <td>
+                                             @* @if (s.IsActive) {
+                                            <span class="badge bg-success-subtle text-success">Faol</span>
+                                        } else { *@
+                                                  <span class="badge bg-secondary-subtle text-secondary">Faol emas</span>
+
+                                             </td>
+                                             <td>@s.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                        </tr>
+                                                                      }
+                              </tbody>
+                         </table>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between border-top p-3 mt-3">
+                         <small class="text-muted"><b>@students.Meta?.TotalCount</b> tadan <b>@students.Items.Count</b>
+                              tasi ko'rsatilmoqda</small>
+                         <PaginationComponent Meta="students.Meta" OnClickEvent="@LoadData"></PaginationComponent>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- O'ng panel: filter + profile -->
+     <div class="col-3">
+          <div class="filter-panel mb-3">
+               <h6 class="mb-2 fw-semibold">Filtr</h6>
+
+               <div class="mb-2">
+                    <label class="form-label small mb-1">Ism</label>
+                    <input class="form-control form-control-sm" @bind="searchTerm" @bind:event="oninput"
+                         placeholder="Ism bo'yicha..." />
+               </div>
+
+               <div class="mb-2">
+                    <label class="form-label small mb-1">Guruh</label>
+                    <select class="form-select form-select-sm" @bind="selectedGroupId">
+                         <option value="">Barchasi</option>
+                         @foreach (var g in groupsForFilter)
+                         {
+                              <option value="@g.Id">@g.Name</option>
+                         }
+                    </select>
+               </div>
+
+               <div class="mb-2">
+                    <label class="form-label small mb-1">Holat</label>
+                    <select class="form-select form-select-sm" @bind="selectedStatus">
+                         <option value="">Barchasi</option>
+                         <option value="true">Faol</option>
+                         <option value="false">Faol emas</option>
+                    </select>
+               </div>
+
+               <div class="filter-divider"></div>
+
+               <div class="d-grid gap-2">
+                    <button class="btn btn-sm btn-primary" @onclick="ApplyFilter">
+                         <i class="bx bx-filter-alt me-1"></i> Filtrlash
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="ResetFilter">Tozalash</button>
+               </div>
+          </div>
+
+
+     </div>
+</div>
+
+@code {
+     // Modellarni sizga moslab o'zgartiring (Group minimal model keltirilgan)
+     protected Collection<Student> students = new();
+
+
+     // filter state
+     protected string searchTerm = "";
+     protected string selectedGroupId = "";
+     protected string selectedStatus = "";
+
+     // filter uchun guruhlar ro'yxati (odatda serverdan olinadi)
+     protected List<GroupForFilter> groupsForFilter = new();
+
+     protected override async Task OnInitializedAsync()
+     {
+          await LoadGroupsForFilter();
+          await LoadData(1);
+     }
+
+     protected async Task LoadData(int page)
+     {
+          var studentResponse = await studentClient.GetAllAsync(page, 50);
+          if (studentResponse.Success)
+          {
+               students = studentResponse.Data!;
+
+          }
+          else
+          {
+               Console.WriteLine("Nimadir xato ketdi");
+          }
+     }
+
+
+
+     async Task ApplyFilter()
+     {
+          // Agar siz serverda filtrni qo'llab server endpoint qo'ygan bo'lsangiz,
+          // shu yerda studentClient.GetAllFilteredAsync(...) chaqiring.
+          // Hozir local filter misoli:
+          var all = students.Items.AsEnumerable();
+
+          if (!string.IsNullOrWhiteSpace(searchTerm))
+               all = all.Where(x => x.FullName?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false);
+
+          if (!string.IsNullOrEmpty(selectedGroupId))
+               all = all.Where(x => x.Groups.Any(g => g.Id.ToString() == selectedGroupId));
+
+          if (!string.IsNullOrEmpty(selectedStatus))
+          {
+               @* if (bool.TryParse(selectedStatus, out var st))
+                all = all.Where(x => x.IsActive == st); *@
+          }
+
+          students.Items = all.ToList();
+     }
+
+     void ResetFilter()
+     {
+
+          searchTerm = "";
+          selectedGroupId = "";
+          selectedStatus = "";
+          // qaytadan serverdan asl sahifani yuklaymiz:
+          _ = LoadData(1);
+     }
+
+     string GetInitials(string? name)
+     {
+          if (string.IsNullOrWhiteSpace(name)) return "";
+          var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+          if (parts.Length == 1) return parts[0].Substring(0, 1).ToUpper();
+          return (parts[0].Substring(0, 1) + parts[^1].Substring(0, 1)).ToUpper();
+     }
+
+
+
+
+
+     async Task LoadGroupsForFilter()
+     {
+          // serverda groups endpoint bo'lsa chaqiring.
+          // hozir test uchun dummy:
+          groupsForFilter = new List<GroupForFilter> {
+new GroupForFilter { Id = 1, Name = "Matematika" },
+new GroupForFilter { Id = 2, Name = "Fizika" },
+new GroupForFilter { Id = 3, Name = "Ingliz tili" }
+};
+     }
+
+     // yordamchi sinflar (sizning modelingizga moslashtiring)
+     public class GroupForFilter { public int Id { get; set; } public string Name { get; set; } = ""; }
+}

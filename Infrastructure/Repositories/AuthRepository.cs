@@ -16,6 +16,9 @@ public class AuthRepository
 
     public async Task<User?> GetUser(string username)
     {
-        return await _context.Users.Where(u => u.Username == username).FirstOrDefaultAsync();
+        return await _context
+            .Users.Where(u => u.Username == username)
+            .Include(u => u.Center)
+            .FirstOrDefaultAsync();
     }
 }

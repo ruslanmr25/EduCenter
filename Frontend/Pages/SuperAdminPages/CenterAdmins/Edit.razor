@@ -1,0 +1,106 @@
+﻿@page "/super-admin/admins/{id:int}/edit"
+
+
+<EditForm Model="@editDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Foydalanuvchi qo'shish</h5>
+               </div>
+
+
+
+               <div class="card-body">
+
+                    <div classmb-3>
+
+                         <h4>Quyidagi xatolar mavjud</h4>
+
+                         <div>
+                              @foreach (var e in errors)
+                              {
+                                   <p class="text-danger">@e</p>
+                              }
+                         </div>
+                    </div>
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">To'liq ism</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="editDto.FullName" />
+                         <ValidationMessage For="@(() => editDto.FullName)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="username" class="form-label">Username</label>
+                         <InputText id="username" class="form-control" @bind-Value="editDto.Username" />
+                         <ValidationMessage For="@(() => editDto.Username)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="password" class="form-label">Parol</label>
+                         <InputText id="password" type="password" class="form-control" @bind-Value="editDto.Password" />
+                         <ValidationMessage For="@(() => editDto.Password)" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject CenterAdminClient centerAdminClient
+@code {
+
+
+     [Parameter]
+
+     public int Id { get; set; }
+
+
+
+     protected List<string> errors = new();
+
+
+     private CreateCenterAdminDto editDto = new();
+
+     private async Task HandleValidSubmitAsync()
+     {
+
+          errors = new();
+
+
+          Response<User>? response = await centerAdminClient.PostAsync(editDto);
+
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+
+          }
+
+     }
+
+     protected override async Task OnParametersSetAsync()
+     {
+
+          Response<User>? adminResponse = await centerAdminClient.GetAsync(Id);
+
+          if (!adminResponse.Success)
+          {
+               errors.Add("Nimadir xato ketti");
+          }
+
+          else
+          {
+
+               editDto.Username = adminResponse.Data!.Username;
+               editDto.FullName = adminResponse.Data!.FullName;
+
+
+          }
+          await base.OnParametersSetAsync();
+     }
+}

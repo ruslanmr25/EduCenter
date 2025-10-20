@@ -28,12 +28,12 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CenterId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TeachersId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("CenterId", "TeachersId");
+                    b.HasKey("CenterId", "UserId");
 
-                    b.HasIndex("TeachersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CenterUser");
                 });
@@ -49,13 +49,23 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CenterAdminId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CenterAdminId");
+                    b.HasIndex("CenterAdminId")
+                        .IsUnique();
 
                     b.ToTable("Centers");
                 });
@@ -71,9 +81,15 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CenterId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.PrimitiveCollection<int[]>("Days")
                         .IsRequired()
                         .HasColumnType("integer[]");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -88,6 +104,9 @@ namespace Infrastructure.Migrations
                     b.PrimitiveCollection<List<TimeOnly>>("Times")
                         .IsRequired()
                         .HasColumnType("time without time zone[]");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -111,9 +130,18 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CenterId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -130,6 +158,12 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -141,6 +175,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("SecondPhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -155,6 +192,12 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -165,6 +208,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -200,7 +246,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("TeachersId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -208,8 +254,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Center", b =>
                 {
                     b.HasOne("Domain.Entities.User", "CenterAdmin")
-                        .WithMany("Centers")
-                        .HasForeignKey("CenterAdminId")
+                        .WithOne("Center")
+                        .HasForeignKey("Domain.Entities.Center", "CenterAdminId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -271,7 +317,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("Centers");
+                    b.Navigation("Center");
                 });
 #pragma warning restore 612, 618
         }

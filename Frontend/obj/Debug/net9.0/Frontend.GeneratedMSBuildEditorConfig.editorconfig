@@ -40,8 +40,76 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Auth/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Groups/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xHcm91cHNcQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Groups/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xHcm91cHNcRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Groups/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xHcm91cHNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Groups/Show.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xHcm91cHNcU2hvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Sciences/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTY2llbmNlc1xDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Sciences/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTY2llbmNlc1xFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Sciences/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTY2llbmNlc1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Students/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Students/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Students/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Teachers/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xUZWFjaGVyc1xDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Teachers/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xUZWFjaGVyc1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/CustomInputs/CustomMultiSelect.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xDdXN0b21JbnB1dHNcQ3VzdG9tTXVsdGlTZWxlY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/CustomInputs/CustomSelect.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xDdXN0b21JbnB1dHNcQ3VzdG9tU2VsZWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/DeleteItemComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xEZWxldGVJdGVtQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/LoadingButton.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xMb2FkaW5nQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/PaginationComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xQYWdpbmF0aW9uQ29tcG9uZW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Counter.razor]
@@ -50,6 +118,30 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/CenterAdmins/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlckFkbWluc1xDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/CenterAdmins/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlckFkbWluc1xFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/CenterAdmins/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlckFkbWluc1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/Centers/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlcnNcQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/Centers/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlcnNcRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/SuperAdminPages/Centers/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJBZG1pblBhZ2VzXENlbnRlcnNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Weather.razor]

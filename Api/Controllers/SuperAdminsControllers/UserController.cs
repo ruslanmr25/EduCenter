@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Index(int page = 1, int pageSize = 50)
     {
-        var users = await userRepository.GetAllAsync(page, pageSize);
+        var users = await userRepository.GetAllCenterAdmin(page, pageSize);
         return Ok(new ApiResponse<PagedResult<User>>(users));
     }
 

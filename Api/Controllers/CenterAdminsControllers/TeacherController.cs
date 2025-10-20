@@ -25,8 +25,6 @@ public class TeacherController : ControllerBase
 
     protected readonly UserRepository userRepository;
 
-    protected readonly int CenterId;
-
     public TeacherController(
         IMapper mapper,
         UserRepository userRepository,
@@ -38,13 +36,13 @@ public class TeacherController : ControllerBase
         this.userRepository = userRepository;
         this.passwordHasher = passwordHasher;
         this.centerRepository = centerRepository;
-
-        CenterId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 
     [HttpGet]
     public async Task<IActionResult> Index(int page = 1, int pageSize = 50)
     {
+        var CenterId = int.Parse(User.FindFirstValue("centerId")!);
+
         var teachers = await userRepository.GetAllTeacher(centerId: CenterId, page, pageSize);
         return Ok(new ApiResponse<PagedResult<User>>(teachers));
     }
@@ -52,6 +50,8 @@ public class TeacherController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CrateTeacher(TeacherDto teacherDto)
     {
+        var CenterId = int.Parse(User.FindFirstValue("centerId")!);
+
         Center center =
             await centerRepository.GetAsync(CenterId)
             ?? throw new NullReferenceException("Center Id must be not null");
@@ -71,6 +71,8 @@ public class TeacherController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Show(int id)
     {
+        var CenterId = int.Parse(User.FindFirstValue("centerId")!);
+
         User? teacher = await userRepository.GetTeacherAsync(centerId: CenterId, id);
 
         if (teacher is null)
@@ -83,6 +85,8 @@ public class TeacherController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, TeacherDto teacher)
     {
+        var CenterId = int.Parse(User.FindFirstValue("centerId")!);
+
         User? dbUser = await userRepository.GetTeacherAsync(CenterId, id);
         if (dbUser is null)
         {
@@ -101,6 +105,8 @@ public class TeacherController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var CenterId = int.Parse(User.FindFirstValue("centerId")!);
+
         var entity = await userRepository.GetTeacherAsync(CenterId, id);
         if (entity is null)
         {

@@ -1,0 +1,64 @@
+﻿@* @using Microsoft.AspNetCore.Components.Forms
+@typeparam TItem
+
+@inherits InputBase<List<string>>
+
+<div class="dropdown w-100">
+     <button type="button" class="form-control text-start dropdown-toggle @(IsValid ? "" : "is-invalid")"
+          data-bs-toggle="dropdown">
+          @(SelectedItems.Count == 0 ? Placeholder : string.Join(", ", SelectedItems))
+     </button>
+
+     <ul class="dropdown-menu w-100 shadow">
+          @foreach (var item in Items)
+          {
+               <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#" @onclick="() => ToggleSelection(item)">
+                         <input type="checkbox" class="form-check-input me-2"
+                              checked="@SelectedItems.Contains(ValueSelector(item))" />
+                         <span>@TextSelector(item)</span>
+                    </a>
+               </li>
+          }
+     </ul>
+</div>
+
+@if (!IsValid)
+{
+     <div class="invalid-feedback d-block">
+          @ErrorMessage
+     </div>
+}
+
+@code {
+     [Parameter] public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+     [Parameter] public Func<TItem, string> ValueSelector { get; set; } = default!;
+     [Parameter] public Func<TItem, string> TextSelector { get; set; } = default!;
+     [Parameter] public string Placeholder { get; set; } = "Tanlang";
+
+     private List<string> SelectedItems = new();
+
+     private bool IsValid => !EditContext?.GetValidationMessages(FieldIdentifier).Any() ?? true;
+     private string? ErrorMessage => EditContext?.GetValidationMessages(FieldIdentifier).FirstOrDefault();
+
+     protected override void OnInitialized()
+     {
+          if (Value == null)
+               Value = new List<string>();
+
+          SelectedItems = new List<string>(Value);
+     }
+
+     private void ToggleSelection(TItem item)
+     {
+          var value = ValueSelector(item);
+          if (SelectedItems.Contains(value))
+               SelectedItems.Remove(value);
+          else
+               SelectedItems.Add(value);
+
+          Value = SelectedItems.ToList();
+          ValueChanged.InvokeAsync(Value);
+          EditContext?.NotifyFieldChanged(FieldIdentifier);
+     }
+} *@

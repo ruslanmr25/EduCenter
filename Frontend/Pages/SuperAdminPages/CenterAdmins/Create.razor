@@ -1,0 +1,91 @@
+﻿@page "/super-admin/admins/create"
+
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Foydalanuvchi qo'shish</h5>
+               </div>
+
+
+
+               <div class="card-body">
+
+                    <div classmb-3>
+
+                         <h4>Quyidagi xatolar mavjud</h4>
+
+                         <div>
+                              @foreach (var e in errors)
+                              {
+                                   <p class="text-danger">@e</p>
+                              }
+                         </div>
+                    </div>
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">To'liq ism</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.FullName" />
+                         <ValidationMessage For="@(() => createDto.FullName)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="username" class="form-label">Username</label>
+                         <InputText id="username" class="form-control" @bind-Value="createDto.Username" />
+                         <ValidationMessage For="@(() => createDto.Username)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="password" class="form-label">Parol</label>
+                         <InputText id="password" type="password" class="form-control"
+                              @bind-Value="createDto.Password" />
+                         <ValidationMessage For="@(() => createDto.Password)" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject CenterAdminClient centerAdminClient
+
+@inject NavigationManager navigationManager
+@code {
+
+
+
+     protected List<string> errors = new();
+
+
+     private CreateCenterAdminDto createDto = new();
+
+     private async Task HandleValidSubmitAsync()
+     {
+
+          errors = new();
+
+
+          Response<User>? response = await centerAdminClient.PostAsync(createDto);
+
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.Created)
+          {
+               navigationManager.NavigateTo("/super-admin/admins/");
+
+          }
+          else
+          {
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+
+          }
+
+
+
+
+
+     }
+}

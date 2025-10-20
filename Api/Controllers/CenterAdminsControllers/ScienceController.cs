@@ -8,30 +8,30 @@ using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Api.Controllers.scienceAdminsControllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = "CenterAdmin")]
-public class ScienceController : ControllerBase
+public class ScienceController : Controller
 {
     protected ScienceRepository scienceRepository;
 
     protected IMapper mapper;
-    protected int centerId;
 
     public ScienceController(ScienceRepository scienceRepository, IMapper mapper)
     {
         this.scienceRepository = scienceRepository;
         this.mapper = mapper;
-
-        centerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(int page = 1, int pageSize = 50)
+    public async Task<IActionResult> Index(int page = 1, int pageSize = 100)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         var science = await scienceRepository.GetAllAsync(centerId: centerId, page, pageSize);
         return Ok(new ApiResponse<PagedResult<Science>>(science));
     }
@@ -39,6 +39,8 @@ public class ScienceController : ControllerBase
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Show(int id)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Science? science = await scienceRepository.GetAsync(centerId, id);
 
         if (science is null)
@@ -51,6 +53,8 @@ public class ScienceController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(NewScienceDto scienceDto)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Science science = mapper.Map<Science>(scienceDto);
 
         science.CenterId = centerId;
@@ -63,6 +67,8 @@ public class ScienceController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdatedScienceDto scienceDTO)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Science? dbScience = await scienceRepository.GetAsync(id);
         if (dbScience is null)
         {
@@ -79,6 +85,8 @@ public class ScienceController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         var entity = await scienceRepository.GetAsync(id);
         if (entity is null)
         {

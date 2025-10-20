@@ -12,10 +12,6 @@ public class NewGroupDto
     [StringLength(100, ErrorMessage = "Nom uzunligi 100 ta belgidan oshmasligi kerak.")]
     public string Name { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "CenterId kiritilishi shart.")]
-    [Range(1, int.MaxValue, ErrorMessage = "CenterId musbat son bo‘lishi kerak.")]
-    [Exsist(typeof(Center), "Id")]
-    public int CenterId { get; set; }
 
     [Required(ErrorMessage = "ScienceId kiritilishi shart.")]
     [Range(1, int.MaxValue, ErrorMessage = "ScienceId musbat son bo‘lishi kerak.")]

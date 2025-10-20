@@ -1,0 +1,104 @@
+﻿@page "/super-admin/admins"
+@using Domain.Entities
+
+
+<div class="card fade-in">
+     <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+               <h4 class="card-title">O'quv markaz adminlari</h4>
+
+               <NavLink href="/super-admin/admins/create" class="btn btn-sm btn-primary">
+                    <i class="bx bx-plus me-1"></i> Qo'shish
+               </NavLink>
+          </div>
+     </div> <!-- end card body -->
+     <div class="table-responsive table-centered">
+          <table class="table mb-0">
+               <thead class="bg-light bg-opacity-50">
+                    <tr>
+                         <th class="border-0 py-2">Id</th>
+                         <th class="border-0 py-2">To'liq ismi</th>
+                         <th class="border-0 py-2">Foydalanuvchi nomi</th>
+                         <th class="border-0 py-2">Roli</th>
+                         <th class="border-0 py-2">Markazi</th>
+                         <th class="border-0 py-2">Status</th>
+                         <th class="border-0 py-2">Yaratilgan Vaqt</th>
+
+                         <th class="border-0 py-2">Tahrirlash</th>
+
+                    </tr>
+               </thead> <!-- end thead-->
+               <tbody>
+
+
+
+                    @foreach (var item in admins.Items.Select((user, index) => new { user, index }))
+                    {
+
+                         <tr>
+                              <td>@((admins.Meta!.Page - 1) * admins.Meta.PageSize + item.index + 1)</td>
+                              <td>
+
+
+                                   @item.user.FullName
+                              </td>
+                              <td><a href="#!">@item.user.Username</a></td>
+                              <td>@item.user.Role.ToString()</td>
+                              <td>@item.user.Center?.Name</td>
+                              <td><i class="bx bxs-circle text-success me-1"></i>Active</td>
+
+                              <td>@item.user.CreatedAt</td>
+                              <td>
+                                   <NavLink href="@($"/super-admin/admins/{item.user.Id}/edit")">
+                                        Tahrirlash
+                                   </NavLink>
+                              </td>
+                         </tr>
+                    }
+
+               </tbody> <!-- end tbody -->
+          </table> <!-- end table -->
+     </div> <!-- table responsive -->
+     <div class="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
+          <div class="col-sm">
+               <div class="text-muted">
+                    <span class="fw-semibold">@admins.Meta?.TotalCount</span> tadan <span
+                         class="fw-semibold">@admins.Items.Count</span> tasi ko'rsatilmoqda
+
+               </div>
+          </div>
+          <PaginationComponent Meta="admins.Meta" OnClickEvent="@LoadData"></PaginationComponent>
+
+     </div>
+</div> <!-- end card -->
+
+
+@inject CenterAdminClient centerAdminClient
+@code
+{
+
+
+     protected Collection<User> admins = new();
+
+
+
+
+     protected override async Task OnInitializedAsync()
+     {
+          await LoadData(1);
+
+          await base.OnInitializedAsync();
+
+
+     }
+
+     protected async Task LoadData(int page)
+     {
+          admins = (await centerAdminClient.GetAllAsync(page)).Data!;
+
+
+     }
+
+
+
+}

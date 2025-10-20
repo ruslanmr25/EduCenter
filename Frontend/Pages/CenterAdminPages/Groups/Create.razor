@@ -1,0 +1,210 @@
+﻿@using Frontend.DTOs.GroupDto
+@using Domain.Enums
+@page "/center-admin/groups/create"
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+
+    <div class="row mx-5">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Guruh qo'shish</h5>
+            </div>
+
+
+
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col">
+
+
+                        @if (errors.Count > 0)
+                        {
+                            <div class="mb-3">
+                                <h4>Quyidagi xatolar mavjud</h4>
+                                <div>
+                                    @foreach (var e in errors)
+                                    {
+                                        <p class="text-danger">@e</p>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Nomi</label>
+                            <InputText id="fullname" class="form-control" @bind-Value="createDto.Name" />
+                            <ValidationMessage For="@(() => createDto.Name)" />
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Fan</label>
+                            <InputSelect class="form-control" @bind-Value="createDto.ScienceId">
+                                <option value="">Tanlang</option>
+                                @foreach (var science in sciences)
+                                {
+                                    <option value="@science.Id">@science.Name</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => createDto.ScienceId)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">O'qituvchi</label>
+                            <InputSelect class="form-control" @bind-Value="createDto.TeacherId">
+                                <option value="">Tanlang</option>
+                                @foreach (var teacher in teachers)
+                                {
+                                    <option value="@teacher.Id">@teacher.FullName</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => createDto.TeacherId)" />
+                        </div>
+
+                    </div>
+                    <div class="col">
+
+
+                        <!-- Haftaning kunlari (Days) -->
+                        <div class="mb-3">
+                            <label class="form-label">Dars kunlari</label>
+                            @foreach (var day in Enum.GetValues<DaysOfWeek>())
+                            {
+                                <div class="form-check fs-12">
+                                    <input class="form-check-input" type="checkbox" value="@day"
+                                        checked="@createDto.Days.Contains(day)" @onchange="e => ToggleDay(day, e.Value)"
+                                        id="day-@day">
+                                    <label for="day-@day" class="form-check-label">@day</label>
+                                </div>
+                            }
+                            <ValidationMessage For="@(() => createDto.Days)" />
+                        </div>
+
+                        <!-- Dars vaqtlari (Times) -->
+                        <div class="mb-3">
+                            <label class="form-label">Dars vaqtlari</label>
+                            @for (int i = 0; i < createDto.Times.Count; i++)
+                            {
+
+                                <input type="time" class="form-control mb-2" value="@createDto.Times[i].ToString(@"hh\:mm")"
+                                    @onchange="(e) => { OnTimeChanged(i, e.Value?.ToString()); }" />
+
+                            }
+                            <button type="button" class="btn btn-sm btn-secondary" @onclick="AddTime">
+                                + Vaqt
+                                qo'shish
+                            </button>
+
+
+
+                            <ValidationMessage For="@(() => createDto.Times)" />
+                        </div>
+
+
+
+                        <div class="d-flex justify-content-end">
+
+                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</EditForm>
+
+@inject ScienceClient scienceClient
+@inject NavigationManager navigationManager
+@inject TeacherClient teacherClient
+@inject GroupClient groupClient
+
+@code {
+    protected List<string> errors = new();
+    private CreateGroupDto createDto = new()
+    {
+        Days = new(),
+        Times = new List<TimeOnly>()
+{
+TimeOnly.Parse("12:00")
+}
+    };
+
+    protected List<Science> sciences = new();
+    protected List<User> teachers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var scienceResponse = await scienceClient.GetAllAsync();
+        var teacherReponse = await teacherClient.GetAllAsync();
+
+        if (!scienceResponse.Success && !teacherReponse.Success)
+        {
+            errors.Add("Nimadir xato ketti!");
+        }
+        else
+        {
+            sciences = scienceResponse.Data!.Items;
+            teachers = teacherReponse.Data!.Items;
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        errors = new();
+
+        var response = await groupClient.PostAsync(createDto);
+
+        if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+        }
+
+        if (response.HttpStatusCode == HttpStatusCode.Created)
+        {
+            navigationManager.NavigateTo("/center-admin/groups");
+        }
+    }
+
+    private void ToggleDay(DaysOfWeek day, object? value)
+    {
+        bool isChecked = (bool)value!;
+        if (isChecked)
+        {
+            if (!createDto.Days.Contains(day))
+                createDto.Days.Add(day);
+        }
+        else
+        {
+            createDto.Days.Remove(day);
+        }
+    }
+
+    private void AddTime()
+    {
+        createDto.Times.Add(new TimeOnly(5, 0)); // default 09:00
+
+
+    }
+    private void OnTimeChanged(int index, string? newValue)
+    {
+        if (!string.IsNullOrWhiteSpace(newValue) &&
+        TimeOnly.TryParse(newValue, out var time))
+        {
+            createDto.Times[index - 1] = time;
+        }
+    }
+}

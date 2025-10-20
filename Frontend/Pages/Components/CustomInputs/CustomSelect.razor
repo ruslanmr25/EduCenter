@@ -1,0 +1,82 @@
+﻿@typeparam TItem
+@typeparam TValue
+
+@inherits InputBase<TValue>
+
+<div class="dropdown">
+    <button class="form-control d-flex justify-content-between align-items-center dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <span>@(selectedText ?? DefaultOption)</span>
+    </button>
+
+    <ul class="dropdown-menu w-100 shadow">
+        <li>
+            <a class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(CurrentValue, default) ? "active" : "")"
+               @onclick="() => SelectItem(default!)">
+                Tanlang
+            </a>
+        </li>
+
+        @foreach (var item in Items)
+        {
+            <li>
+                <a class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(GetValue(item), CurrentValue) ? "active" : "")"
+                   @onclick="() => SelectItem(item)">
+                    @GetText(item)
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private string? selectedText;
+
+    [Parameter] public List<TItem> Items { get; set; } = new();
+    [Parameter] public Func<TItem, string>? TextSelector { get; set; }
+    [Parameter] public Func<TItem, TValue>? ValueSelector { get; set; }
+    [Parameter] public string? DefaultOption { get; set; }="Tanlang";
+
+
+    private string GetText(TItem item) =>
+        TextSelector?.Invoke(item) ?? item?.ToString() ?? string.Empty;
+
+    private TValue GetValue(TItem item)
+    {
+        if (ValueSelector != null)
+            return ValueSelector(item);
+        if (item is TValue val)
+            return val;
+        return default!;
+    }
+
+    private void SelectItem(TItem item)
+    {
+        selectedText = EqualityComparer<TItem>.Default.Equals(item, default)
+            ? "Tanlang"
+            : GetText(item);
+
+        CurrentValue = EqualityComparer<TItem>.Default.Equals(item, default)
+            ? default!
+            : GetValue(item);
+
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
+    {
+        result = CurrentValue;
+        validationErrorMessage = string.Empty;
+        return true;
+    }
+
+    protected override void OnParametersSet()
+    {
+        var selectedItem = Items.FirstOrDefault(i =>
+            EqualityComparer<TValue>.Default.Equals(GetValue(i), CurrentValue));
+
+        selectedText = selectedItem != null ? GetText(selectedItem) : "Tanlang";
+    }
+}

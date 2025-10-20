@@ -1,0 +1,29 @@
+﻿@page "/logout"
+
+
+
+
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+@inject TokenService tokenService
+
+@code
+{
+
+
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+
+          await tokenService.RemoveTokenAsync();
+
+          ((CustomAuthenticationStateProvider)AuthProvider).NotifyUserLogout();
+
+
+          Navigation.NavigateTo("/login", true);
+          await base.OnInitializedAsync();
+     }
+}

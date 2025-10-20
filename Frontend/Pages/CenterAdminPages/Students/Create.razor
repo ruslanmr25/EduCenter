@@ -1,0 +1,140 @@
+﻿@page "/center-admin/students/create"
+
+
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">Talaba qo'shish</h5>
+               </div>
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+                         <div class="mb-3">
+                              <h4>Quyidagi xatolar mavjud:</h4>
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Ismi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.FullName" />
+                         <ValidationMessage For="@(() => createDto.FullName)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="phoneNumber" class="form-label">Telefon raqami</label>
+                         <InputText id="phoneNumber" class="form-control" @bind-Value="createDto.PhoneNumber" />
+                         <ValidationMessage For="@(() => createDto.PhoneNumber)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="secondPhoneNumber" class="form-label">Ikkinchi telefon raqami</label>
+                         <InputText id="secondPhoneNumber" class="form-control"
+                              @bind-Value="createDto.SecondPhoneNumber" />
+                         <ValidationMessage For="@(() => createDto.SecondPhoneNumber)" />
+                    </div>
+
+                    <!-- Guruhlar select -->
+                    <div class="mb-3">
+                         <label for="groups" class="form-label">Guruhlar</label>
+                         <select id="groups" class="form-select" @bind="selectedGroupId">
+                              <option value="">-- Tanlang --</option>
+                              @foreach (var group in groups)
+                              {
+                                   <option value="@group.Id">@group.Name</option>
+                              }
+                         </select>
+                    </div>
+
+                    <button class="btn btn-primary mb-3" type="button" @onclick="AddSelectedGroup">+ Guruh
+                         qo'shish</button>
+
+                    <!-- Tanlangan guruhlar -->
+                    <ul>
+                         @foreach (var g in selectedGroups)
+                         {
+                              <li>@g.Name
+                                   <button type="button" class="btn btn-sm btn-danger"
+                                        @onclick="() => RemoveGroup(g)">X</button>
+                              </li>
+                         }
+                    </ul>
+
+                    <button type="submit" class="btn btn-success mt-3">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+@inject StudentClient studentClient
+@inject GroupClient groupClient
+@inject NavigationManager navigationManager
+@code {
+     private CreateStudentDto createDto = new();
+     protected List<string> errors = new();
+     protected List<Group> groups = new();
+
+     private int? selectedGroupId;
+     private List<Group> selectedGroups = new();
+
+     protected override async Task OnInitializedAsync()
+     {
+          var groupsResponse = await groupClient.GetAllAsync();
+          if (groupsResponse.Success)
+          {
+               groups = groupsResponse.Data!.Items;
+          }
+          else
+          {
+               Console.WriteLine("Guruhlarni olishda xato yuz berdi");
+          }
+
+          await base.OnInitializedAsync();
+     }
+
+     private void AddSelectedGroup()
+     {
+          if (selectedGroupId.HasValue)
+          {
+               var group = groups.FirstOrDefault(g => g.Id == selectedGroupId.Value);
+               if (group != null && !selectedGroups.Any(g => g.Id == group.Id))
+               {
+                    selectedGroups.Add(group);
+                    createDto.Groups.Add(group.Id);
+                    selectedGroupId = null; // Tanlovni tozalash
+               }
+          }
+     }
+
+     private void RemoveGroup(Group group)
+     {
+          selectedGroups.Remove(group);
+          createDto.Groups.Remove(group.Id);
+     }
+
+     private async Task HandleValidSubmitAsync()
+     {
+          errors.Clear();
+
+          var response = await studentClient.PostAsync(createDto);
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+          }
+          else if (response.HttpStatusCode == System.Net.HttpStatusCode.Created)
+          {
+               navigationManager.NavigateTo("/center-admin/students");
+          }
+     }
+}

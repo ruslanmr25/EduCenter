@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class User
+public class User : BaseEntity
 {
     public int Id { get; set; }
     public string FullName { get; set; } = string.Empty;
@@ -16,4 +16,6 @@ public class User
     public Role Role { get; set; }
 
     public List<Center> Centers { get; set; }
+
+    public Center? Center { get; set; }
 }

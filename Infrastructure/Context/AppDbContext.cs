@@ -30,7 +30,8 @@ public class AppDbContext : DbContext
                                 FullName = "Super Admin",
                                 Username = "superAdmin",
                                 Role = Role.SuperAdmin,
-                                Password = "123456789",
+                                Password =
+                                    "$2a$11$QbiQHQTv47aIbaXNhX.G3.QW3OzCU/AnTkK6EUmqFbxAzBN4J74V.",
                             }
                         )
                         .Entity;
@@ -49,7 +50,8 @@ public class AppDbContext : DbContext
                                     FullName = "Center Admin",
                                     Username = "centerAdmin",
                                     Role = Role.CenterAdmin,
-                                    Password = "123456789",
+                                    Password =
+                                        "$2a$11$QbiQHQTv47aIbaXNhX.G3.QW3OzCU/AnTkK6EUmqFbxAzBN4J74V.",
                                 }
                             )
                             .Entity;
@@ -127,11 +129,50 @@ public class AppDbContext : DbContext
         modelBuilder
             .Entity<Center>()
             .HasOne(c => c.CenterAdmin)
-            .WithMany(u => u.Centers)
-            .HasForeignKey(c => c.CenterAdminId)
+            .WithOne(u => u.Center)
+            .HasForeignKey<Center>(c => c.CenterAdminId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Center>().HasMany(c => c.Teachers).WithMany();
+        // Center ↔ Teacher (Many-to-Many)
+        modelBuilder
+            .Entity<Center>()
+            .HasMany(c => c.Teachers)
+            .WithMany(u => u.Centers)
+            .UsingEntity<Dictionary<string, object>>(
+                "CenterUser", // ko‘prik jadval nomi
+                j =>
+                    j.HasOne<User>()
+                        .WithMany()
+                        .HasForeignKey("UserId") // aniq nom berildi
+                        .OnDelete(DeleteBehavior.Cascade),
+                j =>
+                    j.HasOne<Center>()
+                        .WithMany()
+                        .HasForeignKey("CenterId") // aniq nom berildi
+                        .OnDelete(DeleteBehavior.Cascade)
+            );
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e =>
+                e.Entity is BaseEntity
+                && (e.State == EntityState.Added || e.State == EntityState.Modified)
+            );
+
+        foreach (var entry in entries)
+        {
+            var entity = (BaseEntity)entry.Entity;
+
+            entity.UpdatedAt = DateTime.UtcNow.AddHours(5);
+            if (entry.State == EntityState.Added)
+            {
+                entity.CreatedAt = DateTime.UtcNow.AddHours(5);
+            }
+        }
+        return base.SaveChangesAsync(cancellationToken);
     }
 
     public DbSet<User> Users { get; set; }

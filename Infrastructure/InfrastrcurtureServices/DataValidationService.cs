@@ -20,8 +20,9 @@ public class DataValidationSerive : IDataValidationService
         return !(entity == null);
     }
 
-    public bool Unique()
+    public bool Unique<T>(Func<T, bool> predicate)
+        where T : class
     {
-        throw new NotImplementedException();
+        return _context.Set<T>().Any(predicate);
     }
 }

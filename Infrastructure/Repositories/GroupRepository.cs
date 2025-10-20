@@ -13,14 +13,16 @@ public class GroupRepository : BaseRepository<Group>
 
     public async Task<PagedResult<Group>> GetAllAsync(int centerId, int page, int pageSize = 50)
     {
-        var query = _context.Set<Group>().AsQueryable();
+        var query = _context
+            .Set<Group>()
+            .AsQueryable()
+            .Where(g => g.CenterId == centerId)
+            .Include(g => g.Teacher)
+            .Include(g => g.Science);
+
         var totalCount = await query.CountAsync();
 
-        var result = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Where(g => g.CenterId == centerId)
-            .ToListAsync();
+        var result = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<Group>(result, totalCount, page, pageSize);
     }
@@ -36,6 +38,7 @@ public class GroupRepository : BaseRepository<Group>
             .Set<Group>()
             .Include(g => g.Teacher)
             .Include(g => g.Science)
+            .Include(g => g.Teacher)
             .Where(g => g.Id == id)
             .FirstOrDefaultAsync();
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Domain.Entities;
 
-public class Science
+public class Science : BaseEntity
 {
     public int Id { get; set; }
 

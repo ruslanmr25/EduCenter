@@ -1,0 +1,85 @@
+﻿@page "/center-admin/teachers/create"
+
+<EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">O'qituvchi qo'shish</h5>
+               </div>
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+                         <div class="mb-3">
+                              <h4>Quyidagi xatolar mavjud:</h4>
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">To'liq ismi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.FullName" />
+                         <ValidationMessage For="@(() => createDto.FullName)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Foydalanuvchi nomi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.Username" />
+                         <ValidationMessage For="@(() => createDto.Username)" />
+                    </div>
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Parol</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="createDto.Password" />
+                         <ValidationMessage For="@(() => createDto.Password)" />
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-success mt-3">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject TeacherClient teacherClient
+
+@inject NavigationManager navigationManager
+
+@code {
+     private CreateTeacherDto createDto = new();
+     protected List<string> errors = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+     }
+
+
+
+
+     private async Task HandleValidSubmitAsync()
+     {
+          errors.Clear();
+
+          var response = await teacherClient.PostAsync(createDto);
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+          }
+          else if (response.HttpStatusCode == System.Net.HttpStatusCode.Created)
+          {
+               navigationManager.NavigateTo("/center-admin/teachers");
+          }
+     }
+}

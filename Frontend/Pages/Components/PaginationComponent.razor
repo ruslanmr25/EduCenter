@@ -1,0 +1,91 @@
+﻿@if (Meta is not null)
+{
+     <div class="col-sm-auto mt-3 mt-sm-0">
+          <ul class="pagination pagination-rounded m-0">
+
+               <!-- Chap o‘q -->
+               <li class="page-item @(Meta.Page == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                         @onclick="@(Meta.Page == 1 ? null : async () => await OnClick(Meta.Page - 1))">
+                         <i class='bx bx-left-arrow-alt'></i>
+                    </a>
+               </li>
+
+               <!-- Sahifalar -->
+               @foreach (var page in GetVisiblePage())
+               {
+                    if (page == -1)
+                    {
+                         <li class="page-item disabled"><span class="page-link">…</span></li>
+                    }
+                    else
+                    {
+                         <li class="page-item @(page == Meta.Page ? "active" : "")">
+                              <a class="page-link" @onclick="@(async () => await OnClick(page))">@(page)</a>
+                         </li>
+                    }
+               }
+
+               <!-- O‘ng o‘q -->
+               <li class="page-item @(Meta.Page == Meta.TotalPages ? "disabled" : "")">
+                    <a role="button" class="page-link"
+                         @onclick="@(Meta.Page == Meta.TotalPages ? null : async () => await OnClick(Meta.Page + 1))">
+                         <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+               </li>
+          </ul>
+     </div>
+}
+else
+{
+     <p>Meta berilmagan</p>
+}
+
+
+@code {
+     [Parameter]
+     public Meta? Meta { get; set; }
+
+     [Parameter]
+     public EventCallback<int> OnClickEvent { get; set; }
+
+     private async Task OnClick(int page)
+     {
+          if (Meta == null || page < 1 || page > Meta.TotalPages)
+               return;
+
+          await OnClickEvent.InvokeAsync(page);
+     }
+
+     private IEnumerable<int> GetVisiblePage()
+     {
+          if (Meta == null) yield break;
+
+          int total = Meta.TotalPages;
+          int page = Meta.Page;
+          int window = 2;
+          List<int> pages = new();
+
+          if (total <= 7)
+          {
+               for (int i = 1; i <= total; i++)
+                    yield return i;
+               yield break;
+          }
+
+          yield return 1;
+          if (page - window > 2)
+               yield return -1;
+
+          int start = Math.Max(2, page - window);
+          int end = Math.Min(total - 1, page + window);
+
+          for (int i = start; i <= end; i++)
+               yield return i;
+
+          if (page + window < total - 1)
+               yield return -1;
+
+          yield return total;
+     }
+}

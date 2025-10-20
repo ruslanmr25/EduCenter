@@ -73,6 +73,46 @@
       "PackagePath": "staticwebassets\\assets\\fonts\\boxicons.woff2"
     },
     {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-0.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-0.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-1.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-1.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-2.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-2.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-3.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-3.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-4.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-4.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-5.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-5.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-6.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-6.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-7.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-7.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-8.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-8.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\group-images\\group-image-9.jpg",
+      "PackagePath": "staticwebassets\\assets\\group-images\\group-image-9.jpg"
+    },
+    {
       "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\images\\404.svg",
       "PackagePath": "staticwebassets\\assets\\images\\404.svg"
     },
@@ -6075,6 +6115,10 @@
     {
       "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\css\\custom.css",
+      "PackagePath": "staticwebassets\\css\\custom.css"
     },
     {
       "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\favicon.png",

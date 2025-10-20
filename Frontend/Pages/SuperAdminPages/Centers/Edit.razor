@@ -1,0 +1,146 @@
+﻿@page "/super-admin/centers/{id:int}/edit"
+
+<EditForm Model="@editDto" OnValidSubmit="@HandleValidSubmitAsync">
+     <DataAnnotationsValidator />
+
+     <div class="row gx-3">
+          <div class="card fade-in">
+               <div class="card-header">
+                    <h5 class="card-title mb-0">O'quv markazni tahrirlash</h5>
+               </div>
+
+
+
+               <div class="card-body">
+                    @if (errors.Count > 0)
+                    {
+
+                         <div clas="mb-3">
+
+                              <h4>Quyidagi xatolar mavjud</h4>
+
+                              <div>
+                                   @foreach (var e in errors)
+                                   {
+                                        <p class="text-danger">@e</p>
+                                   }
+                              </div>
+                         </div>
+                    }
+
+                    <div class="mb-3">
+                         <label for="fullname" class="form-label">Nomi</label>
+                         <InputText id="fullname" class="form-control" @bind-Value="editDto.Name" />
+                         <ValidationMessage For="@(() => editDto.Name)" />
+                    </div>
+
+
+                    <div class="mb-3">
+                         <label for="password" class="form-label">Admini</label>
+                         <InputSelect id="password" type="password" class="form-control"
+                              @bind-Value="editDto.CenterAdminId">
+
+                              <option value="">Tanlang</option>
+
+                              @foreach (var admin in admins)
+                              {
+                                   <option value="@admin.Id">@admin.FullName</option>
+                              }
+                         </InputSelect>
+                         <ValidationMessage For="@(() => editDto.CenterAdminId)" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+               </div>
+          </div>
+     </div>
+</EditForm>
+
+
+@inject CenterClient centerClient
+
+@inject NavigationManager navigationManager
+@inject CenterAdminClient centerAdminClient
+@code {
+
+
+     [Parameter]
+     public int Id { get; set; }
+
+
+
+     protected List<string> errors = new();
+
+
+
+
+     protected List<User> admins = new();
+
+
+     private EditCenterDto editDto = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+          var adminResponse = (await centerAdminClient.GetAllAsync());
+
+          if (!adminResponse.Success)
+          {
+
+               errors.Add("Nimadir xato ketti");
+
+          }
+          else
+          {
+               admins = adminResponse.Data!.Items;
+          }
+     }
+
+
+     protected override async Task OnParametersSetAsync()
+     {
+
+          var centerResponse = await centerClient.GetAsync(Id);
+
+          if (!centerResponse.Success)
+          {
+               errors.Add("Nimadir xato ketti, iltimos keyinroq urinib ko'ring");
+          }
+
+          else
+          {
+               editDto.Name = centerResponse.Data!.Name;
+               editDto.CenterAdminId = centerResponse.Data!.CenterAdminId;
+
+          }
+
+
+          await base.OnParametersSetAsync();
+     }
+
+     private async Task HandleValidSubmitAsync()
+     {
+
+          errors = new();
+
+
+          Response<Center>? response = await centerClient.PutAsync(Id, editDto);
+
+
+          if (response.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+          {
+
+               errors.AddRange(response.Errors.SelectMany(r => r.Errors));
+
+          }
+
+
+          if (response.HttpStatusCode == HttpStatusCode.OK)
+          {
+
+               navigationManager.NavigateTo("/super-admin/centers");
+
+          }
+
+     }
+}

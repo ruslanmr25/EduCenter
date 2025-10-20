@@ -20,8 +20,6 @@ public class StudentController : ControllerBase
 
     protected readonly GroupRepository groupRepository;
 
-    protected int CenterId;
-
     protected readonly IMapper mapper;
 
     public StudentController(
@@ -33,14 +31,13 @@ public class StudentController : ControllerBase
         this.studentRepository = studentRepository;
         this.mapper = mapper;
         this.groupRepository = groupRepository;
-        CenterId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
         PagedResult<Student> students = await studentRepository.GetAllAsync(1, 50);
-        return Ok(students);
+        return Ok(new ApiResponse<PagedResult<Student>>(students));
     }
 
     [HttpPost]
@@ -68,7 +65,7 @@ public class StudentController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(student);
+        return Ok(new ApiResponse<Student>(student));
     }
 
     [HttpPut("{id}")]

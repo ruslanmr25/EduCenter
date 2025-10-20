@@ -7,9 +7,7 @@ using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Api.Controllers.SuperAdminsControllers
 {

@@ -1,0 +1,92 @@
+﻿@page "/super-admin/centers"
+@using Domain.Entities
+
+
+<div class="card fade-in">
+     <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+               <h4 class="card-title">O'quv markazlar</h4>
+
+               <NavLink href="/super-admin/centers/create" class="btn btn-sm btn-primary">
+                    <i class="bx bx-plus me-1"></i> Qo'shish
+               </NavLink>
+          </div>
+     </div> <!-- end card body -->
+     <div class="table-responsive table-centered">
+          <table class="table mb-0">
+               <thead class="bg-light bg-opacity-50">
+                    <tr>
+                         <th class="border-0 py-2">Id</th>
+                         <th class="border-0 py-2">Nomi</th>
+                         <th class="border-0 py-2">Admini</th>
+
+                         <th class="border-0 py-2">Status</th>
+                         <th>Yaratilgan vaqti</th>
+                         <th>Tahrirlash</th>
+                    </tr>
+               </thead> <!-- end thead-->
+               <tbody>
+
+
+
+                    @foreach (var item in centers.Items.Select((center, index) => new { center, index }))
+                    {
+
+                         <tr>
+                              <td><a href="#!">@item.center.Id</a></td>
+                              <td>@item.center.Name</td>
+                              <td><a href="#!">@item.center.CenterAdmin.FullName</a></td>
+
+                              <td><i class="bx bxs-circle text-success me-1"></i>Active</td>
+                              <td>@item.center.CreatedAt</td>
+
+                              <td>
+                                   <NavLink href="@($"/super-admin/centers/{item.center.Id}/edit")">
+
+                                        Tahrirlash
+                                   </NavLink>
+                              </td>
+                         </tr>
+                    }
+
+               </tbody> <!-- end tbody -->
+          </table> <!-- end table -->
+     </div> <!-- table responsive -->
+     <div class="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
+          <div class="col-sm">
+               <div class="text-muted">
+                    <span class="fw-semibold">@centers.Meta?.TotalCount</span> tadan <span
+                         class="fw-semibold">@centers.Items.Count</span> tasi ko'rsatilmoqda
+
+               </div>
+          </div>
+
+          <PaginationComponent Meta="@centers.Meta" OnClickEvent="@LoadData"></PaginationComponent>
+     </div>
+</div> <!-- end card -->
+
+
+@inject CenterClient centerClient
+@code
+{
+
+     protected Collection<Center> centers = new();
+     protected override async Task OnInitializedAsync()
+     {
+          await LoadData(1);
+
+          await base.OnInitializedAsync();
+
+
+     }
+
+     protected async Task LoadData(int page)
+     {
+          centers = (await centerClient.GetAllAsync(page)).Data!;
+
+
+     }
+
+
+
+}
