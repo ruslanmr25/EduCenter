@@ -145,6 +145,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\brands\\slack.svg"
     },
     {
+      "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\images\\edit.png",
+      "PackagePath": "staticwebassets\\assets\\images\\edit.png"
+    },
+    {
       "Id": "D:\\Projects\\visual studio\\EduCenter\\Frontend\\wwwroot\\assets\\images\\favicon.ico",
       "PackagePath": "staticwebassets\\assets\\images\\favicon.ico"
     },

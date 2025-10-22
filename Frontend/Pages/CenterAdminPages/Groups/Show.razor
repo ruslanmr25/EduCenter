@@ -1,31 +1,169 @@
 ﻿@page "/center-admin/groups/{id:int}"
 
+@if (group is not null)
+{
+    <div class="group-details fade-in">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="card-header bg-gradient text-white py-4 px-4 rounded-top"
+                 style="background: linear-gradient(90deg, #4e73df, #224abe);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-semibold">@group.Name</h4>
+                    <span class="badge  badge-outline-info px-3 py-2">@group.Science?.Name</span>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <ul class="nav nav-tabs nav-justified modern-tabs mb-4" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info"
+                                type="button" role="tab">
+                            <i class="bi bi-info-circle me-1"></i> Guruh haqida
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students"
+                                type="button" role="tab">
+                            <i class="bi bi-people me-1"></i> O‘quvchilar
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages"
+                                type="button" role="tab">
+                            <i class="bi bi-chat-dots me-1"></i> Izohlar
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Info Tab -->
+                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+ 
+   
+
+<div class="group-card mb-4">
+    
+
+    <div class="group-body">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="info-item">
+                    <span class="info-label">O‘qituvchi:</span>
+                    <strong>@group.Teacher?.FullName</strong>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tashkil topgan sana:</span>
+                    <strong>@group.CreatedAt.ToString("yyyy-MM-dd")</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <span class="info-label">O‘quvchilar soni:</span>
+                    <strong>@group.Students.Count</strong>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Kunlari:</span>
+                    <div>
+                        @foreach (var day in group.Days)
+                        {
+                            <span class="badge badge-outline-info me-1">@day</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Vaqti:</span>
+                    <div>
+                        @foreach (var time in group.Times)
+                        {
+                            <span class="badge badge-outline-primary me-1">@time</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
 
 
 
+
+                    </div>
+
+                    <!-- Students Tab -->
+                    <div class="tab-pane fade" id="students" role="tabpanel">
+                        <div class="students-table">
+                            <div class="table-header d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-semibold mb-0">O‘quvchilar ro‘yxati</h5>
+                                <input type="text" class="form-control form-control-sm w-25" placeholder="Qidirish..." />
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle border rounded">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Ism</th>
+                                            <th>Telefon</th>
+                                            <th>Holat</th>
+                                            <th>Yaratilgan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var (student, index) in group.Students.Select((s, i) => (s, i + 1)))
+                                        {
+                                            <tr>
+                                                <td>@index</td>
+                                                <td class="fw-medium">@student.FullName</td>
+                                                <td>@string.Join(", ", new[] { student.PhoneNumber, student.SecondPhoneNumber }.Where(x => !string.IsNullOrEmpty(x)))</td>
+                                                <td>
+                                                    @* @if (student.IsActive)
+                                                    {
+                                                        <span class="badge bg-success-subtle text-success fw-semibold px-3 py-2">Faol</span>
+                                                    }
+                                                    else
+                                                    { *@
+                                                        <span class="badge bg-danger-subtle text-danger fw-semibold px-3 py-2">Faol emas</span>
+                                                    @* } *@
+                                                </td>
+                                                <td>@student.CreatedAt.ToString("dd-MM-yyyy")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Tab -->
+                    <div class="tab-pane fade" id="messages" role="tabpanel">
+                        <div class="alert alert-info rounded-4">
+                            <i class="bi bi-chat-square-text me-2"></i>
+                            Izohlar funksiyasi hali faol emas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="loading text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted">Ma’lumotlar yuklanmoqda...</p>
+    </div>
+}
 @inject GroupClient groupClient
 @code {
-
-    public int Id { get; set; }
-
-
+    [Parameter] public int Id { get; set; }
     protected Group? group;
-
 
     protected override async Task OnParametersSetAsync()
     {
-        await base.OnParametersSetAsync();
-
-
-        var result=await groupClient.GetAsync(Id);
+        var result = await groupClient.GetAsync(Id);
+        if (result.Success)
+            group = result.Data;
     }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-
-
-
 }

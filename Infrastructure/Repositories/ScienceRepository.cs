@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Application.Results;
 using Domain.Entities;
 using Infrastructure.Context;
@@ -11,14 +12,18 @@ public class ScienceRepository : BaseRepository<Science>
     public ScienceRepository(AppDbContext appDbContext)
         : base(appDbContext) { }
 
-    public async Task<PagedResult<Science>> GetAllAsync(int centerId, int page, int pageSize = 50)
+    public async Task<PagedResult<Science>> GetAllAsync(
+        int centerId,
+        int page,
+        int pageSize = 50,
+        Expression<Func<Science, object>>? orderBy = null,
+        bool descending = true
+    )
     {
-        var query = _context.Set<Science>().AsQueryable().Where(s => s.CenterId == centerId);
-        var totalCount = await query.CountAsync();
+        var query = BuildBaseQuery(orderBy, descending);
+        query = query.Where(s => s.CenterId == centerId);
 
-        var result = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-        return new PagedResult<Science>(result, totalCount, page, pageSize);
+        return await GetPagedResult(query, page, pageSize);
     }
 
     public async Task<Science?> GetAsync(int centerId, int id)

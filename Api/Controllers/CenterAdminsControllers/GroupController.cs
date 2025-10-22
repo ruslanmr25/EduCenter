@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.GroupDTOs;
+using Application.Filters;
 using Application.Results;
 using AutoMapper;
 using Domain.Entities;
@@ -26,11 +27,16 @@ public class GroupController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(int page = 1, int pageSize = 50)
+    public async Task<IActionResult> Index([FromQuery] GroupFilter filter)
     {
         var centerId = int.Parse(User.FindFirstValue("centerId")!);
 
-        var groups = await groupRepository.GetAllAsync(centerId: centerId, page, pageSize);
+        var groups = await groupRepository.GetAllAsync(
+            centerId: centerId,
+            filter.Page,
+            filter.PageSize
+        );
+
         return Ok(new ApiResponse<PagedResult<Group>>(groups));
     }
 

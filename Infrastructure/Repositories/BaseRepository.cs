@@ -1,8 +1,13 @@
 using System;
+using System.Linq.Expressions;
+using Application.Filters;
 using Application.Results;
 using Domain.Entities;
 using Infrastructure.Context;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualBasic;
 
 namespace Infrastructure.Repositories;
 
@@ -16,14 +21,47 @@ public class BaseRepository<TEntity>
         _context = appDbContext;
     }
 
-    public virtual async Task<PagedResult<TEntity>> GetAllAsync(int page, int pageSize = 50)
+    protected IQueryable<TEntity> BuildBaseQuery(
+        Expression<Func<TEntity, object>>? orderBy = null,
+        bool descending = true
+    )
     {
-        var query = _context.Set<TEntity>().AsQueryable();
+        IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+        if (orderBy is not null)
+        {
+            query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+        }
+        else
+        {
+            query = query.OrderByDescending(e => e.CreatedAt);
+        }
+
+        return query;
+    }
+
+    protected async Task<PagedResult<TEntity>> GetPagedResult(
+        IQueryable<TEntity> query,
+        int page,
+        int pageSize
+    )
+    {
         var totalCount = await query.CountAsync();
 
         var result = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<TEntity>(result, totalCount, page, pageSize);
+    }
+
+    public virtual async Task<PagedResult<TEntity>> GetAllAsync(
+        int page,
+        int pageSize = 50,
+        Expression<Func<TEntity, object>>? orderBy = null,
+        bool descending = true
+    )
+    {
+        var query = BuildBaseQuery(orderBy, descending);
+
+        return await GetPagedResult(query, page, pageSize);
     }
 
     public async Task<TEntity> CreateAsync(TEntity entity)

@@ -80,10 +80,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xFZGl0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Students/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xJbmRleC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Teachers/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xUZWFjaGVyc1xDcmVhdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -106,6 +102,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/LoadingButton.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xMb2FkaW5nQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/Modal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xNb2RhbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Projects/visual studio/EduCenter/Frontend/Pages/Components/PaginationComponent.razor]
@@ -159,3 +159,7 @@ build_metadata.AdditionalFiles.CssScope = b-yxi2lmzgn0
 [D:/Projects/visual studio/EduCenter/Frontend/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-fpiqm1rjhp
+
+[D:/Projects/visual studio/EduCenter/Frontend/Pages/CenterAdminPages/Students/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VudGVyQWRtaW5QYWdlc1xTdHVkZW50c1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-nv0a3pm56f

@@ -8,9 +8,12 @@
                     @if (sciences is not null)
                     {
                          <CustomSelect TItem="Science" TValue="int" Items="@sciences" TextSelector="@((s) => s.Name)"
-                              ValueSelector="@((s) => s.Id)" @bind-Value="@selectedScienceId"
-                              DefaultOption="Fanni tanlang">
-                         </CustomSelect>
+                              ValueSelector="@((s) => s.Id)" Value="@selectedScienceId"
+                              ValueChanged="@(async (int id) => await OnGroupChanged(id))"
+                              ValueExpression="() => selectedScienceId" DefaultOption="Fanni tanlang" />
+
+
+
                     }
 
 
@@ -24,10 +27,10 @@
 
      <div class="card-body mt-3">
           <div class="row g-4">
-               @foreach (var item in groups.Items.Select((group, index) => new { group, index }))
+               @foreach (var item in selectedGroups.Select((group, index) => new { group, index }))
                {
                     <div class="col-xl-3 col-md-6">
-                         <div class="card border-1 shadow-md rounded-4 overflow-hidden hover-lift bg-white">
+                         <div class="card border-1 shadow-md rounded-4 overflow-hidden hover-lift">
                               <div class="position-relative">
                                    <img src="@($"assets/group-images/group-image-{item.index % 10}.jpg")"
                                         class="card-img-top img-fluid" alt="group image"
@@ -54,10 +57,10 @@
                                         </div>
                                    </div>
 
-                                   <a href="javascript:void(0);"
+                                   <NavLink href="@($"/center-admin/groups/{@item.group.Id}")"
                                         class="btn btn-outline-secondary w-100 rounded-3 py-2 fw-semibold">
                                         <i class="bi bi-info-circle me-1"></i> Batafsil
-                                   </a>
+                                   </NavLink>
                               </div>
                          </div>
                     </div>
@@ -77,6 +80,8 @@
 
      protected Collection<Group> groups = new();
 
+     protected List<Group> selectedGroups = new();
+
      protected List<Science>? sciences;
      protected override async Task OnInitializedAsync()
      {
@@ -93,11 +98,30 @@
 
      protected async Task LoadData(int page)
      {
-          groups = (await groupClient.GetAllAsync(page, 20)).Data!;
+          groups = (await groupClient.GetAllAsync(page, 50)).Data!;
+
+          selectedGroups = groups.Items;
 
 
 
      }
+
+
+     protected async Task OnGroupChanged(int scienceId)
+     {
+          selectedScienceId = scienceId;
+
+          if (scienceId == 0)
+          {
+               selectedGroups = groups.Items;
+          }
+
+          selectedGroups = groups.Items
+          .Where(g => g.ScienceId == scienceId)
+          .ToList();
+     }
+
+
 
 
 

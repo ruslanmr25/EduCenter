@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Application.Results;
 using Domain.Entities;
 using Infrastructure.Context;
@@ -11,17 +12,17 @@ public class CenterRepository : BaseRepository<Center>
     public CenterRepository(AppDbContext appDbContext)
         : base(appDbContext) { }
 
-    public override async Task<PagedResult<Center>> GetAllAsync(int page, int pageSize = 50)
+    public override async Task<PagedResult<Center>> GetAllAsync(
+        int page,
+        int pageSize = 50,
+        Expression<Func<Center, object>>? orderBy = null,
+        bool descending = true
+    )
     {
-        var query = _context.Set<Center>().AsQueryable();
-        var totalCount = await query.CountAsync();
+        IQueryable<Center> query = this.BuildBaseQuery(orderBy, descending);
 
-        var result = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Include(c => c.CenterAdmin)
-            .ToListAsync();
+        query = query.Include(c => c.CenterAdmin);
 
-        return new PagedResult<Center>(result, totalCount, page, pageSize);
+        return await GetPagedResult(query, page, pageSize);
     }
 }

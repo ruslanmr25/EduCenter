@@ -1,1 +1,27 @@
-﻿
+﻿@page "/black"
+
+
+<button @onclick="OpenModal">Modalni ochish</button>
+
+<Modal @ref="myModal" Title="Mening Modalim">
+
+     <p>Bu modal ichidagi o'ziga xos kontent.</p>
+     <div class="p-3">
+          <button class="btn btn-primary" @onclick="Save">Saqlash</button>
+          <button class="btn btn-secondary" @onclick="CloseModal">Bekor qilish</button>
+     </div>
+
+
+</Modal>
+
+@code {
+     private Modal? myModal;
+
+     void OpenModal() => myModal?.Show();
+     void CloseModal() => myModal?.Close();
+     void Save()
+     {
+          // Saqlash ishlarini bajarish
+          myModal?.Close();
+     }
+}

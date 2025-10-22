@@ -4,17 +4,16 @@
 @inherits InputBase<TValue>
 
 <div class="dropdown">
-    <button class="form-control d-flex justify-content-between align-items-center dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
+    <button class="form-control d-flex justify-content-between align-items-center dropdown-toggle" type="button"
+        data-bs-toggle="dropdown" aria-expanded="false">
         <span>@(selectedText ?? DefaultOption)</span>
     </button>
 
     <ul class="dropdown-menu w-100 shadow">
         <li>
-            <a class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(CurrentValue, default) ? "active" : "")"
-               @onclick="() => SelectItem(default!)">
+            <a role="button"
+                class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(CurrentValue, default) ? "active" : "")"
+                @onclick="() => SelectItem(default!)">
                 Tanlang
             </a>
         </li>
@@ -22,8 +21,9 @@
         @foreach (var item in Items)
         {
             <li>
-                <a class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(GetValue(item), CurrentValue) ? "active" : "")"
-                   @onclick="() => SelectItem(item)">
+                <a role="button"
+                    class="dropdown-item @(EqualityComparer<TValue>.Default.Equals(GetValue(item), CurrentValue) ? "active" : "")"
+                    @onclick="() => SelectItem(item)">
                     @GetText(item)
                 </a>
             </li>
@@ -37,11 +37,12 @@
     [Parameter] public List<TItem> Items { get; set; } = new();
     [Parameter] public Func<TItem, string>? TextSelector { get; set; }
     [Parameter] public Func<TItem, TValue>? ValueSelector { get; set; }
-    [Parameter] public string? DefaultOption { get; set; }="Tanlang";
+    [Parameter] public string? DefaultOption { get; set; } = "Tanlang";
 
+    @* [Parameter] public EventCallback<TValue> OnChanged { get; set; } *@
 
     private string GetText(TItem item) =>
-        TextSelector?.Invoke(item) ?? item?.ToString() ?? string.Empty;
+    TextSelector?.Invoke(item) ?? item?.ToString() ?? string.Empty;
 
     private TValue GetValue(TItem item)
     {
@@ -52,17 +53,22 @@
         return default!;
     }
 
-    private void SelectItem(TItem item)
+    private async Task SelectItem(TItem item)
     {
         selectedText = EqualityComparer<TItem>.Default.Equals(item, default)
-            ? "Tanlang"
-            : GetText(item);
+        ? "Tanlang"
+        : GetText(item);
 
-        CurrentValue = EqualityComparer<TItem>.Default.Equals(item, default)
-            ? default!
-            : GetValue(item);
+        var newValue = EqualityComparer<TItem>.Default.Equals(item, default)
+        ? default!
+        : GetValue(item);
+
+        CurrentValue = newValue;
 
         EditContext?.NotifyFieldChanged(FieldIdentifier);
+
+        await ValueChanged.InvokeAsync(newValue);
+        @* await OnChanged.InvokeAsync(newValue); *@
     }
 
     protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
@@ -75,7 +81,7 @@
     protected override void OnParametersSet()
     {
         var selectedItem = Items.FirstOrDefault(i =>
-            EqualityComparer<TValue>.Default.Equals(GetValue(i), CurrentValue));
+        EqualityComparer<TValue>.Default.Equals(GetValue(i), CurrentValue));
 
         selectedText = selectedItem != null ? GetText(selectedItem) : "Tanlang";
     }

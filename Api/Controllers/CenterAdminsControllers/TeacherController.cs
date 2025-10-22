@@ -43,7 +43,7 @@ public class TeacherController : ControllerBase
     {
         var CenterId = int.Parse(User.FindFirstValue("centerId")!);
 
-        var teachers = await userRepository.GetAllTeacher(centerId: CenterId, page, pageSize);
+        var teachers = await userRepository.GetAllTeacherAsync(centerId: CenterId, page, pageSize);
         return Ok(new ApiResponse<PagedResult<User>>(teachers));
     }
 

@@ -1,0 +1,41 @@
+﻿@if (IsVisible)
+{
+     <div class="overlay" @onclick="BackdropClick"></div>
+     <div class="modal-container" role="dialog" aria-modal="true">
+          <div class="modal-box">
+               <div class="modal-header bg-secondary p-3">
+                    <h5>@Title</h5>
+                    <button class="close-btn fs-18 text-danger" @onclick="Close">
+                         <i class="fa-solid fa-xmark"></i>
+                    </button>
+               </div>
+
+               <div class="modal-content">
+                    @ChildContent
+               </div>
+
+
+               @* <div class="modal-footer">
+                         @FooterContent
+                    </div> *@
+
+          </div>
+     </div>
+}
+
+@code {
+     [Parameter] public string Title { get; set; } = "";
+     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+     [Parameter] public bool CloseOnBackdrop { get; set; } = true;
+
+     public bool IsVisible { get; private set; } = false;
+
+     public void Show() => IsVisible = true;
+     public void Close() => IsVisible = false;
+
+     private void BackdropClick()
+     {
+          if (CloseOnBackdrop) Close();
+     }
+}
