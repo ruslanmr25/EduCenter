@@ -28,9 +28,6 @@ public class GroupRepository : BaseRepository<Group>
             .Include(g => g.Teacher)
             .Include(g => g.Science);
 
-        Console.WriteLine("BU yerga keldi");
-        Console.WriteLine("________________________________");
-
         if (conditions is not null && conditions.Count > 0)
         {
             foreach (var condition in conditions)

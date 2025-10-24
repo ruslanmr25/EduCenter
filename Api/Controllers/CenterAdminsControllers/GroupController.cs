@@ -101,4 +101,20 @@ public class GroupController : ControllerBase
         await groupRepository.DeleteAsync(entity);
         return Ok(new ApiResponse<string[]>());
     }
+
+    [HttpPut("{id}/change-status")]
+    public async Task<IActionResult> ChangeActiveStatus(int id, UpdateGroupActiveStateDto dto)
+    {
+        Group? group = await groupRepository.GetAsync(id);
+
+        if (group is null)
+        {
+            return NotFound();
+        }
+
+        group.IsActive = dto.IsActive;
+
+        await groupRepository.UpdateAsync(group);
+        return Ok(new ApiResponse<string[]>());
+    }
 }

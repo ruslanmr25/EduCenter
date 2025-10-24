@@ -1,31 +1,86 @@
-﻿<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-     o'chirish
-</button>
+﻿@using System.Linq.Expressions
+@using System.Threading.Tasks
 
 
+<Modal @ref="myModal" Title="@(!string.IsNullOrEmpty(EntityName) ? $"{EntityName}ni o'chirish" : "O'chirish")">
 
 
+     <div>
+          <h3>@(EntityName)ni o'chirmoqchimisiz?</h3>
 
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby=" "
-     aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-               <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                    <p>This is a vertically centered modal.</p>
-               </div>
-               <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-               </div>
-          </div>
+          <span class="text-muted">O'chirilgan narsalar savatchada saqlanadi. Siz ularni keyinchalik ko'rishingiz yoki
+               qayta tiklashingiz mumkin </span>
      </div>
-</div>
+     <div class="p-3 d-flex align-items-end">
+          <button class="btn btn-danger" @onclick="DeleteItemAsync" disabled="@isLoading">
+               @(isLoading ? "O'chirilmoqda..." : "O'chirish")
+          </button>
+
+          <button class="btn btn-secondary" @onclick="CloseModal">Bekor qilish</button>
+     </div>
+
+
+</Modal>
+@typeparam TEntity
+@code {
+     private bool isLoading = false;
+
+
+
+     [Parameter]
+     public string EntityName { get; set; } = string.Empty;
+
+
+     [Parameter]
+     public BaseClient<TEntity>? Client { get; set; }
+
+     [Parameter]
+     public EventCallback NotifyParent { get; set; }
+
+
+     [Parameter]
+     public int EntityId { get; set; } = -1;
+     private Modal? myModal;
+
+
+     public void OpenModal() { myModal?.Show(); }
+     void CloseModal() => myModal?.Close();
+
+
+     private string? errorMessage;
+
+     protected async Task DeleteItemAsync()
+     {
+          if (EntityId > 0 && Client is not null)
+          {
+               try
+               {
+                    isLoading = true;
+                    await Client.DeleteAsync(EntityId);
+                    await NotifyParent.InvokeAsync();
+                    myModal?.Close();
+               }
+               catch (Exception ex)
+               {
+                    errorMessage = $"O'chirishda xato: {ex.Message}";
+               }
+               finally
+               {
+                    isLoading = false;
+               }
+          }
+          else
+          {
+               errorMessage = "Xatolik: ID yoki Client topilmadi.";
+          }
+     }
+
+
+
+
+
+
+
+
+
+}

@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Group:BaseEntity
+public class Group : BaseEntity
 {
     public int Id { get; set; }
 
@@ -20,6 +20,8 @@ public class Group:BaseEntity
     public User Teacher { get; set; }
 
     public List<Student> Students { get; set; }
+
+    public bool IsActive { get; set; } = true;
 
     public int TeacherId { get; set; }
 

@@ -129,6 +129,7 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     CenterId = table.Column<int>(type: "integer", nullable: false),
                     ScienceId = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     TeacherId = table.Column<int>(type: "integer", nullable: false),
                     Days = table.Column<int[]>(type: "integer[]", nullable: false),
                     Times = table.Column<List<TimeOnly>>(type: "time without time zone[]", nullable: false),

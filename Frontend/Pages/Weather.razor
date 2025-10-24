@@ -1,27 +1,53 @@
 ﻿@page "/black"
+@if (sciences is not null)
+{
+     @string.Join(",", sciences.Select(s => s.Name))
+}
+
+@if (science is not null)
+{
+     <DeleteItemComponent TEntity="Science" Client="@scienceClient" EntityName="@(science.Name)"
+          EntityId="@(science.Id)" NotifyParent="Notify" />
+
+}
+
+@inject ScienceClient scienceClient
+@code
+{
 
 
-<button @onclick="OpenModal">Modalni ochish</button>
-
-<Modal @ref="myModal" Title="Mening Modalim">
-
-     <p>Bu modal ichidagi o'ziga xos kontent.</p>
-     <div class="p-3">
-          <button class="btn btn-primary" @onclick="Save">Saqlash</button>
-          <button class="btn btn-secondary" @onclick="CloseModal">Bekor qilish</button>
-     </div>
-
-
-</Modal>
-
-@code {
-     private Modal? myModal;
-
-     void OpenModal() => myModal?.Show();
-     void CloseModal() => myModal?.Close();
-     void Save()
+     protected async Task Notify()
      {
-          // Saqlash ishlarini bajarish
-          myModal?.Close();
+          await Load();
      }
+
+
+     protected Science? science;
+
+     protected List<Science>? sciences;
+
+     protected override async Task OnInitializedAsync()
+     {
+          await Load();
+
+
+          await base.OnInitializedAsync();
+     }
+
+
+     protected async Task Load()
+     {
+          sciences = (await scienceClient.GetAllAsync()).Data!.Items;
+
+          if (sciences.Count > 0)
+          {
+
+
+               science = (await scienceClient.GetAsync(sciences[0].Id)).Data;
+          }
+     }
+
+
+
+
 }

@@ -1,5 +1,4 @@
 ﻿@page "/center-admin/sciences"
-@using System.Threading.Tasks
 
 
 <div class="card border-0 fade-in">
@@ -17,24 +16,33 @@
 
 
      <div class="row p-3 g-3">
-          @foreach (var science in science.Items)
+          @foreach (var science in sciences.Items)
           {
                <div class="col-md-4">
                     <div class="card border-1 shadow-sm hover-lift  p-3 position-relative rounded-3">
 
                          <!-- O‘ng yuqori burchakdagi tugmalar -->
                          <div class="position-absolute top-0 end-0 p-3 d-flex gap-2">
-                              <div class="text-primary" title="Tahrirlash">
-                                   <i class="fa-regular fa-pen-to-square fa-xl"></i>
-                              </div>
-                              <div class="text-danger" title="O‘chirish">
+
+                              <NavLink href="@($"/center-admin/sciences/{science.Id}/edit")">
+                                   <div role="button" class="text-primary" title="Tahrirlash">
+                                        <i class="fa-regular fa-pen-to-square fa-xl"></i>
+                                   </div>
+                              </NavLink>
+                              <div onclick="@(() => OpenDeleteModal(science))" role="button" class="text-danger"
+                                   title="O‘chirish">
+
+
                                    <i class="fa-solid fa-trash fa-xl"></i>
                               </div>
                          </div>
 
                          <div class="d-flex align-items-center gap-2 mt-2">
-                              <i class="bi bi-calculator-fill text-primary fs-5"></i>
-                              <h5 class="fw-bold text-dark mb-0 fs-5">@science.Name</h5>
+
+                              @* <i class="bi bi-calculator-fill text-primary fs-5"></i> *@
+                              <h5 class="fw-bold text-dark mb-0 fs-5">@science.Name </h5>
+
+                          
                          </div>
 
                          <div class="text-muted mt-3">
@@ -46,6 +54,11 @@
 
           }
      </div>
+
+
+     <DeleteItemComponent @ref="deleteModal" TEntity="Science" Client="@scienceClient"
+          NotifyParent="@(() => LoadData(1))">
+     </DeleteItemComponent>
 
      @* <div class="align-items-science justify-content-between row g-0 text-science text-sm-start p-3 border-top">
           <div class="col-sm">
@@ -67,7 +80,7 @@
 @code
 {
 
-     protected Collection<Science> science = new();
+     protected Collection<Science> sciences = new();
      protected override async Task OnInitializedAsync()
      {
 
@@ -81,11 +94,29 @@
      protected async Task LoadData(int page)
      {
 
-          science = new();
+          sciences = new();
 
-          science = (await scienceClient.GetAllAsync(page, 20)).Data!;
+          sciences = (await scienceClient.GetAllAsync(page, 20)).Data!;
 
      }
+
+     private DeleteItemComponent<Science>? deleteModal;
+
+     protected void OpenDeleteModal(Science science)
+     {
+
+          if (deleteModal is not null)
+          {
+
+
+               deleteModal.EntityId = science.Id;
+
+               deleteModal.EntityName = science.Name;
+               deleteModal.OpenModal();
+          }
+     }
+
+
 
 
 

@@ -23,7 +23,9 @@ public class BaseClient<T>
         this.navigationManager = navigationManager;
     }
 
-    private async Task<Response<TResponse>> HandleResponse<TResponse>(HttpResponseMessage response)
+    protected async Task<Response<TResponse>> HandleResponse<TResponse>(
+        HttpResponseMessage response
+    )
     {
         if (response.StatusCode == HttpStatusCode.InternalServerError)
         {
@@ -73,7 +75,7 @@ public class BaseClient<T>
         }
     }
 
-    private static Response<TResponse> HandleException<TResponse>(Exception ex)
+    protected static Response<TResponse> HandleException<TResponse>(Exception ex)
     {
         return ex switch
         {

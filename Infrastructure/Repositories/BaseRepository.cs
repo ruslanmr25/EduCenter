@@ -36,6 +36,8 @@ public class BaseRepository<TEntity>
             query = query.OrderByDescending(e => e.CreatedAt);
         }
 
+        query = query.Where(e => e.DeletedAt == null);
+
         return query;
     }
 
