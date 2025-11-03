@@ -50,4 +50,6 @@ builder.Services.AddScoped<TeacherClient>();
 
 builder.Services.AddScoped<StudentClient>();
 
+builder.Services.AddScoped<StudentPaymentClient>();
+
 await builder.Build().RunAsync();

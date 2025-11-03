@@ -18,6 +18,8 @@ public class StudentController : ControllerBase
 {
     protected readonly StudentRepository studentRepository;
 
+    protected readonly PaymentRepository paymentRepository;
+
     protected readonly GroupRepository groupRepository;
 
     protected readonly IMapper mapper;
@@ -25,12 +27,14 @@ public class StudentController : ControllerBase
     public StudentController(
         StudentRepository studentRepository,
         IMapper mapper,
-        GroupRepository groupRepository
+        GroupRepository groupRepository,
+        PaymentRepository paymentRepository
     )
     {
         this.studentRepository = studentRepository;
         this.mapper = mapper;
         this.groupRepository = groupRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     [HttpGet]
@@ -52,7 +56,10 @@ public class StudentController : ControllerBase
         {
             return UnprocessableEntity();
         }
-        await studentRepository.CreateAsync(student);
+        student = await studentRepository.CreateAsync(student);
+
+        await paymentRepository.CreateGroupStudentPaymentAsync(groups, student);
+
         return Created();
     }
 

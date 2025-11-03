@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,15 +18,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        options.JsonSerializerOptions.ReferenceHandler = System
-            .Text
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
             .Json
-            .Serialization
-            .ReferenceHandler
-            .IgnoreCycles;
+            .ReferenceLoopHandling
+            .Ignore;
+
+        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
     })
     .ConfigureApiBehaviorOptions(options =>
     {
@@ -120,16 +122,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-
-
-
-
-
-
-
-
-
-
-

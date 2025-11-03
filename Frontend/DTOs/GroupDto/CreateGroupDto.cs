@@ -12,6 +12,10 @@ namespace Frontend.DTOs.GroupDto
         [Required(ErrorMessage = "Fan tanlanishi kerak.")]
         public int ScienceId { get; set; }
 
+        [Required(ErrorMessage = "Guruh narxi kiritilishi kerak")]
+        [Range(10000, int.MaxValue, ErrorMessage = "Musbat son bo‘lishi kerak.")]
+        public int GroupPrice { get; set; }
+
         [Required(ErrorMessage = "O‘qituvchi tanlanishi kerak.")]
         public int TeacherId { get; set; }
 

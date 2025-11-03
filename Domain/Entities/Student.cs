@@ -13,4 +13,6 @@ public class Student : BaseEntity
     public string SecondPhoneNumber { get; set; }
 
     public List<Group> Groups { get; set; }
+
+    public List<GroupStudentPaymentSycle> GroupStudentPaymentSycles { get; set; }
 }

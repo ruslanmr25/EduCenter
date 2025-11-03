@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Frontend",
   "resources": {
-    "hash": "sha256-Mo+rXNGqL68myLykLpAcu7lbJx7rWEOyG7hnFJhe0Ko=",
+    "hash": "sha256-IFUQDh5Z0Q4LCw2ZIUFSQMmFLbAuF2iZRfT8ops4lLs=",
     "fingerprinting": {
       "Blazored.LocalStorage.12n6dz54qr.wasm": "Blazored.LocalStorage.wasm",
       "Microsoft.AspNetCore.Authorization.qe23mgxr71.wasm": "Microsoft.AspNetCore.Authorization.wasm",
@@ -212,12 +212,12 @@
       "icudt_CJK.tjcz0u77k5.dat": "icudt_CJK.dat",
       "icudt_EFIGS.tptq2av103.dat": "icudt_EFIGS.dat",
       "icudt_no_CJK.lfu7j35m59.dat": "icudt_no_CJK.dat",
-      "Common.hwp6t5xp03.wasm": "Common.wasm",
-      "Domain.sx9jwgnm9s.wasm": "Domain.wasm",
-      "Common.n024mohoue.pdb": "Common.pdb",
-      "Domain.b4mwmnbknp.pdb": "Domain.pdb",
-      "Frontend.uo18p6wfi4.wasm": "Frontend.wasm",
-      "Frontend.bnndtsmo80.pdb": "Frontend.pdb"
+      "Common.u6pn79djvf.wasm": "Common.wasm",
+      "Domain.ee82ef5hon.wasm": "Domain.wasm",
+      "Common.uovuc6ilbo.pdb": "Common.pdb",
+      "Domain.rintmxvo2u.pdb": "Domain.pdb",
+      "Frontend.j1wd6rtjum.wasm": "Frontend.wasm",
+      "Frontend.0ojh3dwexk.pdb": "Frontend.pdb"
     },
     "jsModuleNative": {
       "dotnet.native.9ih887ebfz.js": "sha256-oS7IRiQoVt9ThQ7Y2UM3XoeY0JqPD02cg9IvRdufn2w="
@@ -438,14 +438,14 @@
       "WindowsBase.377bly7twj.wasm": "sha256-0VmBdMjdc0nZGHDSfaGirT6y3mJTM0qx8eqCUC/rpiE=",
       "mscorlib.o0184ey5ia.wasm": "sha256-2GxNKZQJVJvYMUxSTuXa5V2qxawSMMHZtwG33SKVCZU=",
       "netstandard.hb3h2rr8mk.wasm": "sha256-DWn9+RH/ElZQ6imlYqVwZvir1KTzNwY18AzGmnyiymU=",
-      "Common.hwp6t5xp03.wasm": "sha256-X3Z9wtFYNoDpgUYFT8yK2AvAmuIShCWEcyUd4zDoChI=",
-      "Domain.sx9jwgnm9s.wasm": "sha256-8PbGqPJCjtixSyBpEef8APSyqLDK6vLKO0FItHD/nbA=",
-      "Frontend.uo18p6wfi4.wasm": "sha256-jgswX2nZ5nEL6lCqsT48QEFHZLC8SWqLCy68gtuKTzg="
+      "Common.u6pn79djvf.wasm": "sha256-umUukaD64VLA0nOsv7aoK13TPfpP0QAZSlkjQZmdusI=",
+      "Domain.ee82ef5hon.wasm": "sha256-+m6GmL/j+QivnQBCwkYaHh6k9Atpi0ps9oNaI+bK2gM=",
+      "Frontend.j1wd6rtjum.wasm": "sha256-iXrDRlgHxtyIHtMg6g9qWwCa7pXfup6mpWUrGV6rn/A="
     },
     "pdb": {
-      "Common.n024mohoue.pdb": "sha256-ydZt2Gt8yFyPyjRTq4V2/gydUip5KYSNxCMLlAuuJlc=",
-      "Domain.b4mwmnbknp.pdb": "sha256-+3nNthyIOB9O1AM7jSB8G39eEeNT4iD7ZwuoQJw3RWY=",
-      "Frontend.bnndtsmo80.pdb": "sha256-CbqrjNF3Edfinb99J5RuyrHUBARrlu8u6x4cmr/jhMA="
+      "Common.uovuc6ilbo.pdb": "sha256-EkAxpQB4MbPRZs043aPVvZ0g5Pj+POWdYvQZPIzerfU=",
+      "Domain.rintmxvo2u.pdb": "sha256-Uwa726P5bqhvvfJWmuIAeY25781W/GLNBSAAO2owb4c=",
+      "Frontend.0ojh3dwexk.pdb": "sha256-0DROyqIguBQQnERGxdq4Gv8Cr0rxm1XFNtVN0S1SaOo="
     }
   },
   "cacheBootResources": true,

@@ -32,6 +32,8 @@ public static class InfrastructureService
         services.AddScoped<StudentRepository>();
 
         services.AddScoped<AuthRepository>();
+
+        services.AddScoped<PaymentRepository>();
         return services;
     }
 }

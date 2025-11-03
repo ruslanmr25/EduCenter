@@ -10,6 +10,10 @@ public class EditGroupDto
     [StringLength(100, ErrorMessage = "Nom 100 ta belgidan oshmasligi kerak.")]
     public string Name { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Guruh narxi kiritilishi kerak")]
+    [Range(10000, int.MaxValue, ErrorMessage = "Musbat son bo‘lishi kerak.")]
+    public int GroupPrice { get; set; }
+
     [Required(ErrorMessage = "Fan tanlanishi kerak.")]
     public int ScienceId { get; set; }
 

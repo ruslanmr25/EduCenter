@@ -9,6 +9,8 @@ public class Group : BaseEntity
 
     public string Name { get; set; } = string.Empty;
 
+    public decimal GroupPrice { get; set; }
+
     public Center Center { get; set; }
 
     public int CenterId { get; set; }
@@ -28,4 +30,6 @@ public class Group : BaseEntity
     public List<DaysOfWeek> Days { get; set; }
 
     public List<TimeOnly> Times { get; set; }
+
+    public List<GroupStudentPaymentSycle> GroupStudentPaymentSycles { get; set; }
 }

@@ -393,3 +393,105 @@ tbody tr:hover {
         transform: scale(1);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Umumiy konteyner */
+.pf-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+    font-family: "Inter", system-ui, sans-serif;
+    color: #2d2d2d;
+}
+
+/* Sarlavha */
+.pf-title {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: #1d1d1d;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+/* Ma’lumot yo‘q holati */
+.pf-info {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+}
+
+/* Har bir student kartasi */
+.pf-student-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    transition: box-shadow 0.2s ease;
+}
+
+.pf-student-card:hover {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Student ma’lumoti */
+.pf-student-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.pf-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.pf-phone {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* To‘lovlar ro‘yxati */
+.pf-payment-item {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.pf-label {
+    color: #555;
+    font-weight: 500;
+}
+
+/* Minimalist effektlar */
+.pf-payment-item div+div {
+    margin-top: 0.2rem;
+}
+
+.pf-payments {
+    border-top: 1px solid #eee;
+    padding-top: 0.7rem;
+}

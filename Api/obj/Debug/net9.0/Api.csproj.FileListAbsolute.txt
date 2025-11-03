@@ -153,3 +153,6 @@ D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.IdentityModel
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Common.dll
 D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Common.pdb
+D:\Projects\visual studio\EduCenter\Api\obj\Debug\net9.0\Api.sourcelink.json
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Projects\visual studio\EduCenter\Api\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll

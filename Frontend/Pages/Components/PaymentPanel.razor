@@ -1,0 +1,78 @@
+﻿<div class="card fade-in">
+
+     <div class="card-body">
+          
+     </div>
+</div>
+<div class="card fade-in">
+
+     @if (Group is not null)
+     {
+
+          <div class="card-body row">
+
+               <div class="text-info">Quyida faqat ushbu guruhga mos talabalarning to'lovlari keltirilgan</div>
+               @foreach (var sycle in Group.GroupStudentPaymentSycles)
+               {
+                    <div class="card col-md-4 m-2">
+
+                         <card class="card-body">
+                              <p>
+                                   Ismi: @sycle.Student.FullName
+                              </p>
+                              <p>Guruhga qo'shilgan sanasi : @DateTimeHelper.ToUzbekFormat(sycle.CreatedAt)</p>
+
+                              @if (sycle.StudentPayments?.Count > 0)
+                              {
+
+                                   <p>Oxirgi to'lov: @sycle.StudentPayments.First().CreatedAt </p>
+
+
+                                   <p>Qaysi sanalar uchun: @DateTimeHelper.ToUzbekFormat(sycle.StudentPayments.First().BeginDate) -
+                                        @DateTimeHelper.ToUzbekFormat(sycle.StudentPayments.First()!.EndDate)</p>
+                              }
+                              else
+                              {
+                                   <p>Oxirgi to'lov:
+                                        <span class="text-warning">
+                                             "Xali to'lov amalga oshirilmagan"
+                                        </span>
+                                   </p>
+
+                              }
+
+                         </card>
+
+
+                    </div>
+
+               }
+          </div>
+
+     }
+
+
+
+</div>
+
+@inject StudentPaymentClient Client
+@code
+{
+
+     [Parameter]
+     public int GroupId { get; set; }
+
+
+     public Group? Group { get; set; }
+
+
+
+     protected override async Task OnParametersSetAsync()
+     {
+          await base.OnParametersSetAsync();
+
+          var group = await Client.GetGroupSycle(GroupId);
+
+          Group = group.Data;
+     }
+}

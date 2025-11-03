@@ -1,13 +1,11 @@
 using System;
 using System.Linq.Expressions;
-using Application.Filters;
+
 using Application.Results;
 using Domain.Entities;
 using Infrastructure.Context;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualBasic;
 
 namespace Infrastructure.Repositories;
 

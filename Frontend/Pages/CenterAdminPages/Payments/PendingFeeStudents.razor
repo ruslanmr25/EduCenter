@@ -1,0 +1,93 @@
+﻿@page "/payments/students/pending-fees"
+
+<h2 class="pf-title">To‘lovi Yaqinlashgan O‘quvchilar</h2>
+
+<div class="pf-container row">
+
+     @if (students == null)
+     {
+          <p class="pf-info">Yuklanmoqda...</p>
+     }
+     else if (!students.Any())
+     {
+          <p class="pf-info">Hozircha hech qanday o‘quvchi yo‘q</p>
+     }
+     else
+     {
+          @foreach (var student in students)
+          {
+               <div class="pf-student-card col-md-4 m-2">
+                    <div class="pf-student-header">
+                         <div class="pf-student-info">
+                              <div class="pf-name">@student.FullName</div>
+                              <div class="pf-phone">@student.PhoneNumber</div>
+                         </div>
+                    </div>
+
+                    <div class="pf-payments">
+                         @foreach (var gs in student.GroupStudentPaymentSycles)
+                         {
+                              var lastPayment = gs.StudentPayments.FirstOrDefault();
+                              string overdueText = "";
+                              string overdueClass = "";
+
+                              if (lastPayment != null)
+                              {
+                                   // DateOnly ni DateTime ga aylantiramiz
+                                   var endDate = lastPayment.EndDate;
+                                   var diff = (DateTime.Now.Date - endDate).Days;
+
+                                   if (diff > 0)
+                                   {
+                                        overdueText = $"{diff} kun kechikkan";
+                                        overdueClass = "pf-badge-overdue";
+                                   }
+                                   else if (diff == 0)
+                                   {
+                                        overdueText = "Bugun to‘lov kuni";
+                                        overdueClass = "pf-badge-today";
+                                   }
+                                   else
+                                   {
+                                        overdueText = $"{Math.Abs(diff)} kun qoldi";
+                                        overdueClass = "pf-badge-upcoming";
+                                   }
+                              }
+                              else
+                              {
+                                   overdueText = "To‘lanmagan";
+                                   overdueClass = "pf-badge-unpaid";
+                              }
+
+                         <div class="pf-payment-item">
+                              <div class="pf-badge @overdueClass">@overdueText</div>
+                              <div><span class="pf-label">Guruh:</span> @gs.Group.Name</div>
+                              <div><span class="pf-label">Qo‘shilgan sana:</span> @gs.CreatedAt.ToShortDateString()</div>
+                              <div>
+                                   <span class="pf-label">Oxirgi to‘lov:</span>
+                                   @(lastPayment != null
+                                                            ? lastPayment.EndDate.ToShortDateString()
+                                                            : "To‘lanmagan")
+                                   </div>
+                              </div>
+                         }
+                    </div>
+               </div>
+          }
+     }
+</div>
+
+@inject StudentPaymentClient client
+
+@code {
+     protected List<Student>? students;
+
+     protected override async Task OnInitializedAsync()
+     {
+          var response = await client.GetPendingFees();
+          if (response.Success)
+          {
+               students = response.Data;
+          }
+     }
+}

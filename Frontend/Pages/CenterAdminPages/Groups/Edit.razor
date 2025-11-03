@@ -42,6 +42,15 @@
                             <ValidationMessage For="@(() => editDto.ScienceId)" />
                         </div>
 
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Kurs narxi</label>
+                            <InputNumber class="form-control" @bind-Value="editDto.GroupPrice" />
+                            <ValidationMessage For="@(() => editDto.GroupPrice)" />
+                        </div>
+
+
                         <div class="mb-3">
                             <label class="form-label">O'qituvchi</label>
                             <InputSelect class="form-control" @bind-Value="editDto.TeacherId">

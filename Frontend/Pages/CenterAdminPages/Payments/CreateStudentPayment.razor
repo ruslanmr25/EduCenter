@@ -1,0 +1,186 @@
+﻿@page "/payments/students/{id:int}"
+@inject StudentPaymentClient Client
+@inject NavigationManager NavigationManager
+
+<div class="container py-4">
+     @if (isLoading)
+     {
+          <div class="text-center my-5">
+               <div class="spinner-border text-primary" role="status"></div>
+               <p class="mt-3">Yuklanmoqda...</p>
+          </div>
+     }
+     else if (student is null)
+     {
+          <div class="alert alert-danger mt-4">
+               <i class="bi bi-exclamation-triangle"></i> Talaba topilmadi yoki server xatosi yuz berdi.
+          </div>
+     }
+     else
+     {
+          <div class="card border-0 shadow-lg mb-4 p-4 rounded-4">
+               <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                         style="width: 60px; height: 60px; font-size: 24px;">
+                         @student.FullName.Substring(0, 1).ToUpper()
+                    </div>
+                    <div class="ms-3">
+                         <h4 class="fw-bold mb-1">@student.FullName</h4>
+                         <p class="text-muted mb-0">
+                              <i class="bi bi-telephone-fill me-1"></i> @student.PhoneNumber
+                         </p>
+                    </div>
+               </div>
+          </div>
+
+          <h5 class="fw-semibold mb-3">💳 To‘lov sikllari</h5>
+
+          @if (student.GroupStudentPaymentSycles is not null && student.GroupStudentPaymentSycles.Count > 0)
+          {
+               <EditForm Model="@studentPayments" OnValidSubmit="@Pay">
+                    <div class="card border-0 shadow-sm rounded-4">
+                         <div class="card-body">
+                              @foreach (var paymentSycle in student.GroupStudentPaymentSycles)
+                              {
+                                   var currentPayment = studentPayments
+                                   .FirstOrDefault(sp => sp.GroupStudentPaymentSycleId == paymentSycle.Id);
+
+                                   if (currentPayment is not null)
+                                   {
+                                        <div class="card mb-4 shadow-sm border-0">
+                                             <div class="card-body">
+                                                  <p><strong>Guruh nomi:</strong> @paymentSycle.Group?.Name</p>
+                                                  <p><strong>Guruh narxi:</strong> @paymentSycle.Price so'm</p>
+
+                                                  <p><strong>Guruhga qo'shilgan
+                                                            sanasi:</strong>@DateTimeHelper.ToUzbekFormat(paymentSycle.CreatedAt)</p>
+
+                                                  <p>
+                                                       <strong>Ohirgi to‘lov oyi:</strong>
+                                                       @(paymentSycle.StudentPayments.FirstOrDefault() is not null
+                                                                                          ? @DateTimeHelper.ToUzbekFormat(paymentSycle.StudentPayments.First().BeginDate)
+                                                                                          : "Oldin to‘lanmagan")
+                                                  </p>
+
+                                                  <p>
+                                                       <strong>Ohirgi to‘lov miqdori:</strong>
+                                                       @(paymentSycle.StudentPayments.FirstOrDefault() is not null
+                                                                                          ? $"{paymentSycle.StudentPayments.FirstOrDefault()?.Amount.ToReadebleString()} so'm"
+                                                                                          : "Oldin to‘lanmagan")
+                                                  </p>
+
+                                                  <hr />
+
+                                                  <div class="row g-3">
+                                                       <div class="col-md-4">
+                                                            <label class="form-label">Boshlanish sanasi</label>
+                                                            <!-- here we explicitly tell InputDate that TValue is DateOnly -->
+                                                            <InputDate TValue="DateOnly" @bind-Value="@currentPayment.BeginDate"
+                                                                 class="form-control" />
+                                                       </div>
+
+                                                       <div class="col-md-4">
+                                                            <label class="form-label">Tugash sanasi</label>
+                                                            <InputDate @bind-Value="currentPayment.EndDate" TValue="DateOnly"
+                                                                 class="form-control" />
+                                                       </div>
+
+                                                       <div class="col-md-4">
+                                                            <label class="form-label">To‘lov miqdori (so‘m)</label>
+                                                            <InputNumber @bind-Value="currentPayment.Amount" class="form-control" />
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   }
+                              }
+
+                              <button class="btn btn-primary px-4 mt-3">
+                                   <i class="bi bi-cash-coin me-2"></i> To‘lash
+                              </button>
+                         </div>
+                    </div>
+               </EditForm>
+          }
+          else
+          {
+               <div class="alert alert-warning mt-3">
+                    <i class="bi bi-info-circle"></i> Bu talabada to‘lov sikllari mavjud emas.
+               </div>
+          }
+     }
+
+     @if (!string.IsNullOrEmpty(message))
+     {
+          <div class="alert @(isError ? "alert-danger" : "alert-success") mt-3">
+               @message
+          </div>
+     }
+</div>
+
+@code {
+     [Parameter] public int Id { get; set; }
+
+     private Student? student;
+     private bool isLoading = true;
+     protected List<StudentPaymentDto> studentPayments = new();
+     private string? message;
+     private bool isError;
+
+     protected override async Task OnParametersSetAsync()
+     {
+          isLoading = true;
+          message = null;
+
+          var response = await Client.GetSycles(Id);
+          student = response.Data;
+
+          if (student is not null && studentPayments.Count == 0)
+          {
+               studentPayments = student.GroupStudentPaymentSycles
+               .Select(s =>
+               {
+
+                    var beginDate = DateOnly.FromDateTime(s.StudentPayments.Count > 0 ? s.StudentPayments.First().EndDate : s.CreatedAt);
+                    return new StudentPaymentDto
+                    {
+
+
+                         GroupStudentPaymentSycleId = s.Id,
+                         BeginDate = beginDate,
+                         EndDate = beginDate.AddMonths(1),
+                         Amount = (int)s.Price
+                    };
+               })
+               .ToList();
+          }
+
+          isLoading = false;
+     }
+
+     protected async Task Pay()
+     {
+          try
+          {
+               if (studentPayments.Count == 0)
+               {
+                    message = "To‘lov ma’lumotlari topilmadi.";
+                    isError = true;
+                    return;
+               }
+
+               await Client.PayAsync(Id, studentPayments);
+
+               message = "To‘lov muvaffaqiyatli amalga oshirildi!";
+               isError = false;
+
+               await Task.Delay(1200);
+               @* NavigationManager.NavigateTo($"/payments/students/{Id}", forceLoad: true); *@
+          }
+          catch (Exception ex)
+          {
+               message = $"Xatolik yuz berdi: {ex.Message}";
+               isError = true;
+          }
+     }
+}

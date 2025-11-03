@@ -91,6 +91,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("GroupPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -120,6 +123,44 @@ namespace Infrastructure.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("Domain.Entities.GroupStudentPaymentSycle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("GroupStudentPaymentSycles");
                 });
 
             modelBuilder.Entity("Domain.Entities.Science", b =>
@@ -185,6 +226,42 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StudentPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("GroupStudentPaymentSycleId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupStudentPaymentSycleId");
+
+                    b.ToTable("StudentPayments");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -292,6 +369,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("Domain.Entities.GroupStudentPaymentSycle", b =>
+                {
+                    b.HasOne("Domain.Entities.Group", "Group")
+                        .WithMany("GroupStudentPaymentSycles")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Student", "Student")
+                        .WithMany("GroupStudentPaymentSycles")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("Domain.Entities.Science", b =>
                 {
                     b.HasOne("Domain.Entities.Center", "Center")
@@ -301,6 +397,17 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Center");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StudentPayment", b =>
+                {
+                    b.HasOne("Domain.Entities.GroupStudentPaymentSycle", "GroupStudentPaymentSycle")
+                        .WithMany("StudentPayments")
+                        .HasForeignKey("GroupStudentPaymentSycleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GroupStudentPaymentSycle");
                 });
 
             modelBuilder.Entity("GroupStudent", b =>
@@ -316,6 +423,21 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Group", b =>
+                {
+                    b.Navigation("GroupStudentPaymentSycles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.GroupStudentPaymentSycle", b =>
+                {
+                    b.Navigation("StudentPayments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Student", b =>
+                {
+                    b.Navigation("GroupStudentPaymentSycles");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

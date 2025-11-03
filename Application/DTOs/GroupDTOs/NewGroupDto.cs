@@ -12,7 +12,6 @@ public class NewGroupDto
     [StringLength(100, ErrorMessage = "Nom uzunligi 100 ta belgidan oshmasligi kerak.")]
     public string Name { get; set; } = string.Empty;
 
-
     [Required(ErrorMessage = "ScienceId kiritilishi shart.")]
     [Range(1, int.MaxValue, ErrorMessage = "ScienceId musbat son bo‘lishi kerak.")]
     [Exsist(typeof(Science), "Id")]
@@ -22,6 +21,10 @@ public class NewGroupDto
     [Range(1, int.MaxValue, ErrorMessage = "TeacherId musbat son bo‘lishi kerak.")]
     [Exsist(typeof(User), "Id")]
     public int TeacherId { get; set; }
+
+    [Required(ErrorMessage = "Guruh narxi kiritilishi kerak")]
+    [Range(10000, int.MaxValue, ErrorMessage = "Musbat son bo‘lishi kerak.")]
+    public int GroupPrice { get; set; }
 
     [Required(ErrorMessage = "Kunlar kiritilishi shart.")]
     [MinLength(1, ErrorMessage = "Hech bo‘lmaganda bitta kun tanlanishi kerak.")]

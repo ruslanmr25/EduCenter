@@ -184,4 +184,8 @@ public class AppDbContext : DbContext
     public DbSet<Group> Groups { get; set; }
 
     public DbSet<Student> Students { get; set; }
+
+    public DbSet<GroupStudentPaymentSycle> GroupStudentPaymentSycles { get; set; }
+
+    public DbSet<StudentPayment> StudentPayments { get; set; }
 }

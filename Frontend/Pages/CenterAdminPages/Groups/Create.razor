@@ -41,6 +41,15 @@
                             <ValidationMessage For="@(() => createDto.Name)" />
                         </div>
 
+                        
+
+                        <div class="mb-3">
+                            <label  class="form-label">Kurs narxi</label>
+                            <InputNumber class="form-control" @bind-Value="createDto.GroupPrice" />
+                            <ValidationMessage For="@(() => createDto.GroupPrice)" />
+                        </div>
+
+
 
                         <div class="mb-3">
                             <label class="form-label">Fan</label>

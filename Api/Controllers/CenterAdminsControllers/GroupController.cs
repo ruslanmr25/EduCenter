@@ -18,12 +18,19 @@ namespace Api.Controllers.CenterAdminsControllers;
 public class GroupController : ControllerBase
 {
     protected readonly GroupRepository groupRepository;
+
+    protected readonly PaymentRepository paymentRepository;
     protected readonly IMapper mapper;
 
-    public GroupController(GroupRepository groupRepository, IMapper mapper)
+    public GroupController(
+        GroupRepository groupRepository,
+        IMapper mapper,
+        PaymentRepository paymentRepository
+    )
     {
         this.groupRepository = groupRepository;
         this.mapper = mapper;
+        this.paymentRepository = paymentRepository;
     }
 
     [HttpGet]
@@ -48,8 +55,9 @@ public class GroupController : ControllerBase
         Group group = mapper.Map<Group>(dto);
         group.CenterId = centerId;
 
-        await groupRepository.CreateAsync(group);
+        group = await groupRepository.CreateAsync(group);
 
+        
         return Created();
     }
 
