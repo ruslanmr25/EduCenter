@@ -129,6 +129,15 @@
 
      protected override async Task OnParametersSetAsync()
      {
+
+          await GetFees();
+
+     }
+
+
+
+     public async Task GetFees()
+     {
           isLoading = true;
           message = null;
 
@@ -156,6 +165,8 @@
           }
 
           isLoading = false;
+
+
      }
 
      protected async Task Pay()
@@ -182,5 +193,7 @@
                message = $"Xatolik yuz berdi: {ex.Message}";
                isError = true;
           }
+
+          await GetFees();
      }
 }

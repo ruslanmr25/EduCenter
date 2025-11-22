@@ -70,6 +70,11 @@
                                                             : "To‘lanmagan")
                                    </div>
                               </div>
+
+
+                              <div>
+                                   <button class="btn btn-primary" @onclick="@(() => Navigate(student.Id))">To'lash</button>
+                              </div>
                          }
                     </div>
                </div>
@@ -79,6 +84,7 @@
 
 @inject StudentPaymentClient client
 
+@inject NavigationManager Nav
 @code {
      protected List<Student>? students;
 
@@ -89,5 +95,19 @@
           {
                students = response.Data;
           }
+     }
+
+
+
+     protected async Task Navigate(int studentId)
+     {
+
+          Nav.NavigateTo($"payments/students/{studentId}");
+
+
+
+
+
+
      }
 }

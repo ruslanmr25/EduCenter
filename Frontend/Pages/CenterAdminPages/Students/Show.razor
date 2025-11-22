@@ -1,0 +1,162 @@
+﻿@page "/center-admin/students/{id:int}"
+@inject StudentClient studentClient
+
+<h3 class="mb-4 text-primary fw-bold">Student haqida ma'lumot</h3>
+
+@if (student is not null)
+{
+     <!-- Student Card -->
+     <div class="card shadow-sm mb-4 animate__animated animate__fadeIn">
+          <div class="card-header bg-primary text-white fw-bold">
+               Asosiy ma'lumotlar
+          </div>
+
+          <div class="card-body">
+
+               <div class="mb-2"><strong>Ismi:</strong> @student.FullName</div>
+               <div class="mb-2"><strong>Telefon:</strong> @student.PhoneNumber</div>
+               <div class="mb-2"><strong>Ikkinchi telefon:</strong> @student.SecondPhoneNumber</div>
+
+               <hr />
+
+               <h5 class="fw-bold">Guruhlari</h5>
+
+               <div class="list-group">
+                    @foreach (var group in student.Groups)
+                    {
+                         var date = student.GroupStudentPaymentSycles
+                         .Where(g => g.GroupId == group.Id)
+                         .First().CreatedAt;
+
+                         <div class="list-group-item">
+                              <div class="fw-bold">@group.Name</div>
+                              <div class="text-muted small">
+                                   A'zo bo‘lgan sana:
+                                   <span class="badge bg-secondary">
+                                        @DateTimeHelper.ToUzbekFormat(date)
+                                   </span>
+                              </div>
+                         </div>
+                    }
+               </div>
+          </div>
+     </div>
+
+
+     <!-- Payments Section -->
+     <div class="card shadow-sm animate__animated animate__fadeIn">
+          <div class="card-header bg-success text-white fw-bold">
+               To'lovlar jadvali
+          </div>
+
+          <div class="card-body">
+
+               @foreach (var payment in student.GroupStudentPaymentSycles)
+               {
+                    <div class="mb-4 p-3 border rounded">
+
+                         <h6 class="fw-bold">
+                              @payment.Group.Name
+                              @if (payment.IsActive)
+                              {
+                                   <span class="badge bg-success ms-2">Aktiv</span>
+                              }
+                              else
+                              {
+                                   <span class="badge bg-danger ms-2">Yopilgan</span>
+                              }
+                         </h6>
+
+                         <div class="small text-muted">
+                              To'lov boshlanishi:
+                              <span class="badge bg-secondary">@payment.CreatedAt.ToShortDateString()</span>
+                         </div>
+
+
+                         <div class="small text-muted">
+                              Jami to'lov miqdori:
+                              <span>@payment.StudentPayments.Sum(s => s.Amount).ToReadebleString() so'm</span>
+                         </div>
+
+                         <div class="small text-muted">
+                              Oxirgi to'lov:
+                              @if (payment.StudentPayments.Count > 0)
+                              {
+                                   <span class="badge bg-info">
+                                        @payment.StudentPayments.OrderByDescending(p =>
+                                        p.CreatedAt).First().CreatedAt.ToShortDateString()
+                    </span>
+                                        }
+                              else
+                              {
+                                   <span class="badge bg-warning text-dark">Hali to‘lov qilmagan</span>
+                              }
+                         </div>
+
+                         <hr />
+
+                         <h6 class="fw-bold">To'lovlar</h6>
+
+                         @if (payment.StudentPayments.Count == 0)
+                         {
+                              <div class="text-muted fst-italic">To'lovlar mavjud emas.</div>
+                         }
+                         else
+                         {
+                              <ul class="list-group">
+                                   @foreach (var p in payment.StudentPayments)
+                                   {
+                                        <li class="list-group-item">
+                                             <div><strong>Sana:</strong> @p.CreatedAt.ToShortDateString()</div>
+                                             <div><strong>Davr:</strong> @DateTimeHelper.ToUzbekFormat(@p.BeginDate) —
+                                                  @DateTimeHelper.ToUzbekFormat(p.EndDate)
+                                             </div>
+                                             <div><strong>Miqdor:</strong> @p.Amount.ToReadebleString() so'm</div>
+                                        </li>
+                                   }
+                              </ul>
+                         }
+                    </div>
+
+                    <hr />
+               }
+          </div>
+     </div>
+}
+
+@code {
+
+
+     [Parameter] public int Id { get; set; }
+
+
+     protected Student? student;
+
+
+
+     protected override async Task OnParametersSetAsync()
+     {
+
+          var response = await studentClient.GetAsync(Id);
+
+
+          if (!response.Success)
+          {
+
+
+               Console.WriteLine("Nimadir xato ketti");
+
+               return;
+          }
+
+
+          student = response.Data;
+
+
+
+
+
+          await base.OnParametersSetAsync();
+     }
+
+}

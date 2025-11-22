@@ -86,7 +86,12 @@
                                         var s = it.student;
                                         <tr class="cursor-row ">
                                              <td>@((students.Meta!.Page - 1) * students.Meta.PageSize + it.index + 1)</td>
-                                             <td class="fw-medium">@s.FullName</td>
+                                             <td class="fw-medium">
+                                                  <NavLink href=@($"/center-admin/students/{s.Id}")>
+
+                                                       @s.FullName
+                                                  </NavLink>
+                                             </td>
                                              <td>@string.Join(", ", new [] { s.PhoneNumber, s.SecondPhoneNumber }.Where(x =>
                                                                                                !string.IsNullOrEmpty(x)))</td>
                                         <td>@string.Join(", ", s.Groups.Select(g => g.Name))</td>
@@ -97,7 +102,7 @@
                                                   <span class="badge bg-secondary-subtle text-secondary">Faol emas</span>
 
                                              </td>
-                                             <td>@s.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                             <td>@DateTimeHelper.ToUzbekFormat(s.CreatedAt)</td>
                                         </tr>
                                                                       }
                               </tbody>
