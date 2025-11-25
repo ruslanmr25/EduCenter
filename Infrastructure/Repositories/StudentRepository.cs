@@ -29,7 +29,9 @@ public class StudentRepository : BaseRepository<Student>
     {
         return await _context
             .Set<Student>()
-            .Include(s => s.Groups)
+            .Include(s => s.Groups.OrderByDescending(g => g.CreatedAt))
+            .Include(s => s.GroupStudentPaymentSycles.OrderByDescending(gs => gs.CreatedAt))
+            .ThenInclude(gs => gs.StudentPayments.OrderByDescending(g => g.CreatedAt))
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 }

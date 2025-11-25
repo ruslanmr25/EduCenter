@@ -1,10 +1,8 @@
 using System;
 using System.Linq.Expressions;
-
 using Application.Results;
 using Domain.Entities;
 using Infrastructure.Context;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;

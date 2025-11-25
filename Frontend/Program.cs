@@ -52,4 +52,5 @@ builder.Services.AddScoped<StudentClient>();
 
 builder.Services.AddScoped<StudentPaymentClient>();
 
+builder.Services.AddScoped<CenterStatisticClient>();
 await builder.Build().RunAsync();

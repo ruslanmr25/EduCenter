@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Pages\CenterAdminPages\Statistics\" />
     <Folder Include="Pages\Components\DeleteItemComponent\" />
   </ItemGroup>
 </Project>

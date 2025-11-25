@@ -122,7 +122,7 @@ public class PaymentRepository(AppDbContext appDbContext)
             .Students.Where(s =>
                 s.GroupStudentPaymentSycles.Any(gs =>
                     gs.StudentPayments.Count == 0
-                    || gs.StudentPayments.Any(sp => sp.EndDate <= today.AddDays(5))
+                    || gs.StudentPayments.Max(p => (DateTime?)p.EndDate) <= today.AddDays(5)
                 )
             )
             .Select(s => new Student
