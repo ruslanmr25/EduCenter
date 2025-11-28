@@ -1,0 +1,90 @@
+﻿@page "/teachers"
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+
+     <MudText Typo="Typo.h6" Color="Color.Tertiary" Class="my-4">O'qituvchilar</MudText>
+
+
+
+     <MudPaper Class="px-10 py-5 ma-0" Height="90%" Elevation="0">
+
+          <MudStack Row="true" Justify="Justify.FlexEnd">
+
+               <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled"
+                    Class="mb-4" Size="Size.Small">
+                    Qo'shish</MudButton>
+
+          </MudStack>
+
+
+          <MudTable Elevation="0" Items="@elements" Hover="true" Breakpoint="Breakpoint.Sm">
+
+
+               <HeaderContent>
+                    <MudTh>Nr</MudTh>
+
+                    <MudTh>Name</MudTh>
+
+                    <MudTh>Age</MudTh>
+
+               </HeaderContent>
+
+
+               <RowTemplate>
+
+                    <MudTd DataLabel="Nr">@(elements.IndexOf(context) + 1)</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+
+                    <MudTd DataLabel="Age">@context.Age</MudTd>
+               </RowTemplate>
+          </MudTable>
+
+
+
+     </MudPaper>
+
+
+</MudContainer>
+
+
+
+
+@code
+{
+
+     protected string name;
+
+     protected List<Element> elements = new();
+
+
+     protected override void OnInitialized()
+     {
+
+          var el1 = new Element
+          {
+               Name = "Mamasalayev Ruslan",
+               Age = 22
+          };
+
+          var el2 = new Element
+          {
+               Name = "Ergashev Jamshid",
+               Age = 22
+          };
+          elements = new List<Element>() { el1, el2 };
+          name = elements[0].Name;
+
+     }
+
+
+
+
+     protected class Element
+     {
+
+
+          public string Name { get; set; } = string.Empty;
+
+          public int Age { get; set; }
+     }
+}
