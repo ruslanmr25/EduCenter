@@ -202,6 +202,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CenterId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -224,6 +227,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CenterId");
 
                     b.ToTable("Students");
                 });
@@ -299,21 +304,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("GroupStudent", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("GroupsId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("GroupStudent");
                 });
 
             modelBuilder.Entity("CenterUser", b =>
@@ -399,6 +389,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Center");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Student", b =>
+                {
+                    b.HasOne("Domain.Entities.Center", "Center")
+                        .WithMany()
+                        .HasForeignKey("CenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Center");
+                });
+
             modelBuilder.Entity("Domain.Entities.StudentPayment", b =>
                 {
                     b.HasOne("Domain.Entities.GroupStudentPaymentSycle", "GroupStudentPaymentSycle")
@@ -408,21 +409,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("GroupStudentPaymentSycle");
-                });
-
-            modelBuilder.Entity("GroupStudent", b =>
-                {
-                    b.HasOne("Domain.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>

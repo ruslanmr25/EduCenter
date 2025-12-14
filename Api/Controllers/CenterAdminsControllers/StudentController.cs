@@ -3,6 +3,7 @@ using Api.Responses;
 using Application.DTOs.StudentsDto;
 using Application.Results;
 using AutoMapper;
+using Common.Queries;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -38,35 +39,42 @@ public class StudentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync([FromQuery] StudentQuery query)
     {
-        PagedResult<Student> students = await studentRepository.GetAllAsync(1, 50);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+        PagedResult<Student> students = await studentRepository.GetAllAsync(centerId, query);
         return Ok(new ApiResponse<PagedResult<Student>>(students));
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateASync(NewStudentDto dto)
     {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
         Student student = mapper.Map<Student>(dto);
 
         var groups = await groupRepository.GetAllAsyncByIds(dto.Groups);
 
-        student.Groups = groups;
         if (groups.Count is 0)
         {
             return UnprocessableEntity();
         }
+
+        student.CenterId = centerId;
+
         student = await studentRepository.CreateAsync(student);
 
         await paymentRepository.CreateGroupStudentPaymentAsync(groups, student);
 
-        return Created();
+        return Ok(new ApiResponse<Student>(student));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
-        Student? student = await studentRepository.GetAsync(id);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Student? student = await studentRepository.GetAsync(id, centerId);
 
         if (student is null)
         {
@@ -78,7 +86,9 @@ public class StudentController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatedStudentDto dto)
     {
-        Student? dbStudent = await studentRepository.GetAsync(id);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Student? dbStudent = await studentRepository.GetAsync(id, centerId);
 
         if (dbStudent is null)
             return NotFound();
@@ -92,7 +102,9 @@ public class StudentController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
-        Student? student = await studentRepository.GetAsync(id);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Student? student = await studentRepository.GetAsync(id, centerId);
 
         if (student is null)
         {

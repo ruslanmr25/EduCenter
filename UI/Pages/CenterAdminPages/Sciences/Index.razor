@@ -1,0 +1,141 @@
+﻿@page "/sciences"
+@attribute [Authorize(Roles = "CenterAdmin")]
+
+
+@if (isLoading)
+{
+
+     <MudStack Row="true" Justify="Justify.Center">
+
+          <MudProgressCircular Class="ms-n1" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
+     </MudStack>
+
+}
+
+else
+{
+
+     <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+
+          <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">Fanlar</MudText>
+
+
+
+          <MudPaper Class="px-10 py-5 ma-0" Height="90%" Elevation="0">
+
+               <MudStack Row="true" Justify="Justify.FlexEnd">
+
+                    <MudButton StartIcon="@Icons.Material.Filled.Add" @onclick="OpenDialogAsync" Variant="Variant.Filled"
+                         Color="Color.Primary">
+                         Fan qo'shish
+                    </MudButton>
+               </MudStack>
+
+
+               <MudTable Elevation="0" Items="@collection.Items" Hover="true" Breakpoint="Breakpoint.Md">
+
+
+                    <HeaderContent>
+                         <MudTh>Nr</MudTh>
+
+                         <MudTh>Fan nomi</MudTh>
+
+
+
+
+                    </HeaderContent>
+
+
+                    <RowTemplate>
+
+                         <MudTd DataLabel="Nr">@(collection.Items.IndexOf(context) + 1)</MudTd>
+                         <MudTd DataLabel="Name">@context.Name</MudTd>
+
+
+
+
+                    </RowTemplate>
+                    <PagerContent>
+                         <MudStack Row="true" Justify="Justify.FlexEnd">
+                              <MudPagination BoundaryCount="1" MiddleCount="3" Count="collection.Meta!.TotalPages"
+                                   Selected="@_selected" SelectedChanged="@GetAllAsync" />
+                         </MudStack>
+                    </PagerContent>
+
+               </MudTable>
+
+
+
+          </MudPaper>
+
+
+     </MudContainer>
+
+}
+
+
+
+@inject ScienceClient scienceClient
+@inject IDialogService DialogService
+
+
+@code
+{
+     protected string? name;
+
+     protected int _selected = 1;
+
+     protected bool isLoading = false;
+     protected Collection<Science> collection = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+          await GetAllAsync(1);
+
+     }
+
+     protected async Task GetAllAsync(int i)
+     {
+          isLoading = true;
+          var response = await scienceClient.GetAllAsync(i);
+
+
+          if (!response.Success)
+          {
+               return;
+          }
+
+          collection = response.Data!;
+
+          _selected = i;
+
+          isLoading = false;
+
+
+     }
+
+
+
+
+     private async Task OpenDialogAsync()
+     {
+          var options = new DialogOptions { CloseOnEscapeKey = true };
+
+
+          var parameters = new DialogParameters()
+
+{
+{"OnCreated",new EventCallbackFactory().Create(this,new Func<int, Task>(GetAllAsync))}
+
+};
+
+
+
+
+
+          await DialogService.ShowAsync<CreateScienceComponent>("Simple Dialog", parameters, options);
+     }
+}

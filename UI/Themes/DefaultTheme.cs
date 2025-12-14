@@ -11,7 +11,7 @@ public class DefaultTheme
         {
             Primary = "#083d82",
 
-            Tertiary = "#0a489aff",
+            Tertiary = "#5789caff",
             Secondary = "#edf2f5",
 
             Background = "#f7f8fa",
@@ -21,6 +21,8 @@ public class DefaultTheme
             TextPrimary = "#083d82",
             ActionDefault = "#0a489aff",
             TableHover = "#d4e7ffff",
+
+            Dark = "#21252e",
 
             HoverOpacity = 0.1,
         },
@@ -32,12 +34,13 @@ public class DefaultTheme
 
             AppbarBackground = Colors.BlueGray.Darken3,
         },
+        PseudoCss = new PseudoCss() { },
 
         Typography = new Typography()
         {
             Default = new DefaultTypography()
             {
-                FontFamily = new[] { "Lora", "serif" },
+                FontFamily = new[] { "Noto Serif", "serif" },
                 FontSize = "0.875rem",
                 FontWeight = "700",
             },

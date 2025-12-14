@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.PaymentsDto;
 using Domain.Entities;
@@ -21,43 +22,55 @@ public class StudentPaymentController : ControllerBase
     [HttpGet("students/{studentId}")]
     public async Task<IActionResult> Info(int studentId)
     {
-        Student? student = await paymentRepository.GetStudentPaymentSyclesAsync(studentId);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Student? student = await paymentRepository.GetStudentPaymentSyclesAsync(
+            studentId,
+            centerId
+        );
+
+        if (student is null)
+        {
+            return NotFound();
+        }
         return Ok(new ApiResponse<Student>(student));
     }
 
     [HttpGet("groups/{groupId}")]
     public async Task<IActionResult> GroupInfo(int groupId)
     {
-        Group? group = await paymentRepository.GetGroupPaymentSycleAsync(groupId);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Group? group = await paymentRepository.GetGroupPaymentSycleAsync(groupId, centerId);
+
+        if (group is null)
+        {
+            return NotFound();
+        }
 
         return Ok(new ApiResponse<Group>(group));
     }
 
-    [HttpPost("students/{studentId}/pay")]
-    public async Task<IActionResult> Pay(int studentId, [FromBody] List<StudentPaymentDto> dto)
+    [HttpPost("pay")]
+    public async Task<IActionResult> Pay(StudentPaymentDto dto)
     {
-        if (dto == null || dto.Count == 0)
-            return BadRequest("To‘lov ma’lumotlari kiritilmagan.");
+        var studentPayment = new StudentPayment
+        {
+            BeginDate = dto.BeginDate,
+            EndDate = dto.EndDate,
+            GroupStudentPaymentSycleId = dto.GroupStudentPaymentSycleId,
+            Amount = dto.Amount,
+        };
 
-        var studentPayments = dto.Select(d => new StudentPayment
-            {
-                BeginDate = d.BeginDate.ToDateTime(TimeOnly.MaxValue),
-                EndDate = d.EndDate.ToDateTime(TimeOnly.MaxValue),
-                GroupStudentPaymentSycleId = d.GroupStudentPaymentSycleId,
-                Amount = d.Amount,
-            })
-            .ToList();
-
-        await paymentRepository.PayAsync(studentPayments);
-
+        await paymentRepository.PayAsync(studentPayment);
         return Ok(new ApiResponse<object>());
     }
 
-    [HttpGet("students/pending-fees")]
+    [HttpGet("pending-fees")]
     public async Task<IActionResult> GetPendingFeeStudents()
     {
-        var students = await paymentRepository.PendingFeesStudents();
+        List<GroupStudentPaymentSycle> students = await paymentRepository.PendingFees();
 
-        return Ok(new ApiResponse<List<Student>>(students));
+        return Ok(new ApiResponse<List<GroupStudentPaymentSycle>>(students));
     }
 }

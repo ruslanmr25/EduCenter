@@ -1,0 +1,93 @@
+﻿@using System.Threading.Tasks
+@using UI.DTOs
+<MudDialog>
+     <TitleContent>
+
+          Yangi fan qo'shish
+     </TitleContent>
+     <DialogContent>
+          <EditForm Model="@dto">
+
+               <MudStack>
+
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+
+                    <MudTextField Label="Fan nomi: " Variant="Variant.Outlined" Margin="Margin.Dense"
+                         @bind-Value="@dto.Name" For="@(() => dto.Name)">
+                    </MudTextField>
+
+
+
+
+               </MudStack>
+               @if (errors is not null)
+               {
+
+                    <MudStack>
+                         @foreach (var error in errors)
+                         {
+                              <MudText Color="Color.Error">@string.Join(", ", error.Errors)</MudText>
+
+                         }
+                    </MudStack>
+               }
+               <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-6 mt-6">
+                    <MudButton Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
+                    <MudButton Variant="Variant.Filled" OnClick="Submit" Color="Color.Dark">Yaratish</MudButton>
+
+               </MudStack>
+
+
+
+
+
+          </EditForm>
+     </DialogContent>
+
+</MudDialog>
+@inject ScienceClient client
+@inject ISnackbar snackbar
+@code {
+
+
+     protected List<BadRequestErrors>? errors;
+     protected CreateScienceDto dto = new();
+
+
+
+     [Parameter]
+     public EventCallback<int> OnCreated { get; set; }
+
+     [CascadingParameter]
+     private IMudDialogInstance MudDialog { get; set; } = null!;
+     private async Task Submit()
+     {
+
+          var response = await client.PostAsync(dto);
+
+          if (!response.Success)
+          {
+               errors = response.Errors;
+
+               snackbar.Add(response.Message, Severity.Error);
+               return;
+          }
+
+
+          snackbar.Add(response.Message, Severity.Success);
+
+
+          await OnCreated.InvokeAsync(1);
+
+
+          MudDialog.Close(DialogResult.Ok(true));
+     }
+
+     private void Cancel() => MudDialog.Cancel();
+
+
+
+
+
+}

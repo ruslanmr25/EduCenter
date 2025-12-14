@@ -1,0 +1,47 @@
+﻿@using UI.Extensions
+<MudTabPanel Text="O‘quvchilar" Icon="@Icons.Material.Filled.People">
+
+     <MudTable Elevation="0" Items="@Sycles" Hover="true" Breakpoint="Breakpoint.Md">
+
+
+          <HeaderContent>
+               <MudTh>Nr</MudTh>
+
+               <MudTh>F.I.Sh</MudTh>
+
+               <MudTh>Guruhga qo'shilish sanasi</MudTh>
+               <MudTh>Ohirgi to'lov sanasi </MudTh>
+
+
+
+
+
+          </HeaderContent>
+
+
+          <RowTemplate>
+
+               <MudTd DataLabel="Nr">@(Sycles?.IndexOf(context) + 1)</MudTd>
+               <MudTd DataLabel="Name">@context.Student?.FullName</MudTd>
+               <MudTd DataLabel="Name">@context.CreatedAt.ToUzbekDate()</MudTd>
+               <MudTd DataLabel="Name">
+
+               </MudTd>
+
+
+
+
+
+          </RowTemplate>
+
+
+     </MudTable>
+
+</MudTabPanel>
+
+@code {
+
+     [Parameter]
+     public List<GroupStudentPaymentSycle>? Sycles { get; set; }
+
+}

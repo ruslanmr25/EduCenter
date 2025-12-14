@@ -1,19 +1,26 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using Application.Abstracts;
 using Domain.Entities;
 
 namespace Application.Attributes;
 
-public class UniqueUsernameAttribute : ValidationAttribute
+public class UniqueAttribute<Type> : ValidationAttribute
+    where Type : class
 {
-    public UniqueUsernameAttribute() { }
+    protected Expression<Func<Type, bool>> predicate;
+
+    public UniqueAttribute(Expression<Func<Type, bool>> predicate)
+    {
+        this.predicate = predicate;
+    }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null)
         {
-            return new ValidationResult($"Value  null bulmasligi kerak");
+            return ValidationResult.Success;
         }
 
         var service =
@@ -22,7 +29,7 @@ public class UniqueUsernameAttribute : ValidationAttribute
         if (service is null)
             throw new NullReferenceException("Serves biriktirilmagan");
 
-        bool response = service.Unique<User>(u => u.Username == (string)value);
+        bool response = service.Unique(predicate);
 
         if (response)
             return new ValidationResult($"foydalanuvchi nomi allaqachon olingan");

@@ -5,35 +5,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Attributes;
 
-public class ExsistAttribute : ValidationAttribute
+public class ExsistAttribute<Type> : ValidationAttribute
+    where Type : class
 {
-    private readonly Type _type;
-
-    private readonly string _propertName;
-
-    public ExsistAttribute(Type entityType, string propertyName)
-    {
-        _type = entityType;
-        _propertName = propertyName;
-    }
+    public ExsistAttribute() { }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null)
         {
-            return new ValidationResult($"{_type.Name} ID kiritilishi kerak");
+            return ValidationResult.Success;
         }
-
         var service =
             validationContext.GetService(typeof(IDataValidationService)) as IDataValidationService;
 
         if (service is null)
             throw new NullReferenceException("Service biriktirilmagan");
 
-        bool response = service.Exsist(_type, value);
+        bool response = service.Exsist<Type>(value);
 
         if (response == false)
-            return new ValidationResult($"berilgan {value}  {_type} da mavjud emas");
+            return new ValidationResult($"berilgan {value}  {nameof(Type)} da mavjud emas");
 
         return ValidationResult.Success;
     }

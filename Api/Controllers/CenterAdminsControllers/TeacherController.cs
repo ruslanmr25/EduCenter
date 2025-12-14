@@ -65,7 +65,7 @@ public class TeacherController : ControllerBase
 
         var entity = await userRepository.CreateAsync(teacher);
 
-        return Created();
+        return Ok(new ApiResponse<User>(entity));
     }
 
     [HttpGet("{id}")]

@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Application.Attributes;
+using Domain.Entities;
 
 namespace Application.DTOs.UserDTOs;
 
@@ -15,6 +17,7 @@ public class TeacherDto
         MinimumLength = 3,
         ErrorMessage = "Foydalanuvchi nomi 3–50 ta belgidan iborat bo‘lishi kerak"
     )]
+    // [Unique<User>(u=>u.Username)]
     public required string Username { get; set; }
 
     [Required(ErrorMessage = "Parol kiritilishi shart")]
@@ -25,8 +28,4 @@ public class TeacherDto
     )]
     [DataType(DataType.Password)]
     public required string Password { get; set; }
-
-
-
-    
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using Application.Results;
+using Common.Queries;
 using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -12,26 +13,47 @@ public class StudentRepository : BaseRepository<Student>
     public StudentRepository(AppDbContext appDbContext)
         : base(appDbContext) { }
 
-    public override async Task<PagedResult<Student>> GetAllAsync(
-        int page,
-        int pageSize = 50,
+    public async Task<PagedResult<Student>> GetAllAsync(
+        int centerId,
+        StudentQuery studentQuery,
         Expression<Func<Student, object>>? orderBy = null,
         bool descending = true
     )
     {
         var query = BuildBaseQuery(orderBy, descending);
-        query = query.Include(s => s.Groups);
 
-        return await GetPagedResult(query, page, pageSize);
+        var groupId = studentQuery.GroupId;
+        var scienceId = studentQuery.ScienceId;
+        var fullName = studentQuery.FullName;
+
+        if (groupId is not null || scienceId is not null)
+        {
+            query = query.Where(s =>
+                s.GroupStudentPaymentSycles.Any(g =>
+                    (groupId == null || g.GroupId == groupId)
+                    && (scienceId == null || g.Group!.ScienceId == scienceId)
+                )
+            );
+        }
+
+        if (!string.IsNullOrWhiteSpace(fullName))
+        {
+            query = query.Where(s => EF.Functions.Like(s.FullName, $"%{fullName}%"));
+        }
+        query = query.Where(s => s.CenterId == centerId);
+        query = query.Include(s => s.GroupStudentPaymentSycles).ThenInclude(s => s.Group);
+
+        return await GetPagedResult(query, studentQuery.Page, studentQuery.PageSize);
     }
 
-    public override async Task<Student?> GetAsync(int id)
+    public async Task<Student?> GetAsync(int id, int centerId)
     {
-        return await _context
-            .Set<Student>()
-            .Include(s => s.Groups.OrderByDescending(g => g.CreatedAt))
+        var query = BuildBaseQuery();
+        return await query
             .Include(s => s.GroupStudentPaymentSycles.OrderByDescending(gs => gs.CreatedAt))
             .ThenInclude(gs => gs.StudentPayments.OrderByDescending(g => g.CreatedAt))
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .Where(s => s.CenterId == centerId)
+            .Where(s => s.Id == id)
+            .FirstOrDefaultAsync();
     }
 }

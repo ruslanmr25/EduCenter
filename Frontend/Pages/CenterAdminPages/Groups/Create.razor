@@ -1,6 +1,4 @@
-﻿@using Frontend.DTOs.GroupDto
-@using Domain.Enums
-@page "/center-admin/groups/create"
+﻿@page "/center-admin/groups/create"
 
 <EditForm Model="@createDto" OnValidSubmit="@HandleValidSubmitAsync">
     <DataAnnotationsValidator />
@@ -10,17 +8,11 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">Guruh qo'shish</h5>
             </div>
-
-
-
-
             <div class="card-body">
 
                 <div class="row">
 
                     <div class="col">
-
-
                         @if (errors.Count > 0)
                         {
                             <div class="mb-3">
@@ -34,14 +26,12 @@
                             </div>
                         }
 
-
                         <div class="mb-3">
                             <label for="fullname" class="form-label">Nomi</label>
                             <InputText id="fullname" class="form-control" @bind-Value="createDto.Name" />
                             <ValidationMessage For="@(() => createDto.Name)" />
                         </div>
 
-                        
 
                         <div class="mb-3">
                             <label  class="form-label">Kurs narxi</label>
@@ -77,8 +67,6 @@
 
                     </div>
                     <div class="col">
-
-
                         <!-- Haftaning kunlari (Days) -->
                         <div class="mb-3">
                             <label class="form-label">Dars kunlari</label>

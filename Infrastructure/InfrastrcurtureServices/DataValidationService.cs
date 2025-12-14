@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Application.Abstracts;
 using Infrastructure.Context;
 
@@ -13,14 +14,15 @@ public class DataValidationSerive : IDataValidationService
         _context = context;
     }
 
-    public bool Exsist(Type type, object value)
+    public bool Exsist<Type>(object value)
+        where Type : class
     {
-        var entity = _context.Find(type, value);
+        var entity = _context.Set<Type>().Find(value);
 
         return !(entity == null);
     }
 
-    public bool Unique<T>(Func<T, bool> predicate)
+    public bool Unique<T>(Expression<Func<T, bool>> predicate)
         where T : class
     {
         return _context.Set<T>().Any(predicate);

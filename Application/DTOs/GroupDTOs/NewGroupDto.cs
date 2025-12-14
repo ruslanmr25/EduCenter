@@ -14,12 +14,12 @@ public class NewGroupDto
 
     [Required(ErrorMessage = "ScienceId kiritilishi shart.")]
     [Range(1, int.MaxValue, ErrorMessage = "ScienceId musbat son bo‘lishi kerak.")]
-    [Exsist(typeof(Science), "Id")]
+    [Exsist<Science>]
     public int ScienceId { get; set; }
 
     [Required(ErrorMessage = "TeacherId kiritilishi shart.")]
     [Range(1, int.MaxValue, ErrorMessage = "TeacherId musbat son bo‘lishi kerak.")]
-    [Exsist(typeof(User), "Id")]
+    [Exsist<User>]
     public int TeacherId { get; set; }
 
     [Required(ErrorMessage = "Guruh narxi kiritilishi kerak")]

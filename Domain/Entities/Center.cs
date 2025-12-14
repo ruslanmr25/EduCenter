@@ -8,9 +8,9 @@ public class Center : BaseEntity
 
     public string Name { get; set; } = string.Empty;
 
-    public User CenterAdmin { get; set; }
+    public User? CenterAdmin { get; set; }
 
     public int CenterAdminId { get; set; }
 
-    public List<User> Teachers { get; set; }
+    public List<User> Teachers { get; set; } = default!;
 }

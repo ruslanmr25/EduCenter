@@ -14,6 +14,6 @@ public class UpdatedCenterDTO
 
     [Required(ErrorMessage = "AdminId kiritilishi shart.")]
     [Range(1, int.MaxValue, ErrorMessage = "AdminId 0 dan katta bo‘lishi kerak.")]
-    [Exsist(typeof(User), "Id", ErrorMessage = "Berilgan Id bazada mavjud emas")]
+    [Exsist<User>(ErrorMessage = "Berilgan Id bazada mavjud emas")]
     public int CenterAdminId { get; set; }
 }

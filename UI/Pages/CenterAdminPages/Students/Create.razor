@@ -1,0 +1,154 @@
+﻿@page "/students/create"
+
+@if (groups is null)
+{
+
+}
+else
+{
+
+
+     <MudContainer Class="pa-6">
+
+
+          <MudStack Row="true">
+
+               <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">Yangi o'quvchi qo'shish qo'shish</MudText>
+
+
+          </MudStack>
+
+
+          <MudPaper Elevation="0" Class="pa-6">
+
+               <EditForm Model="@dto" OnValidSubmit="SubmitAsync">
+
+                    <DataAnnotationsValidator />
+
+
+                    <MudStack Spacing="4">
+
+
+                         <MudStack>
+
+
+                              <MudTextField Margin="Margin.Dense" Label="O'quvchining ism familiyasi"
+                                   @bind-Value="@dto.FullName" For="@(() => dto.FullName)" Variant="Variant.Outlined">
+                              </MudTextField>
+
+                         </MudStack>
+
+                         <MudStack>
+
+
+                              <MudTextField Margin="Margin.Dense" Label="Telefon raqami" @bind-Value="@dto.PhoneNumber"
+                                   For="@(() => dto.PhoneNumber)" Variant="Variant.Outlined"></MudTextField>
+
+                         </MudStack>
+
+                         <MudStack>
+
+
+                              <MudTextField Margin="Margin.Dense" Label="Ota-onasining telefon raqami"
+                                   @bind-Value="@dto.SecondPhoneNumber" For="@(() => dto.SecondPhoneNumber)"
+                                   Variant="Variant.Outlined"></MudTextField>
+
+                         </MudStack>
+                         <MudStack>
+
+
+
+
+                              <MudSelect T="int" MultiSelection="true" Variant="Variant.Outlined"
+                                   @bind-SelectedValues="@dto.Groups" Margin="Margin.Dense" Label="Guruhlar">
+
+
+
+                                   @foreach (Group group in groups)
+                                   {
+
+
+                                        <MudSelectItem Value="@group.Id">@group.Name</MudSelectItem>
+                                   }
+
+
+
+                              </MudSelect>
+                              <ValidationMessage For="@(() => dto.Groups)"></ValidationMessage>
+
+
+                         </MudStack>
+
+
+                         <MudStack Justify="Justify.FlexEnd">
+                              <MudButton Variant="Variant.Filled" Color="Color.Dark" ButtonType="ButtonType.Submit">
+                                   Saqlash
+                              </MudButton>
+                         </MudStack>
+                    </MudStack>
+               </EditForm>
+
+
+
+
+          </MudPaper>
+
+     </MudContainer>
+
+}
+
+@inject GroupClient groupClient
+@inject StudentClient studentClient
+@inject ISnackbar snackbar
+@code
+{
+
+
+     protected List<Group>? groups;
+
+
+
+
+
+
+
+
+     protected CreateStudentDto dto = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+          var response = await groupClient.GetAllAsync();
+
+
+          if (!response.Success)
+          {
+
+               snackbar.Add(response.Message, Severity.Success);
+               return;
+
+          }
+
+          groups = response.Data!.Items;
+
+
+          await base.OnInitializedAsync();
+     }
+
+
+     protected async Task SubmitAsync()
+     {
+          var result = await studentClient.PostAsync(dto);
+
+          snackbar.Add(result.Message, Severity.Info);
+
+
+
+     }
+
+
+
+
+
+}

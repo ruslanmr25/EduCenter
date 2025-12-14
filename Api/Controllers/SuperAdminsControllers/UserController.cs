@@ -87,12 +87,15 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var entity = await userRepository.GetAsync(id);
+
         if (entity is null)
         {
             return NotFound(
                 new ApiResponse<string[]>([], success: false, message: "Hech narsa topilmadi")
             );
         }
+        if (entity.Role == Role.SuperAdmin)
+            return Forbid();
 
         await userRepository.DeleteAsync(entity);
         return Ok(new ApiResponse<string[]>());

@@ -1,0 +1,224 @@
+﻿@page "/groups/create"
+
+@if (sciences is null && teachers is null)
+{
+
+}
+else
+{
+
+
+     <MudContainer Class="pa-6">
+
+
+          <MudStack Row="true">
+
+               <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">Yangi guruh qo'shish</MudText>
+
+
+          </MudStack>
+
+
+          <MudPaper Elevation="0" Class="pa-6">
+
+               <EditForm Model="@dto" OnValidSubmit="SubmitAsync">
+
+                    <DataAnnotationsValidator />
+
+
+                    <MudStack Spacing="4">
+
+
+                         <MudStack>
+
+
+                              <MudTextField Margin="Margin.Dense" Label="Guruh nomi" @bind-Value="@dto.Name"
+                                   For="@(() => dto.Name)" Variant="Variant.Outlined"></MudTextField>
+
+                         </MudStack>
+                         <MudStack>
+                              <MudNumericField Margin="Margin.Dense" Label="Kursning narxi" @bind-Value="@dto.GroupPrice"
+                                   HideSpinButtons="true" For="@(() => dto.GroupPrice)" Variant="Variant.Outlined">
+                              </MudNumericField>
+                         </MudStack>
+
+                         <MudStack>
+
+
+
+                              <MudSelect @bind-Value="@dto.ScienceId" For="@(() => dto.ScienceId)" Variant="Variant.Outlined"
+                                   Margin="Margin.Dense" Label="Fanni tanlang">
+
+                                   <MudSelectItem Value="0">Fan tanlanishi kerak</MudSelectItem>
+
+
+                                   @foreach (var science in sciences!)
+                                   {
+                                        <MudSelectItem Value="@science.Id"> @science.Name</MudSelectItem>
+
+                                   }
+
+                              </MudSelect>
+                         </MudStack>
+
+
+                         <MudStack>
+
+
+
+                              <MudSelect @bind-Value="@dto.TeacherId" For="@(() => dto.TeacherId)" Variant="Variant.Outlined"
+                                   Margin="Margin.Dense" Label="O'qituvchini tanlang">
+
+
+                                   <MudSelectItem Value="0">O'qituvchi tanlanishi kerak</MudSelectItem>
+
+                                   @foreach (var teacher in teachers!)
+                                   {
+                                        <MudSelectItem Value="@teacher.Id"> @teacher.FullName</MudSelectItem>
+
+                                   }
+
+                              </MudSelect>
+                         </MudStack>
+
+
+
+                         <MudStack>
+
+
+
+
+
+                              <MudSelect T="DaysOfWeek" MultiSelection="true" Variant="Variant.Outlined"
+                                   @bind-SelectedValues="@dto.Days" Margin="Margin.Dense" Label="Dars kunlari">
+
+
+
+                                   @foreach (DaysOfWeek day in Enum.GetValues<DaysOfWeek>())
+                                   {
+
+
+                                        <MudSelectItem Value="@day">@day.ToString()</MudSelectItem>
+                                   }
+
+
+
+                              </MudSelect>
+                              <ValidationMessage For="@(() => dto.Days)"></ValidationMessage>
+
+
+                         </MudStack>
+
+                         <MudStack>
+
+
+                              <MudStack Row="true">
+
+                                   <MudTimePicker Label="Dars vaqtlari" Margin="Margin.Dense" Variant="Variant.Outlined"
+                                        @bind-Time="selectedTime" />
+
+
+                                   <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="OnAddedTime">Vaqtni
+                                        qo'shish
+                                   </MudButton>
+                              </MudStack>
+
+
+                              <MudField Margin="Margin.Dense" Variant="Variant.Outlined">@string.Join(", ",
+                                                                 dto.Times.Select(t =>
+                                                                 t.ToString("HH:mm")))</MudField>
+
+                         <ValidationMessage For="@(() => dto.Times)"></ValidationMessage>
+
+
+                         </MudStack>
+
+                         <MudStack Justify="Justify.FlexEnd">
+                              <MudButton Variant="Variant.Filled" Color="Color.Dark" ButtonType="ButtonType.Submit">
+                                   Saqlash
+                              </MudButton>
+                         </MudStack>
+                    </MudStack>
+               </EditForm>
+
+
+
+
+          </MudPaper>
+
+     </MudContainer>
+
+}
+
+@inject GroupClient groupClient
+@inject TeacherClient teacherClient
+
+@inject ScienceClient scienceClient
+
+@inject ISnackbar snackbar
+@code
+{
+
+     protected List<Science>? sciences;
+     protected List<User>? teachers;
+
+     private TimeSpan? selectedTime = new TimeSpan(08, 00, 00);
+
+
+
+     protected void OnAddedTime()
+     {
+
+          var time = TimeOnly.FromTimeSpan(selectedTime ?? new TimeSpan(8, 0, 0));
+
+          if (dto.Times.Contains(time))
+          {
+               return;
+          }
+
+          dto.Times.Add(time);
+
+          selectedTime = new TimeSpan(08, 00, 00);
+     }
+
+
+
+
+
+     protected CreateGroupDto dto = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+          sciences = (await scienceClient.GetAllAsync()).Data?.Items;
+
+
+
+
+          teachers = (await teacherClient.GetAllAsync()).Data?.Items;
+
+
+
+          await base.OnInitializedAsync();
+     }
+
+
+     protected async Task SubmitAsync()
+     {
+          var result = await groupClient.PostAsync(dto);
+
+          snackbar.Add(result.Message, Severity.Info);
+
+
+
+
+
+
+     }
+
+
+
+
+
+}

@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
 using Domain.Enums;
+using Newtonsoft.Json;
 
 namespace Domain.Entities;
 
@@ -15,7 +15,7 @@ public class User : BaseEntity
 
     public Role Role { get; set; }
 
-    public List<Center> Centers { get; set; }
+    public List<Center> Centers { get; set; } = [];
 
     public Center? Center { get; set; }
 }

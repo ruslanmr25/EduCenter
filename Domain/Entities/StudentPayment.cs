@@ -10,7 +10,7 @@ public class StudentPayment : BaseEntity
 
     public DateTime EndDate { get; set; }
 
-    public GroupStudentPaymentSycle GroupStudentPaymentSycle { get; set; }
+    public GroupStudentPaymentSycle? GroupStudentPaymentSycle { get; set; }
 
     public int GroupStudentPaymentSycleId { get; set; }
 

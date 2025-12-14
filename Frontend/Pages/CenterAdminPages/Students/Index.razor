@@ -1,57 +1,7 @@
 ﻿@page "/center-admin/students"
 @inject StudentClient studentClient
 
-<style>
-     /* kichik stil qo'shildi — o'zgartirish mumkin */
-     .filter-panel {
-          background: rgba(248, 249, 250, 0.9);
-          /* light */
-          border: 1px solid rgba(0, 0, 0, 0.06);
-          border-radius: 12px;
-          padding: 1rem;
-     }
 
-     .profile-card {
-          border-radius: 12px;
-          padding: 1rem;
-          background: #ffffff;
-          border: 1px solid rgba(0, 0, 0, 0.06);
-     }
-
-     .avatar-circle {
-          width: 72px;
-          height: 72px;
-          border-radius: 50%;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          font-size: 24px;
-          color: #fff;
-          background: linear-gradient(135deg, #6f42c1 0%, #0d6efd 100%);
-     }
-
-     .avatar-img {
-          width: 72px;
-          height: 72px;
-          border-radius: 50%;
-          object-fit: cover;
-     }
-
-     .filter-divider {
-          height: 1px;
-          background: rgba(0, 0, 0, 0.06);
-          margin: 0.75rem 0;
-     }
-
-     .table .cursor-row {
-          cursor: pointer;
-     }
-
-     .table .cursor-row:hover {
-          background: rgba(13, 110, 253, 0.04);
-     }
-</style>
 
 <div class="row g-3">
      <div class="col-9">
@@ -94,7 +44,7 @@
                                              </td>
                                              <td>@string.Join(", ", new [] { s.PhoneNumber, s.SecondPhoneNumber }.Where(x =>
                                                                                                !string.IsNullOrEmpty(x)))</td>
-                                        <td>@string.Join(", ", s.Groups.Select(g => g.Name))</td>
+                                        @* <td>@string.Join(", ", s.Groups.Select(g => g.Name))</td> *@
                                         <td>
                                              @* @if (s.IsActive) {
                                             <span class="badge bg-success-subtle text-success">Faol</span>
@@ -208,8 +158,8 @@
           if (!string.IsNullOrWhiteSpace(searchTerm))
                all = all.Where(x => x.FullName?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false);
 
-          if (!string.IsNullOrEmpty(selectedGroupId))
-               all = all.Where(x => x.Groups.Any(g => g.Id.ToString() == selectedGroupId));
+          @* if (!string.IsNullOrEmpty(selectedGroupId))
+               all = all.Where(x => x.Groups.Any(g => g.Id.ToString() == selectedGroupId)); *@
 
           if (!string.IsNullOrEmpty(selectedStatus))
           {

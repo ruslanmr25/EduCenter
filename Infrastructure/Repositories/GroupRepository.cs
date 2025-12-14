@@ -47,15 +47,18 @@ public class GroupRepository : BaseRepository<Group>
             .ToListAsync();
     }
 
-    public override async Task<Group?> GetAsync(int id)
+    public async Task<Group?> GetAsync(int id, int centerId)
     {
-        Group? entity = await _context
-            .Set<Group>()
+        var query = BuildBaseQuery();
+
+        Group? entity = await query
             .Include(g => g.Teacher)
             .Include(g => g.Science)
-            .Include(g => g.Teacher)
-            .Include(g => g.Students)
-            .Where(g => g.Id == id)
+            .Include(g => g.GroupStudentPaymentSycles)
+            .ThenInclude(gs => gs.Student)
+            .Include(g => g.GroupStudentPaymentSycles)
+            .ThenInclude(gs => gs.StudentPayments)
+            .Where(g => g.Id == id && g.CenterId == centerId)
             .FirstOrDefaultAsync();
 
         return entity;

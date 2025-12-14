@@ -1,0 +1,140 @@
+﻿<MudTabPanel Text="To‘lov jadvali" Icon="@Icons.Material.Filled.Payments">
+     <MudPaper Elevation="0">
+          @if (groupedData == null || !groupedData.Any())
+          {
+               <MudAlert Severity="Severity.Info">To'lovlar tarixi mavjud emas.</MudAlert>
+          }
+          else
+          {
+               <MudTimeline TimelinePosition="TimelinePosition.Left" TimelineAlign="TimelineAlign.Start">
+                    @foreach (var group in groupedData)
+                    {
+                         <MudTimelineItem Color="Color.Dark" Elevation="25">
+                              <ItemOpposite>
+                                   <MudText Color="Color.Dark" Typo="Typo.h6">@group.MonthName</MudText>
+                              </ItemOpposite>
+                              <ItemContent>
+                                   <MudPaper Elevation="0" Class="mt-n1 pa-2">
+                                        <MudText Color="Color.Dark" Typo="Typo.h6" GutterBottom="true">@group.MonthName</MudText>
+
+                                        <MudList T="string" Dense="true" DisablePadding="true">
+                                             @foreach (var item in group.StudentRows)
+                                             {
+                                                  <div class="d-flex flex-column mb-2">
+                                                       <MudText Typo="Typo.body1" Class="font-weight-bold">
+                                                            @item.StudentId. @item.StudentName
+                                                       </MudText>
+
+                                                       <div class="d-flex gap-4">
+                                                            <MudText Typo="Typo.body2"
+                                                                 Color="@(item.IsPaid ? Color.Success : Color.Error)">
+                                                                 To'lov sanasi: @item.PaymentDate
+                                                            </MudText>
+                                                            <MudText Typo="Typo.body2"
+                                                                 Color="@(item.IsPaid ? Color.Success : Color.Default)">
+                                                                 To'lov miqdori: @item.Amount
+                                                            </MudText>
+                                                       </div>
+                                                  </div>
+                                                  <MudDivider Class="my-1" />
+                                             }
+                                        </MudList>
+                                   </MudPaper>
+                              </ItemContent>
+                         </MudTimelineItem>
+                    }
+               </MudTimeline>
+          }
+     </MudPaper>
+</MudTabPanel>
+
+@code {
+    
+     protected List<MonthGroupViewModel> groupedData = new();
+
+     [Parameter]
+     public Group? Group { get; set; }
+
+     protected override void OnParametersSet()
+     {
+          if (Group?.GroupStudentPaymentSycles is null)
+          {
+               groupedData = new();
+               return;
+          }
+
+
+          var students = Group.GroupStudentPaymentSycles
+          .Select(gs => gs.Student)
+          .Where(s => s != null)
+          .ToList();
+
+
+          var paymentLookup = Group.GroupStudentPaymentSycles
+          .SelectMany(gs => gs.StudentPayments.Select(sp => new
+          {
+               StudentId = gs.StudentId,
+               Payment = sp,
+               MonthKey = sp.CreatedAt.ToUzbekMonth() // Eslatma: Bu yerdagi logic to'g'ri bo'lishi kerak
+          }))
+          .GroupBy(x => new { x.MonthKey, x.StudentId }) 
+
+          .ToDictionary(
+          g => g.Key,
+          g => g.OrderByDescending(x => x.Payment.CreatedAt).First().Payment // Oxirgi to'lovni olamiz
+          );
+
+          var allMonths = paymentLookup.Keys
+          .Select(k => k.MonthKey)
+          .Distinct()
+
+          .ToList();
+
+          groupedData = new List<MonthGroupViewModel>();
+
+          foreach (var month in allMonths)
+          {
+               var rowList = new List<StudentPaymentRowViewModel>();
+
+               foreach (var student in students)
+               {
+                    if (student == null) continue;
+
+                  
+                    var hasPayment = paymentLookup.TryGetValue(new { MonthKey = month, StudentId = student.Id }, out var paymentData);
+
+                    rowList.Add(new StudentPaymentRowViewModel
+                    {
+                         StudentId = student.Id,
+                         StudentName = student.FullName,
+                         IsPaid = hasPayment,
+                         PaymentDate = hasPayment ? paymentData!.CreatedAt.ToUzbekDate() : "To'lanmagan",
+                         Amount = hasPayment ? paymentData!.Amount.ToSpacedIntString() : "0"
+                    });
+               }
+
+               groupedData.Add(new MonthGroupViewModel
+               {
+                    MonthName = month,
+                    StudentRows = rowList
+               });
+          }
+
+     }
+
+
+     protected class MonthGroupViewModel
+     {
+          public string MonthName { get; set; } = string.Empty;
+          public List<StudentPaymentRowViewModel> StudentRows { get; set; } = new();
+     }
+
+     protected class StudentPaymentRowViewModel
+     {
+          public int StudentId { get; set; }
+          public string StudentName { get; set; } = string.Empty;
+          public bool IsPaid { get; set; }
+          public string PaymentDate { get; set; } = string.Empty;
+          public string Amount { get; set; } = string.Empty;
+     }
+}

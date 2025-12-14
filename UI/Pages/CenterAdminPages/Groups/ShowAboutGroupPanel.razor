@@ -1,0 +1,86 @@
+﻿@using UI.Extensions
+<MudTabPanel Text="Guruh haqida" Icon="@Icons.Material.Filled.Info">
+     <MudPaper Elevation="0" Class="pa-4">
+          <MudGrid Class="gap-y-1">
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Guruh nomi: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@Group?.Name</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">O‘qituvchi: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@Group?.Teacher?.FullName</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Fan: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@Group?.Science?.Name</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Holati: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudChip T="string" Label="true" Variant="Variant.Outlined"
+                         Color="@(Group?.IsActive == true ? Color.Success : Color.Error)">
+                         @(Group is not null && Group.IsActive ? "Faol" : "Tugagan")
+                    </MudChip>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Narxi: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@Group?.GroupPrice.ToSpacedIntString()</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">O‘quvchilar soni: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">
+                         @Group?.GroupStudentPaymentSycles.Count</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Dars kunlari: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@string.Join(", ", Group?.Days ?? [])
+                    </MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Dars vaqtlari: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@string.Join(", ", Group?.Times ??
+                                                  [])</MudText>
+               </MudItem>
+
+               <MudItem xs="6">
+                    <MudText Color="Color.Primary" Typo="Typo.subtitle2">Yaratilgan sana: </MudText>
+               </MudItem>
+               <MudItem xs="6">
+                    <MudText Typo="Typo.body1">@Group?.CreatedAt.ToUzbekDate()</MudText>
+               </MudItem>
+
+          </MudGrid>
+     </MudPaper>
+
+
+</MudTabPanel>
+
+@code
+{
+
+     [Parameter]
+     public Group? Group { get; set; }
+}

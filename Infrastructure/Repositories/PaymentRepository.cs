@@ -66,32 +66,22 @@ public class PaymentRepository(AppDbContext appDbContext)
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> PayAsync(List<StudentPayment> payments)
+    public async Task<bool> PayAsync(StudentPayment payment)
     {
-        // UTC formatga o'tkazish
-        foreach (var payment in payments)
-        {
-            payment.BeginDate = DateTime.SpecifyKind(payment.BeginDate, DateTimeKind.Utc);
-            payment.EndDate = DateTime.SpecifyKind(payment.EndDate, DateTimeKind.Utc);
-        }
+        payment.BeginDate = DateTime.SpecifyKind(payment.BeginDate, DateTimeKind.Utc);
+        payment.EndDate = DateTime.SpecifyKind(payment.EndDate, DateTimeKind.Utc);
 
-        var newPayments = payments.Where(p => p.Id == 0).ToList();
-        var existingPayments = payments.Where(p => p.Id != 0).ToList();
-
-        if (newPayments.Count != 0)
-            await _context.StudentPayments.AddRangeAsync(newPayments);
-
-        if (existingPayments.Count != 0)
-            _context.StudentPayments.UpdateRange(existingPayments);
+        await _context.StudentPayments.AddAsync(payment);
 
         await _context.SaveChangesAsync();
         return true;
     }
 
-    public async Task<Student?> GetStudentPaymentSyclesAsync(int studentId)
+    public async Task<Student?> GetStudentPaymentSyclesAsync(int studentId, int centerId)
     {
         var student = await _context
             .Students.Where(s => s.Id == studentId)
+            .Where(s => s.CenterId == centerId)
             .Include(s => s.GroupStudentPaymentSycles)
             .ThenInclude(gs => gs.StudentPayments.OrderByDescending(sp => sp.CreatedAt).Take(1))
             .Include(s => s.GroupStudentPaymentSycles)
@@ -101,10 +91,11 @@ public class PaymentRepository(AppDbContext appDbContext)
         return student;
     }
 
-    public async Task<Group?> GetGroupPaymentSycleAsync(int groupId)
+    public async Task<Group?> GetGroupPaymentSycleAsync(int groupId, int centerId)
     {
         var group = await _context
             .Groups.Where(g => g.Id == groupId)
+            .Where(s => s.CenterId == centerId)
             .Include(gs => gs.GroupStudentPaymentSycles)
             .ThenInclude(s => s.Student)
             .Include(gs => gs.GroupStudentPaymentSycles)
@@ -112,6 +103,69 @@ public class PaymentRepository(AppDbContext appDbContext)
             .FirstOrDefaultAsync();
 
         return group;
+    }
+
+    public async Task<List<GroupStudentPaymentSycle>> PendingFees()
+    {
+        var today = DateTime.UtcNow.Date;
+
+        var fees = await _context
+            .GroupStudentPaymentSycles.Where(gs =>
+                gs.IsActive
+                && (
+                    !gs.StudentPayments.Any()
+                    || gs.StudentPayments.OrderByDescending(p => p.EndDate).First().EndDate
+                        <= today.AddDays(-5)
+                )
+            )
+            .Select(gs => new GroupStudentPaymentSycle
+            {
+                Id = gs.Id,
+
+                IsActive = gs.IsActive,
+                Price = gs.Price,
+                Group = new Group
+                {
+                    Id = gs.Group!.Id,
+                    Name = gs.Group.Name,
+                    GroupPrice = gs.Group.GroupPrice,
+                    Teacher = new User
+                    {
+                        Id = gs.Group.Teacher!.Id,
+                        FullName = gs.Group.Teacher.FullName,
+                    },
+                    Science = new Science
+                    {
+                        Id = gs.Group.Science!.Id,
+                        Name = gs.Group.Science.Name,
+                    },
+                },
+                Student = new Student
+                {
+                    Id = gs.Student!.Id,
+                    FullName = gs.Student.FullName,
+                    PhoneNumber = gs.Student.PhoneNumber,
+                    SecondPhoneNumber = gs.Student.SecondPhoneNumber,
+                },
+
+                StudentPayments = gs
+                    .StudentPayments.OrderByDescending(sp => sp.EndDate)
+                    .Take(1)
+                    .Select(sp => new StudentPayment
+                    {
+                        Id = sp.Id,
+                        BeginDate = sp.BeginDate,
+                        EndDate = sp.EndDate,
+                        Amount = sp.Amount,
+                        CreatedAt = sp.CreatedAt,
+                    })
+                    .ToList(),
+
+                CreatedAt = gs.CreatedAt,
+            })
+            .ToListAsync();
+
+        return fees;
     }
 
     public async Task<List<Student>> PendingFeesStudents()

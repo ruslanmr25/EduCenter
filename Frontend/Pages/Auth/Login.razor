@@ -93,8 +93,7 @@
 
                var token = response.Data!.Token;
 
-               Console.WriteLine(token);
-
+               
                await tokenService.SetTokenAsync(token);
 
                await ((CustomAuthenticationStateProvider)authProvider)

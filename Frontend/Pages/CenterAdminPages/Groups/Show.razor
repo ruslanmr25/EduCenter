@@ -59,7 +59,7 @@
             <div class="col-md-6">
                 <div class="info-item">
                     <span class="info-label">O‘quvchilar soni:</span>
-                    <strong>@group.Students.Count</strong>
+                    @* <strong>@group.Students.Count</strong> *@
                 </div>
 
                 <div class="info-item">
@@ -111,25 +111,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var (student, index) in group.Students.Select((s, i) => (s, i + 1)))
+                                        @* @foreach (var (student, index) in group.Students.Select((s, i) => (s, i + 1)))
                                         {
                                             <tr>
                                                 <td>@index</td>
                                                 <td class="fw-medium">@student.FullName</td>
                                                 <td>@string.Join(", ", new[] { student.PhoneNumber, student.SecondPhoneNumber }.Where(x => !string.IsNullOrEmpty(x)))</td>
                                                 <td>
-                                                    @* @if (student.IsActive)
-                                                    {
-                                                        <span class="badge bg-success-subtle text-success fw-semibold px-3 py-2">Faol</span>
-                                                    }
-                                                    else
-                                                    { *@
-                                                        <span class="badge bg-danger-subtle text-danger fw-semibold px-3 py-2">Faol emas</span>
-                                                    @* } *@
+                                                   
                                                 </td>
                                                 <td>@student.CreatedAt.ToString("dd-MM-yyyy")</td>
                                             </tr>
-                                        }
+                                        } *@
                                     </tbody>
                                 </table>
                             </div>

@@ -28,10 +28,8 @@ public class MappingProfile : Profile
         CreateMap<NewGroupDto, Group>();
         CreateMap<UpdatedGroupDto, Group>();
 
-        CreateMap<NewStudentDto, Student>()
-            .ForMember(dest => dest.Groups, option => option.Ignore());
+        CreateMap<NewStudentDto, Student>();
 
-        CreateMap<UpdatedStudentDto, Student>()
-            .ForMember(dest => dest.Groups, option => option.Ignore());
+        CreateMap<UpdatedStudentDto, Student>();
     }
 }

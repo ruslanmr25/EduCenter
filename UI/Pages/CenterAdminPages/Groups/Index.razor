@@ -1,0 +1,158 @@
+﻿@page "/groups"
+@using UI.Extensions
+<MudContainer Class="pa-6">
+
+
+     <MudStack Row="true" Justify="Justify.SpaceBetween">
+
+          <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">Guruhlar</MudText>
+
+
+          <NavLink Href="/groups/create">
+               <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled"
+                    Class="mb-4" Size="Size.Small">
+                    Qo'shish
+               </MudButton>
+          </NavLink>
+
+     </MudStack>
+     @if (groups is null)
+     {
+
+
+          <MudStack Row="true" Justify="Justify.Center">
+
+               <MudProgressCircular Class="ms-n1" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
+          </MudStack>
+
+     }
+     else
+     {
+          <MudStack Row="true" Spacing="3">
+
+               <MudGrid Gutter="3">
+                    @foreach (var item in selectedGroups.Select((group, index) => new { group, index }))
+                    {
+                         <MudItem xs="12" sm="6" md="4" lg="3">
+                              <MudCard Class="hover-lift" Elevation="2" Style="border-radius: 1rem; overflow: hidden;">
+
+                                   <MudCardMedia Image="@($"/group-images/group-image-{item.group.Id % 10}.jpg")" Height="200"
+                                        Class="img-fluid" Style="object-fit: cover;" />
+
+                                   <MudCardContent>
+
+                                        <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                             <MudText Typo="Typo.h6" Class="mb-2">
+                                                  @item.group.Name
+                                             </MudText>
+
+                                             @if (item.group.IsActive)
+                                             {
+                                                  <MudChip Label="true" T="string" Size="Size.Small" Color="Color.Success"
+                                                       Variant="Variant.Outlined" OnClick="@(() => UpdateActiveState(item.group))">
+                                                       Faol
+                                                  </MudChip>
+                                             }
+                                             else
+                                             {
+                                                  <MudChip Label="true" T="string" Color="Color.Secondary" Variant="Variant.Outlined"
+                                                       Style="cursor:pointer;" OnClick="@(() => UpdateActiveState(item.group))">
+                                                       Tugagan
+                                                  </MudChip>
+                                             }
+
+                                        </MudStack>
+                                        <MudText Typo="Typo.body2" Class="mb-1">
+                                             Fan: <strong>@item.group.Science?.Name</strong>
+                                        </MudText>
+                                        <MudText Typo="Typo.body2" Class="mb-1">
+                                             Kurs Narxi: <strong>@item.group.GroupPrice so'm</strong>
+                                        </MudText>
+                                        <MudText Typo="Typo.body2" Class="mb-2">
+                                             O'qituvchi: <strong>@item.group.Teacher?.FullName</strong>
+                                        </MudText>
+
+                                        <MudText Typo="Typo.body2" Class="mb-1">Dars kunlari:</MudText>
+                                        <MudStack Row="true" Spacing="1" Class="mb-2">
+                                             @foreach (var day in item.group.Days)
+                                             {
+                                                  <MudButton Size="Size.Small" Color="Color.Tertiary" Variant="Variant.Outlined">@day
+                                                  </MudButton>
+                                             }
+                                        </MudStack>
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">Dars vaqti:</MudText>
+                                        <MudStack Row="true" Spacing="1" Class="mb-2">
+                                             @foreach (var time in item.group.Times)
+                                             {
+                                                  <MudButton Color="Color.Tertiary" Overlap="true" Variant="Variant.Outlined"
+                                                       Size="Size.Small" Bordered="true" Class="pa-0">@time</MudButton>
+                                             }
+                                        </MudStack>
+
+                                        <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-2">
+                                             <MudText Typo="Typo.caption">
+                                                  <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Class="me-1" />
+                                                  <strong>@item.group.CreatedAt.ToUzbekDate()</strong>
+                                             </MudText>
+                                        </MudStack>
+
+                                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true"
+                                             Href="@($"/center-admin/groups/{item.group.Id}")">
+                                             <MudIcon Icon="@Icons.Material.Filled.Info" Class="me-1" /> Batafsil
+                                        </MudButton>
+                                   </MudCardContent>
+                              </MudCard>
+                         </MudItem>
+                    }
+               </MudGrid>
+
+          </MudStack>
+     }
+</MudContainer>
+@inject GroupClient groupClient
+@inject ISnackbar snackbar
+@code {
+
+     protected Collection<Group>? groups;
+
+     protected List<Group> selectedGroups = new();
+
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+          var response = await groupClient.GetAllAsync();
+
+          if (!response.Success)
+          {
+               snackbar.Add(response.Message, Severity.Error);
+               return;
+
+          }
+
+          groups = response.Data;
+          selectedGroups = groups!.Items;
+
+
+          await base.OnInitializedAsync();
+     }
+
+
+
+
+     protected async Task UpdateActiveState(Group group)
+     {
+          @* await groupClient.UpdateActiveStateAsync(group.Id, !group.IsActive);
+
+          await LoadData(1); *@
+
+
+          StateHasChanged();
+
+     }
+
+
+
+}

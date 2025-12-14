@@ -1,0 +1,112 @@
+﻿@page "/teachers/create"
+@using Microsoft.AspNetCore.Authorization
+@using UI.Clients
+@using UI.DTOs
+
+
+@attribute [Authorize(Roles = "CenterAdmin")]
+
+
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+     <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">O'qituvchi qo'shish</MudText>
+
+
+
+
+     <MudPaper Class="px-10 py-5 ma-0 justify-center" Elevation="0">
+
+
+          <EditForm Model="@dto">
+               <DataAnnotationsValidator></DataAnnotationsValidator>
+
+
+
+               <MudStack Spacing="5">
+                    <MudTextField Label="O'qituvchi ismi" Variant="Variant.Outlined" AutoFocus="true"
+                         Margin="Margin.Dense" Adornment="Adornment.Start" AdornmentColor="Color.Dark"
+                         AdornmentIcon="@Icons.Material.Filled.Person" @bind-Value="dto.FullName"
+                         For="@(() => dto.FullName)"></MudTextField>
+
+                    <MudTextField Label="O'qituvchining foydalanuvchi nomi" Variant="Variant.Outlined"
+                         Margin="Margin.Dense" Adornment="Adornment.Start" AdornmentColor="Color.Dark"
+                         AdornmentIcon="@Icons.Material.Filled.PersonPin" @bind-Value="dto.Username"
+                         For="@(() => dto.Username)"></MudTextField>
+
+                    <MudTextField Label="O'qituvchining paroli" Variant="Variant.Outlined" @bind-Value="dto.Password"
+                         Margin="Margin.Dense" For="@(() => dto.Password)" AdornmentColor="Color.Dark"
+                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Password">
+                    </MudTextField>
+               </MudStack>
+
+               @if (response is not null)
+               {
+                    <MudStack>
+
+                         @foreach (var error in response.Errors)
+                         {
+                              <MudText Color="Color.Error">@error.Field :
+                              </MudText>
+                              <MudText Color="Color.Error">
+                                   @string.Join(", ", error.Errors)
+                              </MudText>
+                         }
+
+
+
+
+
+                    </MudStack>
+               }
+
+               <MudStack Row="true" Justify="Justify.FlexEnd">
+                    <MudButton OnClick="@OnSubmit" Variant="Variant.Filled" Color="Color.Dark" Class="mt-4">Saqlash</MudButton>
+               </MudStack>
+
+
+          </EditForm>
+
+
+
+
+
+     </MudPaper>
+</MudContainer>
+
+@inject TeacherClient teacherClient
+@inject ISnackbar snackbarService
+@inject NavigationManager navigationManager
+@code {
+
+     protected CreateTeacherDto dto = new();
+
+     protected Response<User>? response;
+
+
+
+
+     protected async Task OnSubmit()
+     {
+
+          var response = await teacherClient.PostAsync(dto);
+
+          if (response.Success)
+          {
+
+               snackbarService.Add(response.Message, Severity.Success);
+
+               navigationManager.NavigateTo("/teachers");
+
+               return;
+
+          }
+
+          snackbarService.Add(response.Message, Severity.Error);
+
+
+
+     }
+
+
+
+}

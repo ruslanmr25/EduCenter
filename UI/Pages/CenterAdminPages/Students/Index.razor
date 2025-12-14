@@ -1,0 +1,208 @@
+﻿@page "/students"
+
+@attribute [Authorize(Roles = "CenterAdmin")]
+
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+
+     <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">O'quvchilar</MudText>
+
+
+     <MudPaper Class="mb-5 px-10 py-5" Elevation="0">
+
+
+          <MudGrid Spacing="3" AlignItems="Center">
+               <MudItem xs="12" sm="4">
+                    <MudTextField @bind-Value="query.FullName" Variant="Variant.Outlined"
+                         Placeholder="Mamasalayev Ruslan" Label="F.I.Sh" Margin="Margin.Dense" />
+               </MudItem>
+
+               <MudItem xs="12" sm="4">
+                    <MudSelect T="int?" @bind-Value="query.ScienceId" Variant="Variant.Outlined" Label="Fan"
+                         Margin="Margin.Dense">
+                         @foreach (var science in sciences)
+                         {
+                              <MudSelectItem Value="@((int?)science.Id)">
+                                   @science.Name
+                              </MudSelectItem>
+                         }
+                    </MudSelect>
+               </MudItem>
+
+               <MudItem xs="12" sm="4">
+                    <MudSelect T="int?" @bind-Value="query.GroupId" Variant="Variant.Outlined" Label="Guruh"
+                         Margin="Margin.Dense">
+                         @foreach (var group in groups)
+                         {
+                              <MudSelectItem Value="@((int?)group.Id)">
+                                   @group.Name
+                              </MudSelectItem>
+                         }
+                    </MudSelect>
+               </MudItem>
+
+               <!-- Tugmalar qismi -->
+               <MudItem xs="12" sm="6">
+                    <MudButton OnClick="@(() => GetAllAsync())" Variant="Variant.Filled" Color="Color.Primary"
+                         Style="height:40px; width:min-content;">
+                         Qidirish
+                    </MudButton>
+
+                    <MudButton OnClick="@ClearFilters" Variant="Variant.Outlined" Color="Color.Primary"
+                         Style="height:40px; width: min-content;">
+                         Tozalash
+                    </MudButton>
+               </MudItem>
+          </MudGrid>
+
+     </MudPaper>
+
+     @if (isLoading)
+     {
+
+          <MudStack Row="true" Justify="Justify.Center">
+
+               <MudProgressCircular Class="ms-n1" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
+          </MudStack>
+
+     }
+
+     else
+     {
+
+
+
+          <MudPaper Class="px-10 py-5 ma-0" Height="90%" Elevation="0">
+
+               <MudStack Row="true" Justify="Justify.FlexEnd">
+
+                    <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary">
+                         O'quvchi qo'shish
+                    </MudButton>
+               </MudStack>
+
+
+               <MudTable Elevation="0" Items="@collection.Items" Hover="true" Breakpoint="Breakpoint.Md">
+
+
+                    <HeaderContent>
+                         <MudTh>Nr</MudTh>
+
+                         <MudTh>F.I.Sh</MudTh>
+                         <MudTh>Telefon raqami</MudTh>
+                         <MudTh>Guruhi</MudTh>
+
+
+
+
+
+
+                    </HeaderContent>
+
+
+                    <RowTemplate>
+
+                         <MudTd DataLabel="Nr">@(collection.Items.IndexOf(context) + 1)</MudTd>
+                         <MudTd DataLabel="F.I.Sh">@context.FullName</MudTd>
+                         <MudTd DataLabel="Telefon raqami">@context.PhoneNumber, @context.SecondPhoneNumber</MudTd>
+                         <MudTd DataLabel="Telefon raqami">
+                              @string.Join(",", context.GroupStudentPaymentSycles.Select(s => s.Group?.Name))</MudTd>
+
+
+
+
+
+
+                    </RowTemplate>
+                    <PagerContent>
+                         <MudStack Row="true" Justify="Justify.FlexEnd">
+                              <MudPagination BoundaryCount="1" MiddleCount="3" Count="collection.Meta!.TotalPages"
+                                   Selected="@query.Page" SelectedChanged="@GetAllAsync" />
+                         </MudStack>
+                    </PagerContent>
+
+               </MudTable>
+
+
+
+          </MudPaper>
+
+
+
+     }
+
+</MudContainer>
+
+
+@inject StudentClient studentClient
+@inject GroupClient groupClient
+
+@inject ScienceClient scienceClient
+
+
+@code
+{
+
+
+     protected StudentQuery query = new();
+
+     protected string? name;
+
+
+     protected bool isLoading = false;
+     protected Collection<Student> collection = new();
+
+     protected List<Group> groups = new();
+
+     protected List<Science> sciences = new();
+
+
+     protected override async Task OnInitializedAsync()
+     {
+
+          await GetAllAsync();
+
+          groups = (await groupClient.GetAllAsync()).Data!.Items;
+
+          sciences = (await scienceClient.GetAllAsync()).Data!.Items;
+
+
+
+     }
+
+     protected async Task GetAllAsync(int i = 1)
+     {
+
+
+          query.Page = 1;
+          isLoading = true;
+          var response = await studentClient.GetAllAsync(query);
+
+
+
+
+          if (!response.Success)
+          {
+               return;
+          }
+
+          collection = response.Data!;
+
+
+
+          isLoading = false;
+
+     }
+
+
+     async Task ClearFilters()
+     {
+          query = new();
+
+          await GetAllAsync();
+     }
+
+
+
+}

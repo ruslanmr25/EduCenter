@@ -1,0 +1,162 @@
+﻿@using System.Threading.Tasks
+<MudDialog>
+     <TitleContent>
+          <MudText Typo="Typo.h5">
+
+               To'lov qo'shish
+          </MudText>
+     </TitleContent>
+
+     <DialogContent>
+          <MudCard Elevation="0">
+
+
+               <MudText Typo="Typo.body2" Class="mb-2"> F.I.Sh: <strong>@Sycle.Student?.FullName</strong>
+               </MudText>
+               <MudText Typo="Typo.body2" Class="mb-2"> Guruh:
+                    <strong>@Sycle.Group?.Name</strong>
+               </MudText>
+
+               <MudText Typo="Typo.body2" Class="mb-2"> Narxi:
+                    <strong>@Sycle.Price.ToSpacedIntString()</strong>
+               </MudText>
+               <MudText Typo="Typo.body2" Class="mb-2"> Fan:
+                    <strong>@Sycle.Group?.Science?.Name</strong>
+               </MudText>
+
+               @if (Sycle.StudentPayments.Count > 0)
+               {
+
+
+                    <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                         <strong>@( Sycle.StudentPayments.First().EndDate )</strong>
+                    </MudText>
+
+                    <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                         <strong>@(DateTime.UtcNow.ToDaysLeft(Sycle.StudentPayments.First().EndDate))</strong>
+                    </MudText>
+
+                    <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                         <strong>@Sycle.StudentPayments.First().EndDate.ToUzbekDate()</strong>
+                    </MudText>
+               }
+               else
+               {
+                    <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                         <strong>Hali to'lov amalga oshirilmagan</strong>
+                    </MudText>
+
+
+                    <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                         <strong>@Sycle.CreatedAt.ToUzbekDate()</strong>
+                    </MudText>
+
+                    <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                         <strong>@(DateTime.UtcNow.ToDaysLeft(Sycle.CreatedAt))</strong>
+                    </MudText>
+
+
+
+               }
+
+
+
+
+               <MudStack>
+
+                    <EditForm Model="@dto">
+                         <DataAnnotationsValidator />
+
+
+                         <MudStack Row="true" Class="mb-4">
+
+                              <MudDatePicker Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="dto.BeginDate"
+                                   Label="Boshlanish sanasi" />
+                              <MudDatePicker Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="dto.EndDate"
+                                   Label="Tugash sanasi" />
+
+
+                         </MudStack>
+
+                         <MudStack Row="true" AlignItems="AlignItems.Center">
+                              <MudNumericField Variant="Variant.Outlined" Margin="Margin.Dense" HideSpinButtons="true"
+                                   @bind-Value="@dto.Amount">
+                              </MudNumericField>
+                              <MudText Typo="Typo.h5"> so'm</MudText>
+                         </MudStack>
+
+
+                    </EditForm>
+
+
+               </MudStack>
+          </MudCard>
+     </DialogContent>
+
+     <DialogActions>
+          <MudButton OnClick="Cancel">Cancel</MudButton>
+          <MudButton Color="Color.Primary" OnClick="Submit">OK</MudButton>
+     </DialogActions>
+
+</MudDialog>
+
+@inject ISnackbar snackbar
+@inject StudentPaymentSystemClient client
+@code {
+
+
+     protected CreateStudentPaymentDto dto = new();
+
+
+
+     [CascadingParameter]
+     private IMudDialogInstance MudDialog { get; set; }
+
+
+
+     [Parameter]
+     public GroupStudentPaymentSycle Sycle { get; set; }
+
+
+     protected override void OnParametersSet()
+     {
+
+          dto.Amount = (int)Sycle.Price;
+
+          var date = Sycle.StudentPayments.FirstOrDefault()?.EndDate ?? Sycle.CreatedAt;
+          dto.BeginDate = date;
+
+          dto.EndDate = date.AddMonths(1);
+
+          dto.GroupStudentPaymentSycleId = Sycle.Id;
+          base.OnParametersSet();
+     }
+
+     private async Task Submit()
+     {
+
+
+          var response = await client.Pay(dto);
+
+          if (!response.Success)
+          {
+
+               snackbar.Add(response.Message, Severity.Error);
+
+               return;
+          }
+
+          snackbar.Add(response.Message, Severity.Success);
+
+
+
+
+          MudDialog.Close(DialogResult.Ok(true));
+     }
+
+     private void Cancel() => MudDialog.Cancel();
+
+
+
+
+}

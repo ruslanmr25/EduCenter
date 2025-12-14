@@ -6,9 +6,7 @@ using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Api.Controllers.scienceAdminsControllers;
 
@@ -59,9 +57,9 @@ public class ScienceController : Controller
 
         science.CenterId = centerId;
 
-        await scienceRepository.CreateAsync(science);
+        var entity = await scienceRepository.CreateAsync(science);
         // science science = ;
-        return Created();
+        return Ok(new ApiResponse<Science>(entity));
     }
 
     [HttpPut("{id}")]
@@ -85,8 +83,6 @@ public class ScienceController : Controller
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var centerId = int.Parse(User.FindFirstValue("centerId")!);
-
         var entity = await scienceRepository.GetAsync(id);
         if (entity is null)
         {

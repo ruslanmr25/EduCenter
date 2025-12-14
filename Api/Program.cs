@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
         "AllowFrontend",
         policy =>
             policy
-                .WithOrigins("http://localhost:5227") // frontend manzilingiz
+                .WithOrigins("http://localhost:5055") // frontend manzilingiz
                 .AllowAnyHeader()
                 .AllowAnyMethod()
     );

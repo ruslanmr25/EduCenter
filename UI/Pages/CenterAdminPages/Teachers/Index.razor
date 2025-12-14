@@ -1,90 +1,121 @@
 ﻿@page "/teachers"
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
 
 
-     <MudText Typo="Typo.h6" Color="Color.Tertiary" Class="my-4">O'qituvchilar</MudText>
+@attribute [Authorize(Roles = "CenterAdmin")]
 
 
-
-     <MudPaper Class="px-10 py-5 ma-0" Height="90%" Elevation="0">
-
-          <MudStack Row="true" Justify="Justify.FlexEnd">
-
-               <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled"
-                    Class="mb-4" Size="Size.Small">
-                    Qo'shish</MudButton>
-
-          </MudStack>
-
-
-          <MudTable Elevation="0" Items="@elements" Hover="true" Breakpoint="Breakpoint.Sm">
-
-
-               <HeaderContent>
-                    <MudTh>Nr</MudTh>
-
-                    <MudTh>Name</MudTh>
-
-                    <MudTh>Age</MudTh>
-
-               </HeaderContent>
-
-
-               <RowTemplate>
-
-                    <MudTd DataLabel="Nr">@(elements.IndexOf(context) + 1)</MudTd>
-                    <MudTd DataLabel="Name">@context.Name</MudTd>
-
-                    <MudTd DataLabel="Age">@context.Age</MudTd>
-               </RowTemplate>
-          </MudTable>
-
-
-
-     </MudPaper>
-
-
-</MudContainer>
-
-
-
-
-@code
+@if (isLoading)
 {
 
-     protected string name;
+     <MudStack Row="true" Justify="Justify.Center">
 
-     protected List<Element> elements = new();
+          <MudProgressCircular Class="ms-n1" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
+     </MudStack>
+
+}
+
+else
+{
+
+     <MudContainer MaxWidth="MaxWidth.ExtraLarge">
 
 
-     protected override void OnInitialized()
+          <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">O'qituvchilar</MudText>
+
+
+
+          <MudPaper Class="px-10 py-5 ma-0" Height="90%" Elevation="0">
+
+               <MudStack Row="true" Justify="Justify.FlexEnd">
+
+                    <NavLink Href="/teachers/create">
+                         <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled"
+                              Class="mb-4" Size="Size.Small">
+                              Qo'shish
+                         </MudButton>
+                    </NavLink>
+
+               </MudStack>
+
+
+               <MudTable Elevation="0" Items="@teachers.Items" Hover="true" Breakpoint="Breakpoint.Md">
+
+
+                    <HeaderContent>
+                         <MudTh>Nr</MudTh>
+
+                         <MudTh>F.I.SH</MudTh>
+                         <MudTh>Foydalanuvchi nomi</MudTh>
+
+
+
+                    </HeaderContent>
+
+
+                    <RowTemplate>
+
+                         <MudTd DataLabel="Nr">@(teachers.Items.IndexOf(context) + 1)</MudTd>
+                         <MudTd DataLabel="Name">@context.FullName</MudTd>
+                         <MudTd DataLabel="Name">@context.Username</MudTd>
+
+
+
+                    </RowTemplate>
+                    <PagerContent>
+                         <MudStack Row="true" Justify="Justify.FlexEnd">
+                              <MudPagination BoundaryCount="1" MiddleCount="3" Count="teachers.Meta!.TotalPages"
+                                   Selected="@_selected" SelectedChanged="@GetTeachersAsync" />
+                         </MudStack>
+                    </PagerContent>
+
+               </MudTable>
+
+
+
+          </MudPaper>
+
+
+     </MudContainer>
+
+}
+
+
+
+@inject TeacherClient teacherClient
+@code
+{
+     protected string? name;
+
+     protected int _selected = 1;
+
+     protected bool isLoading = false;
+     protected Collection<User> teachers = new();
+
+
+     protected override async Task OnInitializedAsync()
      {
 
-          var el1 = new Element
-          {
-               Name = "Mamasalayev Ruslan",
-               Age = 22
-          };
-
-          var el2 = new Element
-          {
-               Name = "Ergashev Jamshid",
-               Age = 22
-          };
-          elements = new List<Element>() { el1, el2 };
-          name = elements[0].Name;
+          await GetTeachersAsync(1);
 
      }
 
-
-
-
-     protected class Element
+     protected async Task GetTeachersAsync(int i)
      {
+          isLoading = true;
+          var response = await teacherClient.GetAllAsync(i);
 
 
-          public string Name { get; set; } = string.Empty;
+          if (!response.Success)
+          {
+               return;
+          }
 
-          public int Age { get; set; }
+          teachers = response.Data!;
+
+          _selected = i;
+
+          isLoading = false;
+
+
      }
 }

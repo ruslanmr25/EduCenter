@@ -1,0 +1,154 @@
+﻿@page "/payment-pending-students"
+@using UI.Extensions
+
+@if (sycles is null)
+{
+
+}
+else
+{
+
+     <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+
+          <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">To'lovi yaqinlashayotgan o'quvchilar</MudText>
+
+          <MudGrid>
+               @foreach (var sycle in sycles)
+               {
+                    <MudItem>
+
+                         <MudCard Elevation="0">
+
+                              <MudCardContent>
+                                   <MudText Typo="Typo.body2" Class="mb-2"> F.I.Sh: <strong>@sycle.Student?.FullName</strong>
+                                   </MudText>
+                                   <MudText Typo="Typo.body2" Class="mb-2"> Guruh:
+                                        <strong>@sycle.Group?.Name</strong>
+                                   </MudText>
+
+                                   <MudText Typo="Typo.body2" Class="mb-2"> Narxi:
+                                        <strong>@sycle.Price.ToSpacedIntString()</strong>
+                                   </MudText>
+                                   <MudText Typo="Typo.body2" Class="mb-2"> Fan:
+                                        <strong>@sycle.Group?.Science?.Name</strong>
+                                   </MudText>
+
+                                   @if (sycle.StudentPayments.Count > 0)
+                                   {
+
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                                             <strong>@( sycle.StudentPayments.First().EndDate )</strong>
+                                        </MudText>
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                                             <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.StudentPayments.First().EndDate))</strong>
+                                        </MudText>
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                                             <strong>@sycle.StudentPayments.First().EndDate.ToUzbekDate()</strong>
+                                        </MudText>
+
+
+
+
+                                   }
+                                   else
+                                   {
+
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                                             <strong>Hali to'lov amalga oshirilmagan</strong>
+                                        </MudText>
+
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                                             <strong>@sycle.CreatedAt.ToUzbekDate()</strong>
+                                        </MudText>
+
+                                        <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                                             <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.CreatedAt))</strong>
+                                        </MudText>
+
+
+
+                                   }
+
+                                   <MudButton OnClick="@(() => OpenDialogAsync(sycle))" Color="Color.Dark" FullWidth="true"
+                                        Size="Size.Small" Variant="Variant.Outlined"
+                                        StartIcon="@Icons.Material.Outlined.AttachMoney" Class="px-4 py-2 rounded-lg">
+                                        To'lov qo'shish
+                                   </MudButton>
+
+
+
+
+
+                              </MudCardContent>
+                         </MudCard>
+                    </MudItem>
+
+
+               }
+          </MudGrid>
+
+
+     </MudContainer>
+
+}
+
+
+@inject StudentPaymentSystemClient systemClient
+@inject IDialogService DialogService
+@inject ISnackbar snackbar
+@code {
+
+     protected List<GroupStudentPaymentSycle>? sycles;
+
+
+     protected override async Task OnInitializedAsync()
+     {
+          await base.OnInitializedAsync();
+
+          await Load();
+
+     }
+
+     protected async Task Load()
+     {
+          var response = await systemClient.GetPendingFeeStudents();
+
+          if (!response.Success)
+          {
+
+               snackbar.Add(response.Message, Severity.Error);
+               return;
+          }
+
+          sycles = response.Data;
+     }
+
+     private async Task OpenDialogAsync(GroupStudentPaymentSycle sycle)
+     {
+          var parameters = new DialogParameters<AddStudentPayment> { { x => x.Sycle, sycle } };
+          var options = new DialogOptions { CloseOnEscapeKey = true };
+
+
+          var dialog = await DialogService.ShowAsync<AddStudentPayment>("Simple Dialog", parameters, options);
+
+
+          DialogResult result = (await dialog.Result)!;
+
+
+          if (!result.Canceled)
+          {
+
+               await Load();
+
+          }
+     }
+
+
+
+}

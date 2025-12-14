@@ -16,11 +16,11 @@ public class UpdatedGroupDto
     public int GroupPrice { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "ScienceId musbat son bo‘lishi kerak.")]
-    [Exsist(typeof(Science), "Id")]
+    [Exsist<Science>]
     public int ScienceId { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "TeacherId musbat son bo‘lishi kerak.")]
-    [Exsist(typeof(User), "Id")]
+    [Exsist<User>]
     public int TeacherId { get; set; }
 
     [MinLength(1, ErrorMessage = "Hech bo‘lmaganda bitta kun tanlanishi kerak.")]

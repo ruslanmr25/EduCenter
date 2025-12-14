@@ -1,0 +1,75 @@
+# =========================
+# Build results
+# =========================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]ny [Cc][Pp][Uu]/
+[Ll]og/
+
+# =========================
+# Visual Studio files
+# =========================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Rider / JetBrains
+# =========================
+.idea/
+*.sln.iml
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+# Agar packages papkasini commit qilmoqchi bo‘lmasangiz
+/packages/
+
+# =========================
+# Test results
+# =========================
+TestResults/
+*.trx
+
+# =========================
+# Publish output
+# =========================
+publish/
+wwwroot/dist/
+
+# =========================
+# ASP.NET Core
+# =========================
+appsettings.Development.json
+appsettings.Local.json
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+
+# =========================
+# Coverage
+# =========================
+coverage/
+*.coverage

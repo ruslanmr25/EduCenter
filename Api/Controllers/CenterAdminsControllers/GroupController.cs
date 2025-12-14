@@ -57,8 +57,7 @@ public class GroupController : ControllerBase
 
         group = await groupRepository.CreateAsync(group);
 
-        
-        return Created();
+        return Ok(new ApiResponse<Group>(group));
     }
 
     [HttpGet("{id}")]
@@ -66,7 +65,7 @@ public class GroupController : ControllerBase
     {
         var centerId = int.Parse(User.FindFirstValue("centerId")!);
 
-        Group? group = await groupRepository.GetAsync(id);
+        Group? group = await groupRepository.GetAsync(id, centerId);
 
         if (group is null)
         {
@@ -79,7 +78,9 @@ public class GroupController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdatedGroupDto dto)
     {
-        Group? dbGroup = await groupRepository.GetAsync(id);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Group? dbGroup = await groupRepository.GetAsync(id, centerId);
 
         if (dbGroup is null)
         {
@@ -98,7 +99,7 @@ public class GroupController : ControllerBase
     {
         var centerId = int.Parse(User.FindFirstValue("centerId")!);
 
-        var entity = await groupRepository.GetAsync(id);
+        var entity = await groupRepository.GetAsync(id, centerId);
         if (entity is null)
         {
             return NotFound(
@@ -113,7 +114,9 @@ public class GroupController : ControllerBase
     [HttpPut("{id}/change-status")]
     public async Task<IActionResult> ChangeActiveStatus(int id, UpdateGroupActiveStateDto dto)
     {
-        Group? group = await groupRepository.GetAsync(id);
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        Group? group = await groupRepository.GetAsync(id, centerId);
 
         if (group is null)
         {

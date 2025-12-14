@@ -1,0 +1,129 @@
+﻿@layout BlankLayout
+@page "/login"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using UI.Clients
+@using UI.DTOs
+@using UI.Providers
+
+<MudContainer Class="ma-0 mud-theme-primary d-flex justify-center align-center" Style="height:100vh;"
+     MaxWidth="MaxWidth.ExtraExtraLarge">
+
+     <MudPaper Elevation="0" Class="p-4 pt-10" Style="width:100%; max-width:500px;">
+
+          <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1">
+
+
+               <MudImage Src="/favicon.png" Width="150" />
+               <MudText Color="Color.Dark" Typo="Typo.h4">Tizimga kirish</MudText>
+
+
+          </MudStack>
+
+          <MudStack Class="pa-4 px-10 pb-20" Spacing="6">
+
+               <EditForm Model="@dto">
+
+               </EditForm>
+
+               <MudStack Spacing="1">
+                    <MudText Color="Color.Dark" Typo="Typo.body2">Username:</MudText>
+
+                    <MudTextField AdornmentIcon="@Icons.Material.Filled.Person" Adornment="Adornment.Start"
+                         AdornmentColor="Color.Dark" AutoFocus="true" Margin="Margin.Dense" @bind-Value="@dto.Username"
+                         Variant="Variant.Outlined" For="@(() => dto.Username)">
+                    </MudTextField>
+               </MudStack>
+
+               <MudStack Spacing="1">
+                    <MudText Color="Color.Dark" Typo="Typo.body2">Parolingiz:</MudText>
+
+
+
+                    <MudTextField AdornmentColor="Color.Dark" AdornmentIcon="@Icons.Material.Filled.Password"
+                         Adornment="Adornment.Start" ShrinkLabel Margin="Margin.Dense" InputType="InputType.Password"
+                         @bind-Value="@dto.Password" Variant="Variant.Outlined" For="@(() => dto.Password)">
+                    </MudTextField>
+
+               </MudStack>
+
+
+               <MudButton Disabled="@isSubmit" OnClick="Submit" Color="Color.Dark" Variant="Variant.Filled">
+                    @if (isSubmit)
+                    {
+                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+
+                    }
+                    else
+                    {
+                         <MudText>Kirish</MudText>
+                    }
+               </MudButton>
+
+
+               <MudText Align="Align.Center" Color="Color.Surface" Typo="Typo.body2">Ro'yxatdan o'tish uchun bu yerga
+                    bosing</MudText>
+
+
+
+
+          </MudStack>
+
+     </MudPaper>
+
+</MudContainer>
+
+
+@inject AuthClient authClient
+@inject TokenProvider tokenProvider
+@inject AuthenticationStateProvider authProvider
+@inject NavigationManager NavigationManager
+@inject ISnackbar snackbar
+@code {
+
+
+     protected LoginDto dto = new();
+
+     protected bool isSubmit = false;
+
+
+     protected async Task Submit()
+     {
+
+          isSubmit = true;
+
+
+          var response = await authClient.Login(dto);
+
+
+          if (response.Success == false)
+          {
+
+               snackbar.Add(response.Message, Severity.Error);
+
+               isSubmit = false;
+
+
+
+               return;
+          }
+
+          snackbar.Add(response.Message, Severity.Success);
+
+
+          var token = response.Data!.Token;
+
+          await tokenProvider.SetToken(token);
+
+          await ((CustomAuthenticationStateProvider)authProvider).NotifyUserAuthentication(token);
+          isSubmit = false;
+
+
+          NavigationManager.NavigateTo("/");
+
+
+
+     }
+
+
+}
