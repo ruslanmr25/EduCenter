@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Filters;
 
 public class GroupFilter : BaseFilter

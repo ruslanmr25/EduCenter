@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Frontend.DTOs.GroupDto
 {

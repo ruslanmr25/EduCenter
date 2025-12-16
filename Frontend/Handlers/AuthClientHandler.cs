@@ -1,4 +1,3 @@
-using System;
 using Frontend.Services;
 
 namespace Frontend.Handlers;

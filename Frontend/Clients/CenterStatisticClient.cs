@@ -1,4 +1,3 @@
-using System;
 using Frontend.DTOs.StatisticsDTO;
 using Frontend.Responses;
 using Microsoft.AspNetCore.Components;

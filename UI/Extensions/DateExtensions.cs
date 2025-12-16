@@ -1,5 +1,3 @@
-using System;
-
 namespace UI.Extensions;
 
 public static class DateExtensions
@@ -30,6 +28,11 @@ public static class DateExtensions
     {
         string month = UzbekMonths[date.Month - 1];
         return $"{date.Day}-{month}, {date.Year}";
+    }
+
+    public static string? ToUzbekDate(this DateTime? date)
+    {
+        return null;
     }
 
     public static string ToUzbekDate(this DateOnly date)

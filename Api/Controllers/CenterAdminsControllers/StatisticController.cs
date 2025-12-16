@@ -1,11 +1,9 @@
-using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.StatisticDto;
-using Domain.Enums;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers.CenterAdminsControllers
 {

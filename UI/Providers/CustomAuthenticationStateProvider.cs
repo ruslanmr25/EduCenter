@@ -1,11 +1,9 @@
-using System;
-
 namespace UI.Providers;
 
+using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Authorization;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {

@@ -1,4 +1,3 @@
-using System;
 using MudBlazor;
 
 namespace UI.Themes;

@@ -1,8 +1,7 @@
-using System;
+using Microsoft.AspNetCore.Components;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.AspNetCore.Components;
 using UI.Responses;
 
 namespace UI.Handlers;

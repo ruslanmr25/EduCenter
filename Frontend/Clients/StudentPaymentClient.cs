@@ -1,13 +1,10 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Domain.Entities;
 using Frontend.DTOs.Payments;
 using Frontend.Responses;
 using Microsoft.AspNetCore.Components;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Frontend.Clients
 {

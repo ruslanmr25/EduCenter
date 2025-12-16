@@ -1,5 +1,3 @@
-using System;
-
 namespace Frontend.Services;
 
 public static class DateTimeHelper

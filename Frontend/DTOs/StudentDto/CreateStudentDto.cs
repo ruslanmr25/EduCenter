@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations; // <- Attribute'lar uchun
-using Domain.Entities;
 
 namespace Frontend.DTOs.StudentDto;
 

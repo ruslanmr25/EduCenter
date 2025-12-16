@@ -126,7 +126,7 @@
           var date = Sycle.StudentPayments.FirstOrDefault()?.EndDate ?? Sycle.CreatedAt;
           dto.BeginDate = date;
 
-          dto.EndDate = date.AddMonths(1);
+          dto.EndDate = date.AddMonths(1).AddDays(-1);
 
           dto.GroupStudentPaymentSycleId = Sycle.Id;
           base.OnParametersSet();

@@ -1,14 +1,14 @@
-using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.GroupDTOs;
 using Application.Filters;
 using Application.Results;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers.CenterAdminsControllers;
 
@@ -73,6 +73,21 @@ public class GroupController : ControllerBase
         }
 
         return Ok(new ApiResponse<Group>(group));
+    }
+
+    [HttpGet("{id}/sycle")]
+    public async Task<IActionResult> GetGroupSycleModel(int id)
+    {
+        var centerId = int.Parse(User.FindFirstValue("centerId")!);
+
+        List<StudentPaymentRowModel>? model = await groupRepository.GroupPaymentModel(id, centerId);
+
+        if (model is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new ApiResponse<List<StudentPaymentRowModel>>(model));
     }
 
     [HttpPut("{id}")]

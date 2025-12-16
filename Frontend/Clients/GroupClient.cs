@@ -1,8 +1,7 @@
-using System;
-using System.Net.Http.Json;
 using Domain.Entities;
 using Frontend.Responses;
 using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
 
 namespace Frontend.Clients;
 

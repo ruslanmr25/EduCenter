@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Responses;
 using Application.Abstracts;
 using Application.DTOs.UserDTOs;
@@ -9,6 +8,7 @@ using Domain.Enums;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers.CenterAdminsControllers;
 

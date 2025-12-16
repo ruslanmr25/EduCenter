@@ -1,5 +1,3 @@
-using System;
-
 namespace Frontend.DTOs.Payments;
 
 public class StudentPaymentDto

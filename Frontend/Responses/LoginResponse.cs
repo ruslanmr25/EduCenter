@@ -1,5 +1,3 @@
-using System;
-
 namespace Frontend.Responses;
 
 public class LoginResponse

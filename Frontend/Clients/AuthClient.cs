@@ -1,9 +1,8 @@
-using System;
+using Frontend.DTOs.Auth;
+using Frontend.Responses;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Frontend.DTOs.Auth;
-using Frontend.Responses;
 
 namespace Frontend.Clients;
 

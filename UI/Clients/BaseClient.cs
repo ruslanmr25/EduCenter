@@ -1,6 +1,5 @@
-using System;
-using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
 using UI.Extensions;
 using UI.Handlers;
 using UI.Responses;

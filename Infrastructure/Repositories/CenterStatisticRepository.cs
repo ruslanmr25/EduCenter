@@ -1,4 +1,3 @@
-using System;
 using Application.DTOs.StatisticDto;
 using Domain.Entities;
 using Domain.Enums;

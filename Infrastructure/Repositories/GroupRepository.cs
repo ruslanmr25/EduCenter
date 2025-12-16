@@ -1,9 +1,9 @@
-using System;
-using System.Linq.Expressions;
 using Application.Results;
 using Domain.Entities;
+using Domain.Models;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
 
@@ -62,5 +62,28 @@ public class GroupRepository : BaseRepository<Group>
             .FirstOrDefaultAsync();
 
         return entity;
+    }
+
+    public async Task<List<StudentPaymentRowModel>> GroupPaymentModel(int id, int centerId)
+    {
+        var query = BuildBaseQuery();
+
+        Group? group = await _context
+            .Groups.Where(g => g.Id == id && g.CenterId == centerId)
+            .FirstOrDefaultAsync();
+
+        List<StudentPaymentRowModel> sycles = await _context
+            .GroupStudentPaymentSycles.Where(gs => gs.GroupId == id)
+            .Select(gs => new StudentPaymentRowModel
+            {
+                StudentId = gs.StudentId,
+                StudentName = gs.Student!.FullName,
+                StudentPayments = gs.StudentPayments.OrderByDescending(sp => sp.CreatedAt).ToList(),
+
+                JoinedAt = gs.CreatedAt,
+            })
+            .ToListAsync();
+
+        return sycles;
     }
 }

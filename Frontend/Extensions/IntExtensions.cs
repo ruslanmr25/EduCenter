@@ -1,5 +1,3 @@
-using System;
-
 namespace Frontend.Extensions;
 
 public static class IntExtensions

@@ -1,7 +1,7 @@
 ﻿@page "/payment-pending-students"
-@using UI.Extensions
 
-@if (sycles is null)
+
+@if (orderedItems is null)
 {
 
 }
@@ -11,88 +11,101 @@ else
      <MudContainer MaxWidth="MaxWidth.ExtraLarge">
 
 
-          <MudText Typo="Typo.h6" Color="Color.Primary" Class="my-4">To'lovi yaqinlashayotgan o'quvchilar</MudText>
-
-          <MudGrid>
-               @foreach (var sycle in sycles)
-               {
-                    <MudItem>
-
-                         <MudCard Elevation="0">
-
-                              <MudCardContent>
-                                   <MudText Typo="Typo.body2" Class="mb-2"> F.I.Sh: <strong>@sycle.Student?.FullName</strong>
-                                   </MudText>
-                                   <MudText Typo="Typo.body2" Class="mb-2"> Guruh:
-                                        <strong>@sycle.Group?.Name</strong>
-                                   </MudText>
-
-                                   <MudText Typo="Typo.body2" Class="mb-2"> Narxi:
-                                        <strong>@sycle.Price.ToSpacedIntString()</strong>
-                                   </MudText>
-                                   <MudText Typo="Typo.body2" Class="mb-2"> Fan:
-                                        <strong>@sycle.Group?.Science?.Name</strong>
-                                   </MudText>
-
-                                   @if (sycle.StudentPayments.Count > 0)
-                                   {
+          <MudText Typo="Typo.h5" Color="Color.Primary" Class="my-4">To'lovi yaqinlashayotgan o'quvchilar</MudText>
 
 
-                                        <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
-                                             <strong>@( sycle.StudentPayments.First().EndDate )</strong>
-                                        </MudText>
+          @foreach (var item in orderedItems)
+          {
 
-                                        <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
-                                             <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.StudentPayments.First().EndDate))</strong>
-                                        </MudText>
-
-                                        <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
-                                             <strong>@sycle.StudentPayments.First().EndDate.ToUzbekDate()</strong>
-                                        </MudText>
+               <MudStack class="ma-4">
 
 
+                    <MudText Typo="Typo.h6">@item.Key</MudText>
+
+                    <MudGrid>
+                         @foreach (var sycle in item.Items)
+                         {
+                              <MudItem>
+
+                                   <MudCard Elevation="0">
+
+                                        <MudCardContent>
+                                             <MudText Typo="Typo.body2" Class="mb-2"> F.I.Sh: <strong>@sycle.Student?.FullName</strong>
+                                             </MudText>
+                                             <MudText Typo="Typo.body2" Class="mb-2"> Guruh:
+                                                  <strong>@sycle.Group?.Name</strong>
+                                             </MudText>
+
+                                             <MudText Typo="Typo.body2" Class="mb-2"> Narxi:
+                                                  <strong>@sycle.Price.ToSpacedIntString()</strong>
+                                             </MudText>
+                                             <MudText Typo="Typo.body2" Class="mb-2"> Fan:
+                                                  <strong>@sycle.Group?.Science?.Name</strong>
+                                             </MudText>
+
+                                             @if (sycle.StudentPayments.Count > 0)
+                                             {
 
 
-                                   }
-                                   else
-                                   {
+                                                  <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                                                       <strong>@( sycle.StudentPayments.First().EndDate )</strong>
+                                                  </MudText>
 
+                                                  <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                                                       <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.StudentPayments.First().EndDate))</strong>
+                                                  </MudText>
 
-                                        <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
-                                             <strong>Hali to'lov amalga oshirilmagan</strong>
-                                        </MudText>
-
-
-                                        <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
-                                             <strong>@sycle.CreatedAt.ToUzbekDate()</strong>
-                                        </MudText>
-
-                                        <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
-                                             <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.CreatedAt))</strong>
-                                        </MudText>
-
-
-
-                                   }
-
-                                   <MudButton OnClick="@(() => OpenDialogAsync(sycle))" Color="Color.Dark" FullWidth="true"
-                                        Size="Size.Small" Variant="Variant.Outlined"
-                                        StartIcon="@Icons.Material.Outlined.AttachMoney" Class="px-4 py-2 rounded-lg">
-                                        To'lov qo'shish
-                                   </MudButton>
+                                                  <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                                                       <strong>@sycle.StudentPayments.First().EndDate.ToUzbekDate()</strong>
+                                                  </MudText>
 
 
 
 
+                                             }
+                                             else
+                                             {
 
-                              </MudCardContent>
-                         </MudCard>
-                    </MudItem>
+
+                                                  <MudText Typo="Typo.body2" Class="mb-2">Ohirgi to'lov sanasi:
+                                                       <strong>Hali to'lov amalga oshirilmagan</strong>
+                                                  </MudText>
 
 
-               }
-          </MudGrid>
+                                                  <MudText Typo="Typo.body2" Class="mb-2">To'lov qilishi kerak bo'lgan sana:
+                                                       <strong>@sycle.CreatedAt.ToUzbekDate()</strong>
+                                                  </MudText>
 
+                                                  <MudText Typo="Typo.body2" Class="mb-2">To'lovgacha:
+                                                       <strong>@(DateTime.UtcNow.ToDaysLeft(sycle.CreatedAt))</strong>
+                                                  </MudText>
+
+
+
+                                             }
+
+                                             <MudButton OnClick="@(() => OpenDialogAsync(sycle))" Color="Color.Dark" FullWidth="true"
+                                                  Size="Size.Small" Variant="Variant.Outlined"
+                                                  StartIcon="@Icons.Material.Outlined.AttachMoney" Class="px-4 py-2 rounded-lg">
+                                                  To'lov qo'shish
+                                             </MudButton>
+
+
+
+
+
+                                        </MudCardContent>
+                                   </MudCard>
+                              </MudItem>
+
+
+                         }
+                    </MudGrid>
+
+               </MudStack>
+
+
+          }
 
      </MudContainer>
 
@@ -104,8 +117,7 @@ else
 @inject ISnackbar snackbar
 @code {
 
-     protected List<GroupStudentPaymentSycle>? sycles;
-
+     protected List<OrderedItems<string, GroupStudentPaymentSycle>>? orderedItems = new();
 
      protected override async Task OnInitializedAsync()
      {
@@ -126,7 +138,21 @@ else
                return;
           }
 
-          sycles = response.Data;
+          var sycles = response.Data;
+
+
+          orderedItems = sycles!.GroupBy(x => x.Group!.Name).Select(
+          s => new OrderedItems<string, GroupStudentPaymentSycle>
+          {
+               Key = s.Key,
+               Items = s.ToList()
+          }
+          ).ToList();
+
+
+
+
+
      }
 
      private async Task OpenDialogAsync(GroupStudentPaymentSycle sycle)
@@ -148,6 +174,11 @@ else
 
           }
      }
+
+
+
+
+
 
 
 

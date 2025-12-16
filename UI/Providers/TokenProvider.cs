@@ -1,4 +1,3 @@
-using System;
 using Blazored.LocalStorage;
 
 namespace UI.Providers;

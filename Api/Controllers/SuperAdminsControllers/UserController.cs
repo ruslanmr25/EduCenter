@@ -7,7 +7,6 @@ using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.SuperAdminsControllers;

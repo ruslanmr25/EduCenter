@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.SciencesDTOs;
 using Application.Results;
@@ -7,6 +6,7 @@ using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers.scienceAdminsControllers;
 

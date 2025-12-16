@@ -1,7 +1,4 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using Application.Attributes;
-using Domain.Entities;
 
 namespace Application.DTOs.UserDTOs;
 

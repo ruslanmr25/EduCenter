@@ -1,4 +1,5 @@
 ﻿@page "/center-admin/groups/{id:int}"
+@using Domain.Models
 
 <MudContainer Class="ma-4">
      <MudPaper Elevation="0" Class="pa-4 rounded-lg">
@@ -7,11 +8,11 @@
 
 
                <ShowAboutGroupPanel Group="group" />
-               <ShowGroupStudents Sycles="group?.GroupStudentPaymentSycles" />
+               <ShowGroupStudents Sycles="sycles" />
 
 
 
-               <ShowGroupPaymentSycle Group="group" />
+               <ShowGroupPaymentSycle Group="group" Sycles="sycles" />
 
           </MudTabs>
 
@@ -26,9 +27,17 @@
 
      protected Group? group;
 
+     protected List<StudentPaymentRowModel>? sycles;
+
      protected override async Task OnParametersSetAsync()
      {
           group = (await groupClient.GetAsync(Id)).Data!;
+          var sycle = (await groupClient.GetGroupSycleModel(Id)).Data!;
           await base.OnParametersSetAsync();
+
+
+          sycles = sycle;
+
+
      }
 }

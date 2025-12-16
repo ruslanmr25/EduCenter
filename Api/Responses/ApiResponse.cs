@@ -1,5 +1,3 @@
-using System;
-
 namespace Api.Responses;
 
 public class ApiResponse<T>(

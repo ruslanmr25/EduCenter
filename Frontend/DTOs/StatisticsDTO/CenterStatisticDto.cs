@@ -1,6 +1,3 @@
-using System;
-using Domain.Entities;
-
 namespace Frontend.DTOs.StatisticsDTO;
 
 public class CenterStatisticDto

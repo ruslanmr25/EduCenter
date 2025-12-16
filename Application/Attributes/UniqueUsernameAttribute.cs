@@ -1,8 +1,6 @@
-using System;
+using Application.Abstracts;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
-using Application.Abstracts;
-using Domain.Entities;
 
 namespace Application.Attributes;
 

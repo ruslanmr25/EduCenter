@@ -1,5 +1,3 @@
-using System;
-
 namespace UI.Responses;
 
 public class Collection<T>

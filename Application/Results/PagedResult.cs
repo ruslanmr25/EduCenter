@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Results;
 
 public class PagedResult<T>

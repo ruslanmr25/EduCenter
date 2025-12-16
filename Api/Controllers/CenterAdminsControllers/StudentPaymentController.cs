@@ -1,10 +1,9 @@
-using System.Security.Claims;
 using Api.Responses;
 using Application.DTOs.PaymentsDto;
 using Domain.Entities;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers.CenterAdminsControllers;
 
